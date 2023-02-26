@@ -1,11 +1,16 @@
-import AppHeader from '../App-Header/App-Header.jsx'
+import AppHeader from "../App-Header/App-Header.jsx";
+import BurgerIngredients from "../Burger-Ingredients/Burger-Ingredients.jsx";
+import data from "../../utils/data.js";
 
-import './App.css';
+import "./App.css";
+
 
 function App() {
+
   return (
     <div className="App">
-      <AppHeader/>
+      <AppHeader />
+      <BurgerIngredients ingredientslist={data} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 // import PropTypes from "prop-types";
-import Ingredients from "../Ingridients/Ingredients.jsx";
+import IngredientsBoard from "../Ingredients-Board/Ingredients-Board.jsx";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const BurgerIngredients = ({ ingredientslist }) => {
@@ -21,14 +21,9 @@ const BurgerIngredients = ({ ingredientslist }) => {
       </div>
 
       <div>
-        <section>
-          <h2>Булки</h2>
-          <ul>
-            {ingredientslist.map((item) => (
-              <Ingredients {...item} key={item._id} />
-            ))}
-          </ul>
-        </section>
+        <IngredientsBoard title="Булки" menu="bun" data={ingredientslist} />
+        <IngredientsBoard title="Соусы" menu="sauce" data={ingredientslist} />
+        <IngredientsBoard title="Начинки" menu="main" data={ingredientslist} />
       </div>
     </section>
   );

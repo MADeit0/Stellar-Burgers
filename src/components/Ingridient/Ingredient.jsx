@@ -4,7 +4,7 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const Ingridients = ({ name, price, image }) => {
+const Ingridient = ({ name, price, image }) => {
   return (
     <li>
       <img src={image} alt={name} />
@@ -18,12 +18,12 @@ const Ingridients = ({ name, price, image }) => {
   );
 };
 
-Ingridients.propTypes = {
+Ingridient.propTypes = {
   // bla: PropTypes.string,
 };
 
-Ingridients.defaultProps = {
+Ingridient.defaultProps = {
   // bla: 'test',
 };
 
-export default Ingridients;
+export default Ingridient;

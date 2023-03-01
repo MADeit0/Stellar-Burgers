@@ -2,12 +2,19 @@ import React from "react";
 // import PropTypes from 'prop-types';
 import Ingredient from "../Ingridient/Ingredient.jsx";
 
+import IngredientsBoardStyle from "./Ingredients-Board.module.css";
+
 const IngredientsBoard = ({ data, title, menu }) => (
-  <section>
+  <section className={IngredientsBoardStyle.board}>
     <h2>{title}</h2>
-    <ul>
+    <ul className={IngredientsBoardStyle.box}>
       {data.map(
-        (item) => item.type === menu && <Ingredient {...item} key={item._id} />
+        (item) =>
+          item.type === menu && (
+            <li className={IngredientsBoardStyle.list}>
+              <Ingredient {...item} key={item._id} />
+            </li>
+          )
       )}
     </ul>
   </section>

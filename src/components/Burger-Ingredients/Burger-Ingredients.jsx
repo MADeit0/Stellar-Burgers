@@ -2,26 +2,31 @@ import React from "react";
 // import PropTypes from "prop-types";
 import IngredientsBoard from "../Ingredients-Board/Ingredients-Board.jsx";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientsStyle from './Burger-Ingredients.module.css'
+import ingredientsStyle from "./Burger-Ingredients.module.css";
 
 const BurgerIngredients = ({ ingredientslist }) => {
   const [current, setCurrent] = React.useState("one");
   return (
-    <section className={ingredientsStyle.board} aria-label="ингредиенты">
-      <h1>Соберите бургер</h1>
+    <section
+      className={`${ingredientsStyle.board} pt-10`}
+      aria-label="ингредиенты"
+    >
+      <h1 className="text text_text text_type_main-large pb-5">
+        Соберите бургер
+      </h1>
       <div style={{ display: "flex" }}>
         <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
           Булки
         </Tab>
-        <Tab value="two" active={current === "two"} onClick={setCurrent}>
+        <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
           Соусы
         </Tab>
-        <Tab value="three" active={current === "three"} onClick={setCurrent}>
+        <Tab value="main" active={current === "main"} onClick={setCurrent}>
           Начинки
         </Tab>
       </div>
 
-      <div className={ingredientsStyle.scroll}>
+      <div className={`${ingredientsStyle.scroll} mt-10`}>
         <IngredientsBoard title="Булки" menu="bun" data={ingredientslist} />
         <IngredientsBoard title="Соусы" menu="sauce" data={ingredientslist} />
         <IngredientsBoard title="Начинки" menu="main" data={ingredientslist} />

@@ -6,7 +6,7 @@ import IngredientsBoardStyle from "./Ingredients-Board.module.css";
 
 const IngredientsBoard = ({ data, title, menu }) => (
   <section className={`${IngredientsBoardStyle.board} pb-10`}>
-    <h2 className="text text_type_main-defaul m-0 pb-6">{title}</h2>
+    <h2 className="text text_type_main-medium m-0 pb-6">{title}</h2>
     <ul className={`${IngredientsBoardStyle.box} pr-4 pl-4`}>
       {data.map(
         (item) =>

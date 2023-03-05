@@ -3,5 +3,6 @@
 }
 
 .scroll {
-
+  max-height: 66.4vh;
+  overflow: scroll;
 }

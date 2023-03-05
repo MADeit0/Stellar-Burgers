@@ -8,7 +8,7 @@ import appStyle from "./App.module.css";
 
 function App() {
   return (
-    <div className={`${appStyle.container} pt-10 pb-10`}>
+    <div className={`${appStyle.container} pb-10`}>
       <AppHeader />
       <div className={appStyle.section}>
         <BurgerIngredients ingredientslist={data} />

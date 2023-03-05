@@ -7,8 +7,9 @@
   flex-direction: column;
   gap: 10px;
   list-style-type: none;
-  margin: 0;
-  padding: 10px 0 10px 0;
+  margin: 10px 0 10px 0;
+  max-height: 46.4vh;
+  overflow: scroll;
 }
 
 .list {

@@ -10,8 +10,8 @@ import burgerConstructorsStyle from "./Burger-Constructor.module.css";
 
 const BurgerConstructor = ({ ingredientslist }) => {
   return (
-    <section className={`${burgerConstructorsStyle.board} pt-25 pl-4 pr-4`}>
-      <div className="ml-8">
+    <section className={`${burgerConstructorsStyle.board} pt-25`}>
+      <div className="ml-8 pl-4 pr-4">
         <ConstructorElement
           type={"top"}
           isLocked={true}
@@ -20,7 +20,7 @@ const BurgerConstructor = ({ ingredientslist }) => {
           thumbnail={ingredientslist[0].image}
         />
       </div>
-      <ul className={burgerConstructorsStyle.lists}>
+      <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
         {ingredientslist.map(
           (item, element) =>
             element > 0 && (
@@ -36,7 +36,7 @@ const BurgerConstructor = ({ ingredientslist }) => {
             )
         )}
       </ul>
-      <div className="ml-8">
+      <div className="ml-8 pl-4 pr-4">
         <ConstructorElement
           type={"bottom"}
           isLocked={true}

@@ -18,7 +18,7 @@ const AppHeader = () => {
   return (
     <header className={`${headerStyle.header} pt-4 pb-4`}>
       <div className={headerStyle.container}>
-        <nav>
+        <nav className={headerStyle.navigation}>
           <ul className={headerStyle.lists}>
             <li>
               <NavLink to="/" className={setActive}>
@@ -39,12 +39,14 @@ const AppHeader = () => {
           </ul>
         </nav>
         <Logo />
-        <NavLink to="./c" className={setActive}>
-          <ProfileIcon type="secondary" />
-          <span className="text text_type_main-default pl-2">
-            Личный кабинет
-          </span>
-        </NavLink>
+        <div className={headerStyle.profile}>
+          <NavLink to="./c" className={setActive}>
+            <ProfileIcon type="secondary" />
+            <span className="text text_type_main-default pl-2">
+              Личный кабинет
+            </span>
+          </NavLink>
+        </div>
       </div>
     </header>
   );

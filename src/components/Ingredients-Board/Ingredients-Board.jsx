@@ -11,8 +11,11 @@ const IngredientsBoard = ({ data, title, menu }) => (
       {data.map(
         (item) =>
           item.type === menu && (
-            <li className={`${IngredientsBoardStyle.list} pl-4 pr-4 pb-6`}>
-              <Ingredient {...item} key={item._id} />
+            <li
+              className={`${IngredientsBoardStyle.list} pl-4 pr-4 pb-6`}
+              key={item._id}
+            >
+              <Ingredient {...item} />
             </li>
           )
       )}

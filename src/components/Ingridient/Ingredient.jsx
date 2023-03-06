@@ -1,4 +1,4 @@
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import {
   CurrencyIcon,
   Counter,
@@ -23,11 +23,9 @@ const Ingridient = ({ name, price, image }) => {
 };
 
 Ingridient.propTypes = {
-  // bla: PropTypes.string,
-};
-
-Ingridient.defaultProps = {
-  // bla: 'test',
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
 };
 
 export default Ingridient;

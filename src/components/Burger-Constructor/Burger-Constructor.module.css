@@ -5,11 +5,25 @@
 .lists {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   list-style-type: none;
-  margin: 10px 0 10px 0;
-  max-height: 46.4vh;
-  overflow: scroll;
+  margin: 16px 0 16px 0;
+  max-height: 45.4vh;
+  overflow-y: scroll;
+}
+
+.lists::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgba(47, 47, 55, 1);
+}
+
+.lists::-webkit-scrollbar-thumb {
+  height: 292px;
+  background-color: rgba(133, 133, 173, 1);
+}
+
+.lists::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(99, 99, 128);
 }
 
 .list {

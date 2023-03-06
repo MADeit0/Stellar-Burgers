@@ -4,9 +4,15 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
 import burgerConstructorsStyle from "./Burger-Constructor.module.css";
-// import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+
+const dataPropTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image_mobile: PropTypes.string.isRequired,
+});
 
 const BurgerConstructor = ({ ingredientslist }) => {
   return (
@@ -17,7 +23,7 @@ const BurgerConstructor = ({ ingredientslist }) => {
           isLocked={true}
           text={ingredientslist[0].name}
           price={ingredientslist[0].price}
-          thumbnail={ingredientslist[0].image}
+          thumbnail={ingredientslist[0].image_mobile}
         />
       </div>
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
@@ -30,7 +36,7 @@ const BurgerConstructor = ({ ingredientslist }) => {
                   isLocked={false}
                   text={item.name}
                   price={item.price}
-                  thumbnail={item.image}
+                  thumbnail={item.image_mobile}
                 />
               </li>
             )
@@ -42,10 +48,10 @@ const BurgerConstructor = ({ ingredientslist }) => {
           isLocked={true}
           text={ingredientslist[0].name}
           price={ingredientslist[0].price}
-          thumbnail={ingredientslist[0].image}
+          thumbnail={ingredientslist[0].image_mobile}
         />
       </div>
-      <div className={`${burgerConstructorsStyle.price} pt-10`}>
+      <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
           <p className="text text_type_digits-medium">167890</p>
           <CurrencyIcon type="primary" />
@@ -59,11 +65,7 @@ const BurgerConstructor = ({ ingredientslist }) => {
 };
 
 BurgerConstructor.propTypes = {
-  // bla: PropTypes.string,
-};
-
-BurgerConstructor.defaultProps = {
-  // bla: 'test',
+  ingredientslist: PropTypes.arrayOf(dataPropTypes).isRequired,
 };
 
 export default BurgerConstructor;

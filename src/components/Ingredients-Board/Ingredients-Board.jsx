@@ -1,8 +1,12 @@
 import React from "react";
-// import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import Ingredient from "../Ingridient/Ingredient.jsx";
 
 import IngredientsBoardStyle from "./Ingredients-Board.module.css";
+
+const dataPropTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+});
 
 const IngredientsBoard = ({ data, title, menu }) => (
   <section className={`${IngredientsBoardStyle.board} pb-10`}>
@@ -24,11 +28,9 @@ const IngredientsBoard = ({ data, title, menu }) => (
 );
 
 IngredientsBoard.propTypes = {
-  // bla: PropTypes.string,
-};
-
-IngredientsBoard.defaultProps = {
-  // bla: 'test',
+  data: PropTypes.arrayOf(dataPropTypes).isRequired,
+  title: PropTypes.string.isRequired,
+  menu: PropTypes.string.isRequired,
 };
 
 export default IngredientsBoard;

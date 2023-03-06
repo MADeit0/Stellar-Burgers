@@ -45,6 +45,11 @@
   color: white;
 }
 
+.link:active {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 0.5;
+}
+
 .active {
   color: white;
   pointer-events: none;

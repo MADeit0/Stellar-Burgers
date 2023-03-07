@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   CurrencyIcon,
   Counter,
@@ -20,12 +19,6 @@ const Ingridient = ({ name, price, image }) => {
       <Counter count={1} size="default" extraClass="m-1" />
     </Link>
   );
-};
-
-Ingridient.propTypes = {
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
 };
 
 export default Ingridient;

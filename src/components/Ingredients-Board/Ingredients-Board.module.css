@@ -1,0 +1,17 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 24px;
+  box-sizing: border-box;
+  margin: 0;
+}
+.list {
+  list-style-type: none;
+  box-sizing: border-box;
+}

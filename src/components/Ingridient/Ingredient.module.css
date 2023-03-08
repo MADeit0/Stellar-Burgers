@@ -1,0 +1,17 @@
+.box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  gap: 4px;
+  color: white;
+}
+
+.pic {
+  max-width: 250px;
+  height: auto;
+}
+.text {
+ text-align: center;
+}

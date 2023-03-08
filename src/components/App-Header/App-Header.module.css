@@ -1,0 +1,57 @@
+.header {
+  width: 100%;
+  background-color: #1c1c21;
+}
+
+.container {
+  max-width: 1240px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+  margin: auto;
+}
+
+.navigation {
+  justify-self: start;
+}
+
+.lists {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.profile {
+  justify-self: end;
+}
+
+.link:hover {
+  color: white;
+}
+
+.link:active {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 0.5;
+}
+
+.active {
+  color: white;
+  pointer-events: none;
+  transition: none;
+}

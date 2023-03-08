@@ -14,7 +14,7 @@ const IngredientsBoard = ({ data, title, menu }) => (
               className={`${IngredientsBoardStyle.list} pl-4 pr-4 pb-6`}
               key={item._id}
             >
-              <Ingredient {...item} />
+              <Ingredient ingredient={item} />
             </li>
           )
       )}

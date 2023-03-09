@@ -15,9 +15,9 @@ const BurgerConstructor = ({ ingredientslist, menu }) => {
         <ConstructorElement
           type={"top"}
           isLocked={true}
-          text={`${ingredientslist[0].name} (верх)`}
-          price={ingredientslist[0].price}
-          thumbnail={ingredientslist[0].image_mobile}
+          text={`${ingredientslist[0] && ingredientslist[0].name} (верх)`}
+          price={ingredientslist[0] && ingredientslist[0].price}
+          thumbnail={ingredientslist[0] && ingredientslist[0].image_mobile}
         />
       </div>
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
@@ -40,9 +40,9 @@ const BurgerConstructor = ({ ingredientslist, menu }) => {
         <ConstructorElement
           type={"bottom"}
           isLocked={true}
-          text={`${ingredientslist[0].name} (низ)`}
-          price={ingredientslist[0].price}
-          thumbnail={ingredientslist[0].image_mobile}
+          text={`${ingredientslist[0] && ingredientslist[0].name} (низ)`}
+          price={ingredientslist[0] && ingredientslist[0].price}
+          thumbnail={ingredientslist[0] && ingredientslist[0].image_mobile}
         />
       </div>
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>

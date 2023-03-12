@@ -33,7 +33,6 @@ const Modal = (props) => {
           <CloseIcon type="primary" />
         </button>
         {children}
-        <p>dfjdjfhgdjhfgjdhgfjhdgfjh</p>
       </div>
       <ModalOverlay onClick={onClose} />
     </>,

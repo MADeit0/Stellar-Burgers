@@ -4,6 +4,7 @@ import BurgerIngredients from "../Burger-Ingredients/Burger-Ingredients.jsx";
 import BurgerConstructor from "../Burger-Constructor/Burger-Constructor.jsx";
 import appStyle from "./App.module.css";
 import Api from "../../utils/Api.js";
+import OrderDetails from "../Order-Details/Order-Details.jsx";
 import { baseUrl } from "../../utils/constants.js";
 
 import Modal from "../Modal/Modal.jsx";
@@ -37,7 +38,9 @@ function App() {
           onClose={() => {
             setShowOpenOrderDetails(false);
           }}
-        ></Modal>
+        >
+          <OrderDetails />
+        </Modal>
       )}
     </div>
   );

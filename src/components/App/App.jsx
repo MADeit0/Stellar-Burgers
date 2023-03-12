@@ -12,9 +12,9 @@ const api = new Api(baseUrl);
 
 function App() {
   const [ingredientsData, setIngredientsData] = React.useState([]);
-  const [isOpenOrderDetails, setIsOpenOrderDetails] = React.useState(true);
-  const [isOpenIngredientDetails, setIsOpenIngredientDetails] =
-    React.useState(false);
+  const [showOpenOrderDetails, setShowOpenOrderDetails] = React.useState(true);
+  // const [showOpenIngredientDetails, setShowOpenIngredientDetails] =
+  //   React.useState(false);
 
   React.useEffect(() => {
     api
@@ -32,8 +32,12 @@ function App() {
         <BurgerIngredients ingredientslist={ingredientsData} />
         <BurgerConstructor ingredientslist={ingredientsData} menu="bun" />
       </main>
-      {isOpenOrderDetails && (
-        <Modal closeHandler={setIsOpenOrderDetails}></Modal>
+      {showOpenOrderDetails && (
+        <Modal
+          onClose={() => {
+            setShowOpenOrderDetails(false);
+          }}
+        ></Modal>
       )}
     </div>
   );

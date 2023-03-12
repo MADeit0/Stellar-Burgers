@@ -6,10 +6,15 @@ import appStyle from "./App.module.css";
 import Api from "../../utils/Api.js";
 import { baseUrl } from "../../utils/constants.js";
 
+import Modal from "../Modal/Modal.jsx";
+
 const api = new Api(baseUrl);
 
 function App() {
   const [ingredientsData, setIngredientsData] = React.useState([]);
+  const [isOpenOrderDetails, setIsOpenOrderDetails] = React.useState(true);
+  const [isOpenIngredientDetails, setIsOpenIngredientDetails] =
+    React.useState(false);
 
   React.useEffect(() => {
     api
@@ -27,6 +32,9 @@ function App() {
         <BurgerIngredients ingredientslist={ingredientsData} />
         <BurgerConstructor ingredientslist={ingredientsData} menu="bun" />
       </main>
+      {isOpenOrderDetails && (
+        <Modal closeHandler={setIsOpenOrderDetails}></Modal>
+      )}
     </div>
   );
 }

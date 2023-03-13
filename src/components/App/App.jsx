@@ -41,7 +41,13 @@ function App() {
           ingredientslist={ingredientsData}
           onClick={handleIngredientData}
         />
-        <BurgerConstructor ingredientslist={ingredientsData} menu="bun" />
+        <BurgerConstructor
+          onClick={() => {
+            setShowOpenOrderDetails(true);
+          }}
+          ingredientslist={ingredientsData}
+          menu="bun"
+        />
       </main>
       {showOpenOrderDetails && (
         <Modal

@@ -8,7 +8,7 @@ import burgerConstructorsStyle from "./Burger-Constructor.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 
-const BurgerConstructor = ({ ingredientslist, menu }) => {
+const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>
       <div className="ml-8 pl-4 pr-4">
@@ -50,7 +50,7 @@ const BurgerConstructor = ({ ingredientslist, menu }) => {
           <p className="text text_type_digits-medium">167890</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large">
+        <Button onClick={onClick} htmlType="button" type="primary" size="large">
           Оформить заказ
         </Button>
       </div>

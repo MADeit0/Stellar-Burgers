@@ -1,5 +1,4 @@
 import done from "../../images/done.png";
-// import PropTypes from 'prop-types';
 
 const OrderDetails = () => (
   <>
@@ -14,9 +13,5 @@ const OrderDetails = () => (
     </p>
   </>
 );
-
-OrderDetails.propTypes = {
-  // bla: PropTypes.string,
-};
 
 export default OrderDetails;

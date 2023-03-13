@@ -33,6 +33,7 @@ IngredientsBoard.propTypes = {
   data: PropTypes.arrayOf(ingredientType).isRequired,
   title: PropTypes.string.isRequired,
   menu: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default IngredientsBoard;

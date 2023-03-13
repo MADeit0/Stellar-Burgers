@@ -1,4 +1,4 @@
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import overlayStyle from "./Modal-Overlay.module.css";
 
 const ModalOverlay = ({ onClick }) => (
@@ -6,7 +6,7 @@ const ModalOverlay = ({ onClick }) => (
 );
 
 ModalOverlay.propTypes = {
-  // bla: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;

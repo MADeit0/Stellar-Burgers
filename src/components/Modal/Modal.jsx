@@ -22,7 +22,7 @@ const Modal = (props) => {
 
   return ReactDOM.createPortal(
     <>
-      <div className={`${ModalStyle.container}`}>
+      <div className={`${ModalStyle.container} pr-10 pl-10`}>
         <button
           onClick={onClose}
           className={`${ModalStyle.leave} pt-15 pr-10`}

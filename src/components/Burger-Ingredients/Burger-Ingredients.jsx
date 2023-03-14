@@ -2,8 +2,9 @@ import React from "react";
 import IngredientsBoard from "../Ingredients-Board/Ingredients-Board.jsx";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyle from "./Burger-Ingredients.module.css";
+import PropTypes from "prop-types";
 
-const BurgerIngredients = ({ ingredientslist }) => {
+const BurgerIngredients = ({ ingredientslist, onClick }) => {
   const [current, setCurrent] = React.useState("one");
   return (
     <section
@@ -26,12 +27,31 @@ const BurgerIngredients = ({ ingredientslist }) => {
       </div>
 
       <div className={`${ingredientsStyle.scroll} mt-10`}>
-        <IngredientsBoard title="Булки" menu="bun" data={ingredientslist} />
-        <IngredientsBoard title="Соусы" menu="sauce" data={ingredientslist} />
-        <IngredientsBoard title="Начинки" menu="main" data={ingredientslist} />
+        <IngredientsBoard
+          title="Булки"
+          menu="bun"
+          data={ingredientslist}
+          onClick={onClick}
+        />
+        <IngredientsBoard
+          title="Соусы"
+          menu="sauce"
+          data={ingredientslist}
+          onClick={onClick}
+        />
+        <IngredientsBoard
+          title="Начинки"
+          menu="main"
+          data={ingredientslist}
+          onClick={onClick}
+        />
       </div>
     </section>
   );
+};
+
+IngredientsBoard.propTypes = {
+  onClick: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

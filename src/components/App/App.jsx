@@ -25,7 +25,7 @@ function App() {
       .then((ingredients) => {
         setIngredientsData(ingredients.data);
       })
-      .catch((err) => api.isRejected(err));
+      .catch((err) => api.handleError(err));
   }, []);
 
   const handleIngredientData = React.useCallback((data) => {

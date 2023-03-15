@@ -11,15 +11,17 @@ import ingredientType from "../../utils/types.js";
 const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>
-      <div className="ml-8 pl-4 pr-4">
-        <ConstructorElement
-          type={"top"}
-          isLocked={true}
-          text={`${ingredientslist[0] && ingredientslist[0].name} (верх)`}
-          price={ingredientslist[0] && ingredientslist[0].price}
-          thumbnail={ingredientslist[0] && ingredientslist[0].image_mobile}
-        />
-      </div>
+      {ingredientslist[0] && (
+        <div className="ml-8 pl-4 pr-4">
+          <ConstructorElement
+            type={"top"}
+            isLocked={true}
+            text={`${ingredientslist[0].name} (верх)`}
+            price={ingredientslist[0].price}
+            thumbnail={ingredientslist[0].image_mobile}
+          />
+        </div>
+      )}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
         {ingredientslist.map(
           (item) =>
@@ -36,15 +38,17 @@ const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
             )
         )}
       </ul>
-      <div className="ml-8 pl-4 pr-4">
-        <ConstructorElement
-          type={"bottom"}
-          isLocked={true}
-          text={`${ingredientslist[0] && ingredientslist[0].name} (низ)`}
-          price={ingredientslist[0] && ingredientslist[0].price}
-          thumbnail={ingredientslist[0] && ingredientslist[0].image_mobile}
-        />
-      </div>
+      {ingredientslist[0] && (
+        <div className="ml-8 pl-4 pr-4">
+          <ConstructorElement
+            type={"bottom"}
+            isLocked={true}
+            text={`${ingredientslist[0].name} (низ)`}
+            price={ingredientslist[0].price}
+            thumbnail={ingredientslist[0].image_mobile}
+          />
+        </div>
+      )}
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
           <p className="text text_type_digits-medium">167890</p>

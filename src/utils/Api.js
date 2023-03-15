@@ -3,7 +3,7 @@ export default class Api {
     this._baseUrl = baseUrl;
   }
 
-  _isResponse(res) {
+  _checkResponse(res) {
     if (res.ok) {
       return res.json();
     } else {
@@ -11,13 +11,15 @@ export default class Api {
     }
   }
 
-  isRejected(err) {
+  handleError(err) {
     console.error(err);
   }
 
+  _request(url, options) {
+    return fetch(url, options).then(this._checkResponse);
+  }
+
   getIngredients() {
-    return fetch(`${this._baseUrl}/ingredients`).then((res) =>
-      this._isResponse(res)
-    );
+    return this._request(`${this._baseUrl}/ingredients`, null);
   }
 }

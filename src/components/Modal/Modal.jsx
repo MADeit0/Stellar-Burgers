@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ModalOverlay from "../Modal-Overlay/Modal-Overlay";
+import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import ModalStyle from "./Modal.module.css";
 import PropTypes from "prop-types";
 

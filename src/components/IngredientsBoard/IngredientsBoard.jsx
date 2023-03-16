@@ -1,5 +1,5 @@
 import Ingredient from "../Ingridient/Ingredient.jsx";
-import IngredientsBoardStyle from "./Ingredients-Board.module.css";
+import IngredientsBoardStyle from "./IngredientsBoard.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 

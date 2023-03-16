@@ -2,6 +2,10 @@
   width: min-content;
 }
 
+.tabs {
+  display: flex;
+}
+
 .scroll {
   max-height: 66.4vh;
   overflow-y: scroll;

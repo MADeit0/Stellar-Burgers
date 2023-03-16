@@ -4,7 +4,7 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import burgerConstructorsStyle from "./Burger-Constructor.module.css";
+import burgerConstructorsStyle from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 

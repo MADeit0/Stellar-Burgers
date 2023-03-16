@@ -5,7 +5,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import headerStyle from "./App-Header.module.css";
+import headerStyle from "./AppHeader.module.css";
 
 const AppHeader = () => {
   const setActive = ({ isActive }) =>

@@ -1,11 +1,11 @@
 import React from "react";
-import AppHeader from "../App-Header/App-Header.jsx";
-import BurgerIngredients from "../Burger-Ingredients/Burger-Ingredients.jsx";
-import BurgerConstructor from "../Burger-Constructor/Burger-Constructor.jsx";
+import AppHeader from "../AppHeader/AppHeader.jsx";
+import BurgerIngredients from "../BurgerIngredients/BurgerIngredients.jsx";
+import BurgerConstructor from "../BurgerConstructor/BurgerConstructor.jsx";
 import appStyle from "./App.module.css";
 import Api from "../../utils/Api.js";
-import OrderDetails from "../Order-Details/Order-Details.jsx";
-import IngredientDetails from "../Ingredient-Details/Ingredient-Details.jsx";
+import OrderDetails from "../OrderDetails/OrderDetails.jsx";
+import IngredientDetails from "../IngredientDetails/IngredientDetails.jsx";
 import { baseUrl } from "../../utils/constants.js";
 
 import Modal from "../Modal/Modal.jsx";

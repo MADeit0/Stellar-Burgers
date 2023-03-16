@@ -1,7 +1,7 @@
 import React from "react";
-import IngredientsBoard from "../Ingredients-Board/Ingredients-Board.jsx";
+import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientsStyle from "./Burger-Ingredients.module.css";
+import ingredientsStyle from "./BurgerIngredients.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types.js";
 
@@ -15,7 +15,7 @@ const BurgerIngredients = ({ ingredientslist, onClick }) => {
       <h1 className="text text_text text_type_main-large pb-5">
         Соберите бургер
       </h1>
-      <div style={{ display: "flex" }}>
+      <div className={ingredientsStyle.tabs}>
         <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
           Булки
         </Tab>

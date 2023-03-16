@@ -1,4 +1,4 @@
-import ingredientStyle from "./Ingredient-Details.module.css";
+import ingredientStyle from "./IngredientDetails.module.css";
 import ingredientType from "../../utils/types.js";
 
 const IngredientDetails = ({ ingredient }) => {

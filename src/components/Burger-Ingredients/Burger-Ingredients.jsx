@@ -3,6 +3,7 @@ import IngredientsBoard from "../Ingredients-Board/Ingredients-Board.jsx";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyle from "./Burger-Ingredients.module.css";
 import PropTypes from "prop-types";
+import ingredientType from "../../utils/types.js";
 
 const BurgerIngredients = ({ ingredientslist, onClick }) => {
   const [current, setCurrent] = React.useState("one");
@@ -50,7 +51,8 @@ const BurgerIngredients = ({ ingredientslist, onClick }) => {
   );
 };
 
-IngredientsBoard.propTypes = {
+BurgerIngredients.propTypes = {
+  ingredientslist: PropTypes.arrayOf(ingredientType).isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

@@ -28,10 +28,24 @@ function App() {
       .catch((err) => api.handleError(err));
   }, []);
 
+  const openOrderModal = () => {
+    setShowOpenOrderDetails(true);
+  };
+
+  const closeOrderModal = () => {
+    setShowOpenOrderDetails(false);
+  };
+
+  const closeIngredientModal = () => {
+    setShowOpenIngredientDetails(false);
+  };
+
   const handleIngredientData = React.useCallback((data) => {
     setNutritionalValue(data);
     setShowOpenIngredientDetails(true);
   }, []);
+
+  
 
   return (
     <div className={`${appStyle.container} pb-10`}>
@@ -42,28 +56,18 @@ function App() {
           onClick={handleIngredientData}
         />
         <BurgerConstructor
-          onClick={() => {
-            setShowOpenOrderDetails(true);
-          }}
+          onClick={openOrderModal}
           ingredientslist={ingredientsData}
           menu="bun"
         />
       </main>
       {showOpenOrderDetails && (
-        <Modal
-          onClose={() => {
-            setShowOpenOrderDetails(false);
-          }}
-        >
+        <Modal onClose={closeOrderModal}>
           <OrderDetails />
         </Modal>
       )}
       {showOpenIngredientDetails && (
-        <Modal
-          onClose={() => {
-            setShowOpenIngredientDetails(false);
-          }}
-        >
+        <Modal onClose={closeIngredientModal}>
           <IngredientDetails ingredient={nutritionalValue} />
         </Modal>
       )}

@@ -1,32 +1,43 @@
+import React from "react";
+import burgerConstructorsStyle from "./BurgerConstructor.module.css";
+import PropTypes from "prop-types";
+
 import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import burgerConstructorsStyle from "./BurgerConstructor.module.css";
-import PropTypes from "prop-types";
-import ingredientType from "../../utils/types.js";
 
-const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
+// import ingredientType from "../../utils/types.js";
+import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
+
+const BurgerConstructor = ({ menu, onClick }) => {
+  const constructorData = React.useContext(selectedIngredientsContext);
+
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>
-      {ingredientslist[0] && (
+      {constructorData[0].type === menu ? (
         <div className="ml-8 pl-4 pr-4">
           <ConstructorElement
             type={"top"}
             isLocked={true}
-            text={`${ingredientslist[0].name} (верх)`}
-            price={ingredientslist[0].price}
-            thumbnail={ingredientslist[0].image_mobile}
+            text={`${constructorData[0].name} (верх)`}
+            price={constructorData[0].price}
+            thumbnail={constructorData[0].image_mobile}
           />
         </div>
+      ) : (
+        <p>выберите булку</p>
       )}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
-        {ingredientslist.map(
-          (item) =>
+        {constructorData.map(
+          (item, index) =>
             item.type !== menu && (
-              <li className={burgerConstructorsStyle.list} key={item._id}>
+              <li
+                className={burgerConstructorsStyle.list}
+                key={`${item._id}${index}`}
+              >
                 <DragIcon type="primary" />
                 <ConstructorElement
                   isLocked={false}
@@ -38,14 +49,14 @@ const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
             )
         )}
       </ul>
-      {ingredientslist[0] && (
+      {constructorData[0].type === menu && (
         <div className="ml-8 pl-4 pr-4">
           <ConstructorElement
             type={"bottom"}
             isLocked={true}
-            text={`${ingredientslist[0].name} (низ)`}
-            price={ingredientslist[0].price}
-            thumbnail={ingredientslist[0].image_mobile}
+            text={`${constructorData[0].name} (низ)`}
+            price={constructorData[0].price}
+            thumbnail={constructorData[0].image_mobile}
           />
         </div>
       )}
@@ -63,7 +74,7 @@ const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
 };
 
 BurgerConstructor.propTypes = {
-  ingredientslist: PropTypes.arrayOf(ingredientType).isRequired,
+  // constructorData: PropTypes.arrayOf(ingredientType).isRequired,
   menu: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };

@@ -19,6 +19,7 @@ const BurgerConstructor = ({ bun, onClick }) => {
   const [constructorBurgersData, setConstructorBurgersData] = React.useContext(
     selectedIngredientsContext
   );
+  const [totalPrice, setTotalPrice] = React.useState(0);
 
   React.useEffect(() => {
     const bunIngredient = ingredients.find(
@@ -35,6 +36,14 @@ const BurgerConstructor = ({ bun, onClick }) => {
     ]);
     // eslint-disable-next-line
   }, [bun, ingredients]);
+
+  React.useEffect(() => {
+    const sum = constructorBurgersData.reduce(
+      (acc, cur) => (cur.type === bun ? acc + cur.price * 2 : acc + cur.price),
+      0
+    );
+    setTotalPrice(sum);
+  }, [bun, constructorBurgersData]);
 
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>
@@ -84,7 +93,7 @@ const BurgerConstructor = ({ bun, onClick }) => {
       )}
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
-          <p className="text text_type_digits-medium">99999</p>
+          <p className="text text_type_digits-medium">{totalPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button onClick={onClick} htmlType="button" type="primary" size="large">

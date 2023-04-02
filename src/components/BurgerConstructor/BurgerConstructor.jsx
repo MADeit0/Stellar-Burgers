@@ -39,7 +39,7 @@ const BurgerConstructor = ({ bun, onClick }) => {
 
   React.useEffect(() => {
     const sum = constructorBurgersData.reduce(
-      (acc, cur) => (cur.type === bun ? acc + cur.price * 2 : acc + cur.price),
+      (acc, {type, price}) => (type === bun ? acc + price * 2 : acc + price),
       0
     );
     setTotalPrice(sum);

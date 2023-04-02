@@ -12,12 +12,13 @@ import { selectedIngredientsContext } from "../../services/selectedIngredientsCo
 
 import { baseUrl } from "../../utils/constants.js";
 import Api from "../../utils/Api.js";
-import constructorData from "../../utils/constructorData";
 
 const api = new Api(baseUrl);
 
 function App() {
+  const [loading, setLoading] = React.useState(false);
   const [ingredientsData, setIngredientsData] = React.useState([]);
+  const constructorBurgersData = React.useState([]);
 
   const [showOpenOrderDetails, setShowOpenOrderDetails] = React.useState(false);
   const [showOpenIngredientDetails, setShowOpenIngredientDetails] =
@@ -29,6 +30,7 @@ function App() {
       .getIngredients()
       .then((ingredients) => {
         setIngredientsData(ingredients.data);
+        setLoading(true);
       })
       .catch((err) => api.handleError(err));
   }, []);
@@ -51,27 +53,29 @@ function App() {
   }, []);
 
   return (
-    <div className={`${appStyle.container} pb-10`}>
-      <AppHeader />
-      <IngredientsContext.Provider value={ingredientsData}>
-        <selectedIngredientsContext.Provider value={constructorData}>
-          <main className={appStyle.section}>
-            <BurgerIngredients handleIngredientData={handleIngredientData} />
-            <BurgerConstructor onClick={openOrderModal} menu="bun" />
-          </main>
-          {showOpenOrderDetails && (
-            <Modal onClose={closeOrderModal}>
-              <OrderDetails />
-            </Modal>
-          )}
-          {showOpenIngredientDetails && (
-            <Modal onClose={closeIngredientModal}>
-              <IngredientDetails ingredient={nutritionalValue} />
-            </Modal>
-          )}
-        </selectedIngredientsContext.Provider>
-      </IngredientsContext.Provider>
-    </div>
+    loading && (
+      <div className={`${appStyle.container} pb-10`}>
+        <AppHeader />
+        <IngredientsContext.Provider value={ingredientsData}>
+          <selectedIngredientsContext.Provider value={constructorBurgersData}>
+            <main className={appStyle.section}>
+              <BurgerIngredients handleIngredientData={handleIngredientData} />
+              <BurgerConstructor onClick={openOrderModal} bun="bun" />
+            </main>
+            {showOpenOrderDetails && (
+              <Modal onClose={closeOrderModal}>
+                <OrderDetails />
+              </Modal>
+            )}
+            {showOpenIngredientDetails && (
+              <Modal onClose={closeIngredientModal}>
+                <IngredientDetails ingredient={nutritionalValue} />
+              </Modal>
+            )}
+          </selectedIngredientsContext.Provider>
+        </IngredientsContext.Provider>
+      </div>
+    )
   );
 }
 

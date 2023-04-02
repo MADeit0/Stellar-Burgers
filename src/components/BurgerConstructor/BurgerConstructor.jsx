@@ -12,28 +12,50 @@ import {
 // import ingredientType from "../../utils/types.js";
 import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
 
-const BurgerConstructor = ({ menu, onClick }) => {
-  const constructorData = React.useContext(selectedIngredientsContext);
+import { IngredientsContext } from "../../services/ingredientsContext";
+
+const BurgerConstructor = ({ bun, onClick }) => {
+  const ingredients = React.useContext(IngredientsContext);
+  const [constructorBurgersData, setConstructorBurgersData] = React.useContext(
+    selectedIngredientsContext
+  );
+
+  React.useEffect(() => {
+    const bunIngredient = ingredients.find(
+      (ingredient) => ingredient.type === bun
+    );
+    const otherIngredient = ingredients.filter(
+      (ingredient) => ingredient.type !== bun
+    );
+
+    setConstructorBurgersData([
+      ...constructorBurgersData,
+      bunIngredient,
+      ...otherIngredient,
+    ]);
+    // eslint-disable-next-line
+  }, [bun, ingredients]);
 
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>
-      {constructorData[0].type === menu ? (
-        <div className="ml-8 pl-4 pr-4">
-          <ConstructorElement
-            type={"top"}
-            isLocked={true}
-            text={`${constructorData[0].name} (верх)`}
-            price={constructorData[0].price}
-            thumbnail={constructorData[0].image_mobile}
-          />
-        </div>
-      ) : (
-        <p>выберите булку</p>
-      )}
+      {constructorBurgersData[0] &&
+        (constructorBurgersData[0].type === bun ? (
+          <div className="ml-8 pl-4 pr-4">
+            <ConstructorElement
+              type={"top"}
+              isLocked={true}
+              text={`${constructorBurgersData[0].name} (верх)`}
+              price={constructorBurgersData[0].price}
+              thumbnail={constructorBurgersData[0].image_mobile}
+            />
+          </div>
+        ) : (
+          <p>выберите булку</p>
+        ))}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
-        {constructorData.map(
+        {constructorBurgersData.map(
           (item, index) =>
-            item.type !== menu && (
+            item.type !== bun && (
               <li
                 className={burgerConstructorsStyle.list}
                 key={`${item._id}${index}`}
@@ -49,20 +71,20 @@ const BurgerConstructor = ({ menu, onClick }) => {
             )
         )}
       </ul>
-      {constructorData[0].type === menu && (
+      {constructorBurgersData[0] && constructorBurgersData[0].type === bun && (
         <div className="ml-8 pl-4 pr-4">
           <ConstructorElement
             type={"bottom"}
             isLocked={true}
-            text={`${constructorData[0].name} (низ)`}
-            price={constructorData[0].price}
-            thumbnail={constructorData[0].image_mobile}
+            text={`${constructorBurgersData[0].name} (низ)`}
+            price={constructorBurgersData[0].price}
+            thumbnail={constructorBurgersData[0].image_mobile}
           />
         </div>
       )}
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
-          <p className="text text_type_digits-medium">167890</p>
+          <p className="text text_type_digits-medium">99999</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button onClick={onClick} htmlType="button" type="primary" size="large">
@@ -75,7 +97,7 @@ const BurgerConstructor = ({ menu, onClick }) => {
 
 BurgerConstructor.propTypes = {
   // constructorData: PropTypes.arrayOf(ingredientType).isRequired,
-  menu: PropTypes.string.isRequired,
+  bun: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

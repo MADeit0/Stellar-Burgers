@@ -36,14 +36,17 @@ const BurgerConstructor = ({ bun, onClick }) => {
     ]);
     // eslint-disable-next-line
   }, [bun, ingredients]);
+  console.log(constructorBurgersData);
 
   React.useEffect(() => {
     const sum = constructorBurgersData.reduce(
-      (acc, {type, price}) => (type === bun ? acc + price * 2 : acc + price),
+      (acc, { type, price }) => (type === bun ? acc + price * 2 : acc + price),
       0
     );
     setTotalPrice(sum);
   }, [bun, constructorBurgersData]);
+
+
 
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>

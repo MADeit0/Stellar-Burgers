@@ -1,8 +1,8 @@
 import done from "../../images/done.png";
 
-const OrderDetails = () => (
+const OrderDetails = ({orderNumber}) => (
   <>
-    <h3 className="text text_type_digits-large pt-30 pb-8">034536</h3>
+    <h3 className="text text_type_digits-large pt-30 pb-8">{orderNumber}</h3>
     <p className="text text_type_main-medium pb-15">идентификатор заказа</p>
     <img src={done} alt="картинка успешного заказа" />
     <p className="text text_type_main-small pt-15 pb-2">

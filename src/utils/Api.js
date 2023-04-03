@@ -1,4 +1,6 @@
-export default class Api {
+import { baseUrl } from "./constants";
+
+class Api {
   constructor(baseUrl) {
     this._baseUrl = baseUrl;
   }
@@ -22,4 +24,19 @@ export default class Api {
   getIngredients() {
     return this._request(`${this._baseUrl}/ingredients`, null);
   }
+
+  sendIngredients(ingredientsId) {
+    return this._request(`${this._baseUrl}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ingredients: ingredientsId
+      }),
+    });
+  }
 }
+
+const api = new Api(baseUrl);
+export default api;

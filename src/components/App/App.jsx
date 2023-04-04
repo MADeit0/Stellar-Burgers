@@ -17,7 +17,7 @@ function App() {
   const [constructorBurgersData, setConstructorBurgersData] = React.useState(
     []
   );
-  const [orderNumber, setOrderNumber] = React.useState([]);
+  const [orderNumber, setOrderNumber] = React.useState(0);
 
   const [showOpenOrderDetails, setShowOpenOrderDetails] = React.useState(false);
   const [showOpenIngredientDetails, setShowOpenIngredientDetails] =

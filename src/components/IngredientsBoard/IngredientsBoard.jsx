@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 import Ingredient from "../Ingridient/Ingredient.jsx";
 
-// import ingredientType from "../../utils/types.js";
 import { IngredientsContext } from "../../services/ingredientsContext";
 
 const IngredientsBoard = ({ title, menu, onClick }) => {
@@ -38,7 +37,6 @@ const IngredientsBoard = ({ title, menu, onClick }) => {
 };
 
 IngredientsBoard.propTypes = {
-  // data: PropTypes.arrayOf(ingredientType).isRequired,
   title: PropTypes.string.isRequired,
   menu: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,

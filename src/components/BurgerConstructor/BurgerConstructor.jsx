@@ -9,9 +9,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-// import ingredientType from "../../utils/types.js";
 import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
-
 import { IngredientsContext } from "../../services/ingredientsContext";
 
 const BurgerConstructor = ({ bun, onClick }) => {
@@ -36,7 +34,6 @@ const BurgerConstructor = ({ bun, onClick }) => {
     ]);
     // eslint-disable-next-line
   }, [bun, ingredients]);
-  console.log(constructorBurgersData);
 
   React.useEffect(() => {
     const sum = constructorBurgersData.reduce(
@@ -108,7 +105,6 @@ const BurgerConstructor = ({ bun, onClick }) => {
 };
 
 BurgerConstructor.propTypes = {
-  // constructorData: PropTypes.arrayOf(ingredientType).isRequired,
   bun: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };

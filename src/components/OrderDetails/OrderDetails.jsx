@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import done from "../../images/done.png";
 
-const OrderDetails = ({orderNumber}) => (
+const OrderDetails = ({ orderNumber }) => (
   <>
     <h3 className="text text_type_digits-large pt-30 pb-8">{orderNumber}</h3>
     <p className="text text_type_main-medium pb-15">идентификатор заказа</p>
@@ -13,5 +14,9 @@ const OrderDetails = ({orderNumber}) => (
     </p>
   </>
 );
+
+OrderDetails.propTypes = {
+  orderNumber: PropTypes.number.isRequired,
+};
 
 export default OrderDetails;

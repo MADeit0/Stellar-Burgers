@@ -1,32 +1,74 @@
+import React from "react";
+import burgerConstructorsStyle from "./BurgerConstructor.module.css";
+import PropTypes from "prop-types";
+
 import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import burgerConstructorsStyle from "./BurgerConstructor.module.css";
-import PropTypes from "prop-types";
-import ingredientType from "../../utils/types.js";
 
-const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
+import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
+import { IngredientsContext } from "../../services/ingredientsContext";
+
+const BurgerConstructor = ({ bun, onClick }) => {
+  const ingredients = React.useContext(IngredientsContext);
+  const [constructorBurgersData, setConstructorBurgersData] = React.useContext(
+    selectedIngredientsContext
+  );
+  const [totalPrice, setTotalPrice] = React.useState(0);
+
+  React.useEffect(() => {
+    const bunIngredient = ingredients.find(
+      (ingredient) => ingredient.type === bun
+    );
+    const otherIngredient = ingredients.filter(
+      (ingredient) => ingredient.type !== bun
+    );
+
+    setConstructorBurgersData([
+      ...constructorBurgersData,
+      bunIngredient,
+      ...otherIngredient,
+    ]);
+    // eslint-disable-next-line
+  }, [bun, ingredients]);
+
+  React.useEffect(() => {
+    const sum = constructorBurgersData.reduce(
+      (acc, { type, price }) => (type === bun ? acc + price * 2 : acc + price),
+      0
+    );
+    setTotalPrice(sum);
+  }, [bun, constructorBurgersData]);
+
+
+
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>
-      {ingredientslist[0] && (
-        <div className="ml-8 pl-4 pr-4">
-          <ConstructorElement
-            type={"top"}
-            isLocked={true}
-            text={`${ingredientslist[0].name} (верх)`}
-            price={ingredientslist[0].price}
-            thumbnail={ingredientslist[0].image_mobile}
-          />
-        </div>
-      )}
+      {constructorBurgersData[0] &&
+        (constructorBurgersData[0].type === bun ? (
+          <div className="ml-8 pl-4 pr-4">
+            <ConstructorElement
+              type={"top"}
+              isLocked={true}
+              text={`${constructorBurgersData[0].name} (верх)`}
+              price={constructorBurgersData[0].price}
+              thumbnail={constructorBurgersData[0].image_mobile}
+            />
+          </div>
+        ) : (
+          <p>выберите булку</p>
+        ))}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
-        {ingredientslist.map(
-          (item) =>
-            item.type !== menu && (
-              <li className={burgerConstructorsStyle.list} key={item._id}>
+        {constructorBurgersData.map(
+          (item, index) =>
+            item.type !== bun && (
+              <li
+                className={burgerConstructorsStyle.list}
+                key={`${item._id}${index}`}
+              >
                 <DragIcon type="primary" />
                 <ConstructorElement
                   isLocked={false}
@@ -38,20 +80,20 @@ const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
             )
         )}
       </ul>
-      {ingredientslist[0] && (
+      {constructorBurgersData[0] && constructorBurgersData[0].type === bun && (
         <div className="ml-8 pl-4 pr-4">
           <ConstructorElement
             type={"bottom"}
             isLocked={true}
-            text={`${ingredientslist[0].name} (низ)`}
-            price={ingredientslist[0].price}
-            thumbnail={ingredientslist[0].image_mobile}
+            text={`${constructorBurgersData[0].name} (низ)`}
+            price={constructorBurgersData[0].price}
+            thumbnail={constructorBurgersData[0].image_mobile}
           />
         </div>
       )}
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
-          <p className="text text_type_digits-medium">167890</p>
+          <p className="text text_type_digits-medium">{totalPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button onClick={onClick} htmlType="button" type="primary" size="large">
@@ -63,8 +105,7 @@ const BurgerConstructor = ({ ingredientslist, menu, onClick }) => {
 };
 
 BurgerConstructor.propTypes = {
-  ingredientslist: PropTypes.arrayOf(ingredientType).isRequired,
-  menu: PropTypes.string.isRequired,
+  bun: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

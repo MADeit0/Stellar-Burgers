@@ -3,10 +3,10 @@ import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyle from "./BurgerIngredients.module.css";
 import PropTypes from "prop-types";
-import ingredientType from "../../utils/types.js";
 
-const BurgerIngredients = ({ ingredientslist, onClick }) => {
+const BurgerIngredients = ({ handleIngredientData }) => {
   const [current, setCurrent] = React.useState("one");
+
   return (
     <section
       className={`${ingredientsStyle.board} pt-10`}
@@ -31,20 +31,17 @@ const BurgerIngredients = ({ ingredientslist, onClick }) => {
         <IngredientsBoard
           title="Булки"
           menu="bun"
-          data={ingredientslist}
-          onClick={onClick}
+          onClick={handleIngredientData}
         />
         <IngredientsBoard
           title="Соусы"
           menu="sauce"
-          data={ingredientslist}
-          onClick={onClick}
+          onClick={handleIngredientData}
         />
         <IngredientsBoard
           title="Начинки"
           menu="main"
-          data={ingredientslist}
-          onClick={onClick}
+          onClick={handleIngredientData}
         />
       </div>
     </section>
@@ -52,8 +49,7 @@ const BurgerIngredients = ({ ingredientslist, onClick }) => {
 };
 
 BurgerIngredients.propTypes = {
-  ingredientslist: PropTypes.arrayOf(ingredientType).isRequired,
-  onClick: PropTypes.func.isRequired,
+  handleIngredientData: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

@@ -1,19 +1,24 @@
+import appStyle from "./App.module.css";
 import React from "react";
 import AppHeader from "../AppHeader/AppHeader.jsx";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients.jsx";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor.jsx";
-import appStyle from "./App.module.css";
-import Api from "../../utils/Api.js";
 import OrderDetails from "../OrderDetails/OrderDetails.jsx";
 import IngredientDetails from "../IngredientDetails/IngredientDetails.jsx";
-import { baseUrl } from "../../utils/constants.js";
-
 import Modal from "../Modal/Modal.jsx";
 
-const api = new Api(baseUrl);
+import { IngredientsContext } from "../../services/ingredientsContext";
+import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
+import api from "../../utils/Api.js";
 
 function App() {
+  const [loading, setLoading] = React.useState(false);
   const [ingredientsData, setIngredientsData] = React.useState([]);
+  const [constructorBurgersData, setConstructorBurgersData] = React.useState(
+    []
+  );
+  const [orderNumber, setOrderNumber] = React.useState(0);
+
   const [showOpenOrderDetails, setShowOpenOrderDetails] = React.useState(false);
   const [showOpenIngredientDetails, setShowOpenIngredientDetails] =
     React.useState(false);
@@ -24,16 +29,32 @@ function App() {
       .getIngredients()
       .then((ingredients) => {
         setIngredientsData(ingredients.data);
+        setLoading(true);
       })
       .catch((err) => api.handleError(err));
   }, []);
 
+  const handleOrder = () => {
+    const ingredientsId = constructorBurgersData.map(
+      (ingredientsI) => ingredientsI._id
+    );
+
+    api
+      .sendIngredients(ingredientsId)
+      .then((ingredients) => {
+        setOrderNumber(ingredients.order.number);
+      })
+      .catch((err) => api.handleError(err));
+  };
+
   const openOrderModal = () => {
     setShowOpenOrderDetails(true);
+    handleOrder();
   };
 
   const closeOrderModal = () => {
     setShowOpenOrderDetails(false);
+    setConstructorBurgersData([]);
   };
 
   const closeIngredientModal = () => {
@@ -45,33 +66,32 @@ function App() {
     setShowOpenIngredientDetails(true);
   }, []);
 
-  
-
   return (
-    <div className={`${appStyle.container} pb-10`}>
-      <AppHeader />
-      <main className={appStyle.section}>
-        <BurgerIngredients
-          ingredientslist={ingredientsData}
-          onClick={handleIngredientData}
-        />
-        <BurgerConstructor
-          onClick={openOrderModal}
-          ingredientslist={ingredientsData}
-          menu="bun"
-        />
-      </main>
-      {showOpenOrderDetails && (
-        <Modal onClose={closeOrderModal}>
-          <OrderDetails />
-        </Modal>
-      )}
-      {showOpenIngredientDetails && (
-        <Modal onClose={closeIngredientModal}>
-          <IngredientDetails ingredient={nutritionalValue} />
-        </Modal>
-      )}
-    </div>
+    loading && (
+      <div className={`${appStyle.container} pb-10`}>
+        <AppHeader />
+        <IngredientsContext.Provider value={ingredientsData}>
+          <selectedIngredientsContext.Provider
+            value={[constructorBurgersData, setConstructorBurgersData]}
+          >
+            <main className={appStyle.section}>
+              <BurgerIngredients handleIngredientData={handleIngredientData} />
+              <BurgerConstructor onClick={openOrderModal} bun="bun" />
+            </main>
+            {showOpenOrderDetails && (
+              <Modal onClose={closeOrderModal}>
+                <OrderDetails orderNumber={orderNumber} />
+              </Modal>
+            )}
+            {showOpenIngredientDetails && (
+              <Modal onClose={closeIngredientModal}>
+                <IngredientDetails ingredient={nutritionalValue} />
+              </Modal>
+            )}
+          </selectedIngredientsContext.Provider>
+        </IngredientsContext.Provider>
+      </div>
+    )
   );
 }
 

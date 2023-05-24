@@ -11,7 +11,15 @@ import { IngredientsContext } from "../../services/ingredientsContext";
 import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
 import api from "../../utils/Api.js";
 
+
+import { useSelector, useDispatch } from "react-redux";
+import { increment } from "../../store/app/appSlice";
+
+
 function App() {
+  const count = useSelector((state) => state.app.value)
+  const dispatch = useDispatch()
+
   const [loading, setLoading] = React.useState(false);
   const [ingredientsData, setIngredientsData] = React.useState([]);
   const [constructorBurgersData, setConstructorBurgersData] = React.useState(
@@ -69,6 +77,15 @@ function App() {
   return (
     loading && (
       <div className={`${appStyle.container} pb-10`}>
+
+        <button
+          aria-label="Increment value"
+          onClick={() => dispatch(increment())}
+        >
+        </button>
+        
+        <span>{count}</span>
+
         <AppHeader />
         <IngredientsContext.Provider value={ingredientsData}>
           <selectedIngredientsContext.Provider

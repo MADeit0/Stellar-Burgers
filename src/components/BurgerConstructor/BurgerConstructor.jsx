@@ -1,6 +1,6 @@
-import React from "react";
 import burgerConstructorsStyle from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
+import { postConstructorData } from "../../store/orderDetails/orderDetailsSlice";
 
 import {
   ConstructorElement,
@@ -9,60 +9,40 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
-import { IngredientsContext } from "../../services/ingredientsContext";
+import { openOrderModal } from "../../store/modal/modalSlice";
 
-const BurgerConstructor = ({ bun, onClick }) => {
-  const ingredients = React.useContext(IngredientsContext);
-  const [constructorBurgersData, setConstructorBurgersData] = React.useContext(
-    selectedIngredientsContext
+import { useDispatch, useSelector } from "react-redux";
+
+const BurgerConstructor = ({ bun }) => {
+  const dispatch = useDispatch();
+
+  const { ingredients } = useSelector(
+    ({ burgerIngredients }) => burgerIngredients
   );
-  const [totalPrice, setTotalPrice] = React.useState(0);
 
-  React.useEffect(() => {
-    const bunIngredient = ingredients.find(
-      (ingredient) => ingredient.type === bun
-    );
-    const otherIngredient = ingredients.filter(
-      (ingredient) => ingredient.type !== bun
-    );
-
-    setConstructorBurgersData([
-      ...constructorBurgersData,
-      bunIngredient,
-      ...otherIngredient,
-    ]);
-    // eslint-disable-next-line
-  }, [bun, ingredients]);
-
-  React.useEffect(() => {
-    const sum = constructorBurgersData.reduce(
-      (acc, { type, price }) => (type === bun ? acc + price * 2 : acc + price),
-      0
-    );
-    setTotalPrice(sum);
-  }, [bun, constructorBurgersData]);
-
-
+  const handleOpenModal = () => {
+    dispatch(openOrderModal());
+    dispatch(postConstructorData("643d69a5c3f7b9001cfa093c","643d69a5c3f7b9001cfa093f","643d69a5c3f7b9001cfa093c"))
+  };
 
   return (
     <section className={`${burgerConstructorsStyle.board} pt-25`}>
-      {constructorBurgersData[0] &&
-        (constructorBurgersData[0].type === bun ? (
+      {ingredients[0] &&
+        (ingredients[0].type === bun ? (
           <div className="ml-8 pl-4 pr-4">
             <ConstructorElement
               type={"top"}
               isLocked={true}
-              text={`${constructorBurgersData[0].name} (верх)`}
-              price={constructorBurgersData[0].price}
-              thumbnail={constructorBurgersData[0].image_mobile}
+              text={`${ingredients[0].name} (верх)`}
+              price={ingredients[0].price}
+              thumbnail={ingredients[0].image_mobile}
             />
           </div>
         ) : (
           <p>выберите булку</p>
         ))}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
-        {constructorBurgersData.map(
+        {ingredients.map(
           (item, index) =>
             item.type !== bun && (
               <li
@@ -80,23 +60,28 @@ const BurgerConstructor = ({ bun, onClick }) => {
             )
         )}
       </ul>
-      {constructorBurgersData[0] && constructorBurgersData[0].type === bun && (
+      {ingredients[0] && ingredients[0].type === bun && (
         <div className="ml-8 pl-4 pr-4">
           <ConstructorElement
             type={"bottom"}
             isLocked={true}
-            text={`${constructorBurgersData[0].name} (низ)`}
-            price={constructorBurgersData[0].price}
-            thumbnail={constructorBurgersData[0].image_mobile}
+            text={`${ingredients[0].name} (низ)`}
+            price={ingredients[0].price}
+            thumbnail={ingredients[0].image_mobile}
           />
         </div>
       )}
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
-          <p className="text text_type_digits-medium">{totalPrice}</p>
+          <p className="text text_type_digits-medium">100</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button onClick={onClick} htmlType="button" type="primary" size="large">
+        <Button
+          onClick={handleOpenModal}
+          htmlType="button"
+          type="primary"
+          size="large"
+        >
           Оформить заказ
         </Button>
       </div>
@@ -106,7 +91,6 @@ const BurgerConstructor = ({ bun, onClick }) => {
 
 BurgerConstructor.propTypes = {
   bun: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

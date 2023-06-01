@@ -1,11 +1,21 @@
-import React from "react";
-import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyle from "./BurgerIngredients.module.css";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
-const BurgerIngredients = ({ handleIngredientData }) => {
-  const [current, setCurrent] = React.useState("one");
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
+
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
+
+const BurgerIngredients = () => {
+  const [current, setCurrent] = useState("one");
+  const dispatch = useDispatch();
+  const { loading } = useSelector(({ burgerIngredients }) => burgerIngredients);
+
+  useEffect(() => {
+    dispatch(fetchIngredientsDetails());
+  }, [dispatch]);
 
   return (
     <section
@@ -27,29 +37,31 @@ const BurgerIngredients = ({ handleIngredientData }) => {
         </Tab>
       </div>
 
-      <div className={`${ingredientsStyle.scroll} mt-10`}>
-        <IngredientsBoard
-          title="Булки"
-          menu="bun"
-          onClick={handleIngredientData}
-        />
-        <IngredientsBoard
-          title="Соусы"
-          menu="sauce"
-          onClick={handleIngredientData}
-        />
-        <IngredientsBoard
-          title="Начинки"
-          menu="main"
-          onClick={handleIngredientData}
-        />
-      </div>
+      {loading === "pending" && (
+        <p className="text text_type_main-medium m-0 pb-6">
+          Настраиваем антэну...
+        </p>
+      )}
+
+      {loading === "succeeded" && (
+        <div className={`${ingredientsStyle.scroll} mt-10`}>
+          <IngredientsBoard title="Булки" menu="bun" />
+          <IngredientsBoard title="Соусы" menu="sauce" />
+          <IngredientsBoard title="Начинки" menu="main" />
+        </div>
+      )}
+
+      {loading === "failed" && (
+        <p className="text text_type_main-medium m-0 pb-6">
+          Упс... Что-то сломалось.
+        </p>
+      )}
     </section>
   );
 };
 
-BurgerIngredients.propTypes = {
-  handleIngredientData: PropTypes.func.isRequired,
-};
+// BurgerIngredients.propTypes = {
+//   handleIngredientData: PropTypes.func.isRequired,
+// };
 
 export default BurgerIngredients;

@@ -1,12 +1,12 @@
 import ingredientStyle from "./IngredientDetails.module.css";
-import ingredientType from "../../utils/types.js";
 
-const IngredientDetails = ({ ingredient }) => {
-  const { name, calories, proteins, fat, image_large, carbohydrates } =
-    ingredient;
+import { useSelector } from "react-redux";
 
+const IngredientDetails = () => {
   const textStyle = "text text_type_main-default text_color_inactive";
 
+  const { name, calories, proteins, fat, image_large, carbohydrates } =
+    useSelector(({ ingredientDetails }) => ingredientDetails.details);
   return (
     <>
       <h3
@@ -36,10 +36,6 @@ const IngredientDetails = ({ ingredient }) => {
       </ul>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientType.isRequired,
 };
 
 export default IngredientDetails;

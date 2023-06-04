@@ -1,3 +1,5 @@
 const baseUrl = "https://norma.nomoreparties.space/api";
 
-export { baseUrl };
+const ingredientsMenu = { bun: "bun", sauce: "sauce", main: "main" };
+
+export { baseUrl, ingredientsMenu };

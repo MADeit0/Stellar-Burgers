@@ -1,21 +1,45 @@
 import ingredientsStyle from "./BurgerIngredients.module.css";
-// import PropTypes from "prop-types";
+import { ingredientsMenu } from "../../utils/constants";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
 
 import { useState, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
 
+const { bun, sauce, main } = ingredientsMenu;
+const options = {
+  threshold: 0.55,
+  rootMargin: "0% 0% -60% 0%",
+};
+
 const BurgerIngredients = () => {
-  const [current, setCurrent] = useState("one");
   const dispatch = useDispatch();
+  const [current, setCurrent] = useState(bun);
   const { loading } = useSelector(({ burgerIngredients }) => burgerIngredients);
+
+  const { ref: refBun, inView: viewBun, entry: bunEntry } = useInView(options);
+  const {
+    ref: refSauce,
+    inView: viewSauce,
+    entry: sauceEntry,
+  } = useInView(options);
+  const {
+    ref: refMain,
+    inView: viewMain,
+    entry: mainEntry,
+  } = useInView(options);
 
   useEffect(() => {
     dispatch(fetchIngredientsDetails());
   }, [dispatch]);
+
+  const onTabChange = (menu, entry) => {
+    setCurrent(menu);
+    entry.target.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section
@@ -26,13 +50,31 @@ const BurgerIngredients = () => {
         Соберите бургер
       </h1>
       <div className={ingredientsStyle.tabs}>
-        <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
+        <Tab
+          value={bun}
+          active={current === bun}
+          onClick={() => {
+            onTabChange(bun, bunEntry);
+          }}
+        >
           Булки
         </Tab>
-        <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
+        <Tab
+          value={sauce}
+          active={current === sauce}
+          onClick={() => {
+            onTabChange(sauce, sauceEntry);
+          }}
+        >
           Соусы
         </Tab>
-        <Tab value="main" active={current === "main"} onClick={setCurrent}>
+        <Tab
+          value={main}
+          active={current === main}
+          onClick={() => {
+            onTabChange(main, mainEntry);
+          }}
+        >
           Начинки
         </Tab>
       </div>
@@ -45,9 +87,27 @@ const BurgerIngredients = () => {
 
       {loading === "succeeded" && (
         <div className={`${ingredientsStyle.scroll} mt-10`}>
-          <IngredientsBoard title="Булки" menu="bun" />
-          <IngredientsBoard title="Соусы" menu="sauce" />
-          <IngredientsBoard title="Начинки" menu="main" />
+          <IngredientsBoard
+            ref={refBun}
+            title="Булки"
+            menu={bun}
+            isView={viewBun}
+            setState={setCurrent}
+          />
+          <IngredientsBoard
+            ref={refSauce}
+            title="Соусы"
+            menu={sauce}
+            isView={viewSauce}
+            setState={setCurrent}
+          />
+          <IngredientsBoard
+            ref={refMain}
+            title="Начинки"
+            menu={main}
+            isView={viewMain}
+            setState={setCurrent}
+          />
         </div>
       )}
 
@@ -59,9 +119,5 @@ const BurgerIngredients = () => {
     </section>
   );
 };
-
-// BurgerIngredients.propTypes = {
-//   handleIngredientData: PropTypes.func.isRequired,
-// };
 
 export default BurgerIngredients;

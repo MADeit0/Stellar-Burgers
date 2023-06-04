@@ -1,4 +1,3 @@
-// import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import done from "../../images/done.png";
 
@@ -17,9 +16,5 @@ const OrderDetails = () => {
     </p>
   </>;
 };
-
-// OrderDetails.propTypes = {
-//   orderNumber: PropTypes.number.isRequired,
-// };
 
 export default OrderDetails;

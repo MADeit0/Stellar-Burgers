@@ -19,6 +19,7 @@ const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState(bun);
   const { loading } = useSelector(({ burgerIngredients }) => burgerIngredients);
+  const { isBun } = useSelector(({ burgerConstructor }) => burgerConstructor);
 
   const { ref: refBun, inView: viewBun, entry: bunEntry } = useInView(options);
   const {
@@ -93,6 +94,7 @@ const BurgerIngredients = () => {
             menu={bun}
             isView={viewBun}
             setState={setCurrent}
+            active={true}
           />
           <IngredientsBoard
             ref={refSauce}
@@ -100,6 +102,7 @@ const BurgerIngredients = () => {
             menu={sauce}
             isView={viewSauce}
             setState={setCurrent}
+            active={isBun}
           />
           <IngredientsBoard
             ref={refMain}
@@ -107,6 +110,7 @@ const BurgerIngredients = () => {
             menu={main}
             isView={viewMain}
             setState={setCurrent}
+            active={isBun}
           />
         </div>
       )}

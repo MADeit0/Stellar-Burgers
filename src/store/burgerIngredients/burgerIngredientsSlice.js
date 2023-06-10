@@ -22,6 +22,7 @@ export const fetchIngredientsDetails = createAsyncThunk(
 export const burgerIngredientsSlice = createSlice({
   name: "burgerIngredients",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredientsDetails.pending, (state) => {

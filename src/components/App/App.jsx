@@ -6,13 +6,14 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor.jsx";
 import OrderDetails from "../OrderDetails/OrderDetails.jsx";
 import IngredientDetails from "../IngredientDetails/IngredientDetails.jsx";
 import Modal from "../Modal/Modal.jsx";
-
 import {
   closeIngredientDetailsModal,
   closeOrderModal,
 } from "../../store/modal/modalSlice";
 
 import { useSelector } from "react-redux";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   const { ingredientDetailsModal } = useSelector(({ modal }) => modal);
@@ -21,10 +22,11 @@ function App() {
   return (
     <div className={`${appStyle.container} pb-10`}>
       <AppHeader />
-
       <main className={appStyle.section}>
-        <BurgerIngredients />
-        <BurgerConstructor bun="bun" />
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </main>
       {orderModal && (
         <Modal onClose={closeOrderModal}>

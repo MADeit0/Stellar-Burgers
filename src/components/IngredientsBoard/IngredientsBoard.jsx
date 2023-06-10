@@ -6,7 +6,7 @@ import { useEffect, forwardRef } from "react";
 import { useSelector } from "react-redux";
 
 const IngredientsBoard = forwardRef(
-  ({ title, menu, isView, setState }, ref) => {
+  ({ title, menu, isView, setState, active }, ref) => {
     const { ingredients } = useSelector(
       ({ burgerIngredients }) => burgerIngredients
     );
@@ -26,7 +26,9 @@ const IngredientsBoard = forwardRef(
             (item) =>
               item.type === menu && (
                 <li
-                  className={`${IngredientsBoardStyle.list} pl-4 pr-4 pb-6`}
+                  className={`${IngredientsBoardStyle.list} pl-4 pr-4 pb-6 ${
+                    !active && IngredientsBoardStyle.pic__gray
+                  }`}
                   key={item._id}
                 >
                   <Ingredient ingredient={item} />
@@ -44,6 +46,7 @@ IngredientsBoard.propTypes = {
   menu: PropTypes.string.isRequired,
   isView: PropTypes.bool.isRequired,
   setState: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired,
 };
 
 export default IngredientsBoard;

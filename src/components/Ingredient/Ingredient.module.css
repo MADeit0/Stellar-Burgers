@@ -17,3 +17,7 @@
   background-color: transparent;
   cursor: pointer;
 }
+
+.pic__gray {
+  filter: grayscale(100%);
+}

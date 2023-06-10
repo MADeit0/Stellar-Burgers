@@ -47,3 +47,17 @@
   align-items: center;
   gap: 8px;
 }
+
+.border {
+  border-radius: 10px;
+  animation: blink 0.5s alternate-reverse infinite;
+}
+
+@keyframes blink {
+  from {
+    outline: 5px dashed purple;
+  }
+  to {
+    outline: 5px dashed rgba(128, 0, 128, 0.361);
+  }
+}

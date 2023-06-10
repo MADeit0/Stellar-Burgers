@@ -13,7 +13,9 @@ export const postConstructorData = createAsyncThunk(
       const res = await fetch("https://norma.nomoreparties.space/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ingredients: ingredientsId }),
+        body: JSON.stringify({
+          ingredients: ingredientsId.map((item) => item._id),
+        }),
       });
       return await res.json();
     } catch (err) {

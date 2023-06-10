@@ -18,7 +18,7 @@ export const ingredientDetailsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(closeIngredientDetailsModal, (state ) => {
+    builder.addCase(closeIngredientDetailsModal, (state) => {
       state.details = [];
     });
   },
@@ -26,5 +26,5 @@ export const ingredientDetailsSlice = createSlice({
 
 export const { getDetailsIngredient, clearDetailsIngredient } =
   ingredientDetailsSlice.actions;
-  
+
 export default ingredientDetailsSlice.reducer;

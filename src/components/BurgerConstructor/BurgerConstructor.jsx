@@ -1,13 +1,13 @@
 import burgerConstructorsStyle from "./BurgerConstructor.module.css";
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import ConstructorCard from "../ConstructorCard/ConstructorCard";
 
 import { ItemTypes, ingredientsMenu } from "../../utils/constants";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 
@@ -16,12 +16,12 @@ import { openOrderModal } from "../../store/modal/modalSlice";
 import {
   addIngredient,
   addBun,
-  deleteIngredient,
 } from "../../store/burgerConstructor/burgerConstructorSlice";
 
-const { bun } = ingredientsMenu;
+const { BUN } = ingredientsMenu;
 
 const BurgerConstructor = () => {
+  const [totalSum, setTotalSum] = useState(0);
   const dispatch = useDispatch();
 
   const { ingredients } = useSelector(
@@ -39,24 +39,21 @@ const BurgerConstructor = () => {
     drop(itemId) {
       const menu = ingredients.find((item) => item._id === itemId._id);
 
-      menu.type === bun
+      menu.type === BUN
         ? dispatch(addBun(menu))
         : dispatch(addIngredient(menu));
     },
   });
 
-  const totalSum = useMemo(() => {
+  useEffect(() => {
     const price = [bunUp, ...otherStuffings, bunDown];
-    return price.reduce((acc, cur) => acc + cur.price, 0) || 0;
+    const total = price.reduce((acc, cur) => acc + cur.price, 0) || 0;
+    setTotalSum(total);
   }, [otherStuffings, bunUp, bunDown]);
 
   const handleOpenModal = () => {
     dispatch(openOrderModal());
     dispatch(postConstructorData([bunUp, ...otherStuffings, bunDown]));
-  };
-
-  const onDelete = (id) => {
-    dispatch(deleteIngredient(id));
   };
 
   return (
@@ -67,8 +64,8 @@ const BurgerConstructor = () => {
       } pt-25`}
     >
       {bunUp &&
-        (bunUp.type === bun ? (
-          <div className="ml-8 pl-4 pr-4">
+        (bunUp.type === BUN ? (
+          <div className="ml-8 pl-4 pr-6">
             <ConstructorElement
               type={"top"}
               isLocked={true}
@@ -82,23 +79,21 @@ const BurgerConstructor = () => {
         ))}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
         {otherStuffings.map(
-          (item) =>
-            item.type !== bun && (
-              <li className={burgerConstructorsStyle.list} key={item.fakeId}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  isLocked={false}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image_mobile}
-                  handleClose={() => onDelete(item.fakeId)}
-                />
-              </li>
+          (item, i) =>
+            item.type !== BUN && (
+              <ConstructorCard
+                name={item.name}
+                price={item.price}
+                image={item.image_mobile}
+                fakeId={item.fakeId}
+                key={item.fakeId}
+                index={i}
+              />
             )
         )}
       </ul>
-      {bunDown && bunDown.type === bun && (
-        <div className="ml-8 pl-4 pr-4">
+      {bunDown && bunDown.type === BUN && (
+        <div className="ml-8 pl-4 pr-6">
           <ConstructorElement
             type={"bottom"}
             isLocked={true}

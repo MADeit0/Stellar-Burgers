@@ -9,7 +9,7 @@ import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
 
-const { bun, sauce, main } = ingredientsMenu;
+const { BUN, SAUCE, MAIN } = ingredientsMenu;
 const options = {
   threshold: 0.55,
   rootMargin: "0% 0% -60% 0%",
@@ -17,7 +17,7 @@ const options = {
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const [current, setCurrent] = useState(bun);
+  const [current, setCurrent] = useState(BUN);
   const { loading } = useSelector(({ burgerIngredients }) => burgerIngredients);
   const { isBun } = useSelector(({ burgerConstructor }) => burgerConstructor);
 
@@ -52,28 +52,28 @@ const BurgerIngredients = () => {
       </h1>
       <div className={ingredientsStyle.tabs}>
         <Tab
-          value={bun}
-          active={current === bun}
+          value={BUN}
+          active={current === BUN}
           onClick={() => {
-            onTabChange(bun, bunEntry);
+            onTabChange(BUN, bunEntry);
           }}
         >
           Булки
         </Tab>
         <Tab
-          value={sauce}
-          active={current === sauce}
+          value={SAUCE}
+          active={current === SAUCE}
           onClick={() => {
-            onTabChange(sauce, sauceEntry);
+            onTabChange(SAUCE, sauceEntry);
           }}
         >
           Соусы
         </Tab>
         <Tab
-          value={main}
-          active={current === main}
+          value={MAIN}
+          active={current === MAIN}
           onClick={() => {
-            onTabChange(main, mainEntry);
+            onTabChange(MAIN, mainEntry);
           }}
         >
           Начинки
@@ -91,7 +91,7 @@ const BurgerIngredients = () => {
           <IngredientsBoard
             ref={refBun}
             title="Булки"
-            menu={bun}
+            menu={BUN}
             isView={viewBun}
             setState={setCurrent}
             active={true}
@@ -99,7 +99,7 @@ const BurgerIngredients = () => {
           <IngredientsBoard
             ref={refSauce}
             title="Соусы"
-            menu={sauce}
+            menu={SAUCE}
             isView={viewSauce}
             setState={setCurrent}
             active={isBun}
@@ -107,7 +107,7 @@ const BurgerIngredients = () => {
           <IngredientsBoard
             ref={refMain}
             title="Начинки"
-            menu={main}
+            menu={MAIN}
             isView={viewMain}
             setState={setCurrent}
             active={isBun}

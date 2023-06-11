@@ -21,3 +21,20 @@
 .pic__gray {
   filter: grayscale(100%);
 }
+
+.count {
+
+  animation: blink .3s ease-out ;
+}
+
+@keyframes blink {
+  from {
+    transform: translateY(5px) translateX(-5px)  scale(0) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-5px) translateX(5px) scale(1.2) rotate(20deg);
+  }
+  to {
+    transform: translateY(0) translateX(0) scale(1) ;
+  }
+}

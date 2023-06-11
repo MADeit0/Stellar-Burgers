@@ -9,13 +9,23 @@ import {
 import { ItemTypes } from "../../utils/constants";
 import { openIngredientDetailsModal } from "../../store/modal/modalSlice";
 import { getDetailsIngredient } from "../../store/ingredientDetails/ingredientDetailsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DragPreviewImage, useDrag } from "react-dnd";
+import { useEffect, useState } from "react";
 
 const Ingredient = ({ ingredient }) => {
   const { name, price, image, _id } = ingredient;
-
+  const [count, setCount] = useState("");
   const dispatch = useDispatch();
+  const { otherStuffings, bunUp, bunDown } = useSelector(
+    ({ burgerConstructor }) => burgerConstructor
+  );
+
+  useEffect(() => {
+    const stuffings = [bunUp, ...otherStuffings, bunDown];
+    const sum = stuffings.filter((item) => item._id === _id).length;
+    setCount(sum);
+  }, [otherStuffings, bunUp, bunDown, _id]);
 
   const [{ isDrag }, dragRef, preview] = useDrag({
     type: ItemTypes.INGREDIENTS,
@@ -48,7 +58,7 @@ const Ingredient = ({ ingredient }) => {
       <p className={` ${ingredientStyle.text} text text_type_main-default`}>
         {name}
       </p>
-      <Counter count={9} size="default" extraClass="m-1" />
+      {!!count &&<Counter count={count} size="default" extraClass={`m-1 ${ingredientStyle.count}` }/>}
     </button>
   );
 };

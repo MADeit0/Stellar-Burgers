@@ -16,8 +16,10 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  const { ingredientDetailsModal } = useSelector(({ modal }) => modal);
-  const { orderModal } = useSelector(({ modal }) => modal);
+  const ingredientDetailsModal = useSelector(
+    ({ modal }) => modal.ingredientDetailsModal
+  );
+  const orderModal = useSelector(({ modal }) => modal.orderModal);
 
   return (
     <div className={`${appStyle.container} pb-10`}>

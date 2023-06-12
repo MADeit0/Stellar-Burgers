@@ -18,8 +18,8 @@ const options = {
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState(BUN);
-  const { loading } = useSelector(({ burgerIngredients }) => burgerIngredients);
-  const { isBun } = useSelector(({ burgerConstructor }) => burgerConstructor);
+  const loading = useSelector(({ burgerIngredients }) => burgerIngredients.loading);
+  const isBun = useSelector(({ burgerConstructor }) => burgerConstructor.isBun);
 
   const { ref: refBun, inView: viewBun, entry: bunEntry } = useInView(options);
   const {
@@ -82,7 +82,7 @@ const BurgerIngredients = () => {
 
       {loading === "pending" && (
         <p className="text text_type_main-medium m-0 pb-6">
-          Настраиваем антэну...
+          Настраиваем антенну...
         </p>
       )}
 

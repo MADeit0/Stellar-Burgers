@@ -24,8 +24,8 @@ const BurgerConstructor = () => {
   const [totalSum, setTotalSum] = useState(0);
   const dispatch = useDispatch();
 
-  const { ingredients } = useSelector(
-    ({ burgerIngredients }) => burgerIngredients
+  const ingredients = useSelector(
+    ({ burgerIngredients }) => burgerIngredients.ingredients
   );
   const { otherStuffings, bunUp, bunDown, isBun } = useSelector(
     ({ burgerConstructor }) => burgerConstructor

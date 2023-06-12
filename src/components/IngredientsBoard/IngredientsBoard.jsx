@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 
 const IngredientsBoard = forwardRef(
   ({ title, menu, isView, setState, active }, ref) => {
-    const { ingredients } = useSelector(
-      ({ burgerIngredients }) => burgerIngredients
+    const ingredients = useSelector(
+      ({ burgerIngredients }) => burgerIngredients.ingredients
     );
 
     useEffect(() => {

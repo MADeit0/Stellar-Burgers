@@ -10,8 +10,8 @@ export const ingredientDetailsSlice = createSlice({
   name: "ingredientDetails",
   initialState,
   reducers: {
-    getDetailsIngredient(state, actions) {
-      state.details = actions.payload;
+    getDetailsIngredient(state, action) {
+      state.details = action.payload;
     },
     clearDetailsIngredient(state) {
       state.details = [];

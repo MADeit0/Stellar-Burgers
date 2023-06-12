@@ -1,20 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { baseUrl } from "../../utils/constants";
 
 const initialState = {
   ingredients: [],
   loading: null,
+  error: null,
 };
 
 export const fetchIngredientsDetails = createAsyncThunk(
   "burgerIngredients/fetchIngredientsDetails",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(
-        "https://norma.nomoreparties.space/api/ingredients"
-      );
+      const res = await fetch(`${baseUrl}/ingredients`);
+      if (!res.ok) {
+        throw new Error("Server Error!");
+      }
       return await res.json();
     } catch (err) {
-      console.error(err);
+      return rejectWithValue(err.message);
     }
   }
 );
@@ -27,13 +30,15 @@ export const burgerIngredientsSlice = createSlice({
     builder
       .addCase(fetchIngredientsDetails.pending, (state) => {
         state.loading = "pending";
+        state.error = null;
       })
-      .addCase(fetchIngredientsDetails.fulfilled, (state, actions) => {
+      .addCase(fetchIngredientsDetails.fulfilled, (state, action) => {
         state.loading = "succeeded";
-        state.ingredients = actions.payload.data;
+        state.ingredients = action.payload.data;
       })
-      .addCase(fetchIngredientsDetails.rejected, (state) => {
+      .addCase(fetchIngredientsDetails.rejected, (state, action) => {
         state.loading = "failed";
+        state.error = action.payload;
       });
   },
 });

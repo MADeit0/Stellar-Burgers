@@ -1,11 +1,46 @@
-import React from "react";
-import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientsStyle from "./BurgerIngredients.module.css";
-import PropTypes from "prop-types";
+import { ingredientsMenu } from "../../utils/constants";
 
-const BurgerIngredients = ({ handleIngredientData }) => {
-  const [current, setCurrent] = React.useState("one");
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
+
+import { useState, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
+
+const { BUN, SAUCE, MAIN } = ingredientsMenu;
+const options = {
+  threshold: 0.55,
+  rootMargin: "0% 0% -60% 0%",
+};
+
+const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+  const [current, setCurrent] = useState(BUN);
+  const loading = useSelector(({ burgerIngredients }) => burgerIngredients.loading);
+  const isBun = useSelector(({ burgerConstructor }) => burgerConstructor.isBun);
+
+  const { ref: refBun, inView: viewBun, entry: bunEntry } = useInView(options);
+  const {
+    ref: refSauce,
+    inView: viewSauce,
+    entry: sauceEntry,
+  } = useInView(options);
+  const {
+    ref: refMain,
+    inView: viewMain,
+    entry: mainEntry,
+  } = useInView(options);
+
+  useEffect(() => {
+    dispatch(fetchIngredientsDetails());
+  }, [dispatch]);
+
+  const onTabChange = (menu, entry) => {
+    setCurrent(menu);
+    entry.target.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section
@@ -16,40 +51,77 @@ const BurgerIngredients = ({ handleIngredientData }) => {
         Соберите бургер
       </h1>
       <div className={ingredientsStyle.tabs}>
-        <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
+        <Tab
+          value={BUN}
+          active={current === BUN}
+          onClick={() => {
+            onTabChange(BUN, bunEntry);
+          }}
+        >
           Булки
         </Tab>
-        <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
+        <Tab
+          value={SAUCE}
+          active={current === SAUCE}
+          onClick={() => {
+            onTabChange(SAUCE, sauceEntry);
+          }}
+        >
           Соусы
         </Tab>
-        <Tab value="main" active={current === "main"} onClick={setCurrent}>
+        <Tab
+          value={MAIN}
+          active={current === MAIN}
+          onClick={() => {
+            onTabChange(MAIN, mainEntry);
+          }}
+        >
           Начинки
         </Tab>
       </div>
 
-      <div className={`${ingredientsStyle.scroll} mt-10`}>
-        <IngredientsBoard
-          title="Булки"
-          menu="bun"
-          onClick={handleIngredientData}
-        />
-        <IngredientsBoard
-          title="Соусы"
-          menu="sauce"
-          onClick={handleIngredientData}
-        />
-        <IngredientsBoard
-          title="Начинки"
-          menu="main"
-          onClick={handleIngredientData}
-        />
-      </div>
+      {loading === "pending" && (
+        <p className="text text_type_main-medium m-0 pb-6">
+          Настраиваем антенну...
+        </p>
+      )}
+
+      {loading === "succeeded" && (
+        <div className={`${ingredientsStyle.scroll} mt-10`}>
+          <IngredientsBoard
+            ref={refBun}
+            title="Булки"
+            menu={BUN}
+            isView={viewBun}
+            setState={setCurrent}
+            active={true}
+          />
+          <IngredientsBoard
+            ref={refSauce}
+            title="Соусы"
+            menu={SAUCE}
+            isView={viewSauce}
+            setState={setCurrent}
+            active={isBun}
+          />
+          <IngredientsBoard
+            ref={refMain}
+            title="Начинки"
+            menu={MAIN}
+            isView={viewMain}
+            setState={setCurrent}
+            active={isBun}
+          />
+        </div>
+      )}
+
+      {loading === "failed" && (
+        <p className="text text_type_main-medium m-0 pb-6">
+          Упс... Что-то сломалось.
+        </p>
+      )}
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  handleIngredientData: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

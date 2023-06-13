@@ -1,112 +1,125 @@
-import React from "react";
 import burgerConstructorsStyle from "./BurgerConstructor.module.css";
-import PropTypes from "prop-types";
-
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import ConstructorCard from "../ConstructorCard/ConstructorCard";
 
-import { selectedIngredientsContext } from "../../services/selectedIngredientsContext";
-import { IngredientsContext } from "../../services/ingredientsContext";
+import { ItemTypes, ingredientsMenu } from "../../utils/constants";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
 
-const BurgerConstructor = ({ bun, onClick }) => {
-  const ingredients = React.useContext(IngredientsContext);
-  const [constructorBurgersData, setConstructorBurgersData] = React.useContext(
-    selectedIngredientsContext
+import { postConstructorData } from "../../store/orderDetails/orderDetailsSlice";
+import { openOrderModal } from "../../store/modal/modalSlice";
+import {
+  addIngredient,
+  addBun,
+} from "../../store/burgerConstructor/burgerConstructorSlice";
+
+const { BUN } = ingredientsMenu;
+
+const BurgerConstructor = () => {
+  const [totalSum, setTotalSum] = useState(0);
+  const dispatch = useDispatch();
+
+  const ingredients = useSelector(
+    ({ burgerIngredients }) => burgerIngredients.ingredients
   );
-  const [totalPrice, setTotalPrice] = React.useState(0);
+  const { otherStuffings, bunUp, bunDown, isBun } = useSelector(
+    ({ burgerConstructor }) => burgerConstructor
+  );
 
-  React.useEffect(() => {
-    const bunIngredient = ingredients.find(
-      (ingredient) => ingredient.type === bun
-    );
-    const otherIngredient = ingredients.filter(
-      (ingredient) => ingredient.type !== bun
-    );
+  const [{ isHover }, dropRef] = useDrop({
+    accept: ItemTypes.INGREDIENTS,
+    collect: (monitor) => ({
+      isHover: !!monitor.isOver(),
+    }),
+    drop(itemId) {
+      const menu = ingredients.find((item) => item._id === itemId._id);
 
-    setConstructorBurgersData([
-      ...constructorBurgersData,
-      bunIngredient,
-      ...otherIngredient,
-    ]);
-    // eslint-disable-next-line
-  }, [bun, ingredients]);
+      menu.type === BUN
+        ? dispatch(addBun(menu))
+        : dispatch(addIngredient(menu));
+    },
+  });
 
-  React.useEffect(() => {
-    const sum = constructorBurgersData.reduce(
-      (acc, { type, price }) => (type === bun ? acc + price * 2 : acc + price),
-      0
-    );
-    setTotalPrice(sum);
-  }, [bun, constructorBurgersData]);
+  useEffect(() => {
+    const price = [bunUp, ...otherStuffings, bunDown];
+    const total = price.reduce((acc, cur) => acc + cur.price, 0) || 0;
+    setTotalSum(total);
+  }, [otherStuffings, bunUp, bunDown]);
 
-
+  const handleOpenModal = () => {
+    dispatch(openOrderModal());
+    dispatch(postConstructorData([bunUp, ...otherStuffings, bunDown]));
+  };
 
   return (
-    <section className={`${burgerConstructorsStyle.board} pt-25`}>
-      {constructorBurgersData[0] &&
-        (constructorBurgersData[0].type === bun ? (
-          <div className="ml-8 pl-4 pr-4">
+    <section
+      ref={dropRef}
+      className={`${isHover && burgerConstructorsStyle.border} ${
+        burgerConstructorsStyle.board
+      } pt-25`}
+    >
+      {bunUp &&
+        (bunUp.type === BUN ? (
+          <div className="ml-8 pl-4 pr-6">
             <ConstructorElement
               type={"top"}
               isLocked={true}
-              text={`${constructorBurgersData[0].name} (верх)`}
-              price={constructorBurgersData[0].price}
-              thumbnail={constructorBurgersData[0].image_mobile}
+              text={`${bunUp.name} (верх)`}
+              price={bunUp.price}
+              thumbnail={bunUp.image_mobile}
             />
           </div>
         ) : (
           <p>выберите булку</p>
         ))}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
-        {constructorBurgersData.map(
-          (item, index) =>
-            item.type !== bun && (
-              <li
-                className={burgerConstructorsStyle.list}
-                key={`${item._id}${index}`}
-              >
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  isLocked={false}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image_mobile}
-                />
-              </li>
+        {otherStuffings.map(
+          (item, i) =>
+            item.type !== BUN && (
+              <ConstructorCard
+                name={item.name}
+                price={item.price}
+                image={item.image_mobile}
+                fakeId={item.fakeId}
+                key={item.fakeId}
+                index={i}
+              />
             )
         )}
       </ul>
-      {constructorBurgersData[0] && constructorBurgersData[0].type === bun && (
-        <div className="ml-8 pl-4 pr-4">
+      {bunDown && bunDown.type === BUN && (
+        <div className="ml-8 pl-4 pr-6">
           <ConstructorElement
             type={"bottom"}
             isLocked={true}
-            text={`${constructorBurgersData[0].name} (низ)`}
-            price={constructorBurgersData[0].price}
-            thumbnail={constructorBurgersData[0].image_mobile}
+            text={`${bunDown.name} (низ)`}
+            price={bunDown.price}
+            thumbnail={bunDown.image_mobile}
           />
         </div>
       )}
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
-          <p className="text text_type_digits-medium">{totalPrice}</p>
+          <p className="text text_type_digits-medium">{totalSum}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button onClick={onClick} htmlType="button" type="primary" size="large">
+        <Button
+          onClick={handleOpenModal}
+          htmlType="button"
+          type="primary"
+          size="large"
+          disabled={!isBun}
+        >
           Оформить заказ
         </Button>
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  bun: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

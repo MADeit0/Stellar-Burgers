@@ -1,7 +1,13 @@
 .pic {
   max-width: 250px;
   height: auto;
+  transition: all 0.4s ease-in-out;
 }
+
+.pic:hover {
+  transform: translateY(-10px) rotate(4deg) scale(1.1);
+}
+
 .text {
   text-align: center;
 }
@@ -23,18 +29,17 @@
 }
 
 .count {
-
-  animation: blink .3s ease-out ;
+  animation: shift 0.3s ease-out;
 }
 
-@keyframes blink {
+@keyframes shift {
   from {
-    transform: translateY(5px) translateX(-5px)  scale(0) rotate(5deg);
+    transform: translateY(5px) translateX(-5px) scale(0) rotate(5deg);
   }
   50% {
     transform: translateY(-5px) translateX(5px) scale(1.2) rotate(20deg);
   }
   to {
-    transform: translateY(0) translateX(0) scale(1) ;
+    transform: translateY(0) translateX(0) scale(1);
   }
 }

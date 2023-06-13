@@ -3,7 +3,7 @@
   align-items: center;
   flex-wrap: nowrap;
   gap: 8px;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 
 .list:hover {

@@ -12,6 +12,14 @@
   margin: auto;
 }
 
+.content {
+  max-width: 1240px;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  margin: auto;
+}
+
 .navigation {
   justify-self: start;
 }

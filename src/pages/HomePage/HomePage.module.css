@@ -1,0 +1,6 @@
+.section {
+  display: flex;
+  flex-direction: row;
+  max-width: 1240px;
+  gap: 40px;
+}

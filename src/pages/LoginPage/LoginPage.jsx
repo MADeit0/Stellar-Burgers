@@ -1,31 +1,55 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-//import { Test } from './LoginPage.styles';
+import loginStyle from "./LoginPage.module.css";
 
-const LoginPage = (props) => (
-  <div className="LoginPageWrapper">
-    Test content
-  </div>
-);
+import FormBody from "../../components/FormBody/FormBody";
+import {
+  EmailInput,
+  PasswordInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-LoginPage.propTypes = {
-  // bla: PropTypes.string,
+import { Link } from "react-router-dom";
+import { useState } from "react";
+
+const LoginPage = () => {
+  const [value, setValue] = useState("password");
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  return (
+    <div className="mt-30">
+      <FormBody title="Вход">
+        <EmailInput
+          onChange={onChange}
+          value={value}
+          name={"email"}
+          isIcon={false}
+        />
+        <PasswordInput onChange={onChange} value={value} name={"password"} />
+      </FormBody>
+      <ul className={loginStyle.lists}>
+        <li>
+          <span className="text text_type_main-default text_color_inactive">
+            Вы - новый пользователь?
+          </span>
+          <Link to="/register">
+            <span className="text text_type_main-default pl-2">
+              Заренистрироваться
+            </span>
+          </Link>
+        </li>
+        <li>
+          <span className="text text_type_main-default text_color_inactive">
+            Забыли пароль?
+          </span>
+          <Link to="/forgot-password">
+            <span className="text text_type_main-default pl-2">
+              Востановить пароль
+            </span>
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
 };
 
-LoginPage.defaultProps = {
-  // bla: 'test',
-};
-
-const mapStateToProps = state => ({
-  // blabla: state.blabla,
-});
-
-const mapDispatchToProps = dispatch => ({
-  // fnBlaBla: () => dispatch(action.name()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(LoginPage);
+export default LoginPage;

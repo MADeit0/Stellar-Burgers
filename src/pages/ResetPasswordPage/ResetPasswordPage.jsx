@@ -1,16 +1,12 @@
-import RegisterStyle from "./RegisterPage.module.css";
+import resetPassStyle from "./ResetPasswordPage.module.css";
 
 import FormBody from "../../components/FormBody/FormBody";
-import {
-  EmailInput,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 
-const RegisterPage = () => {
+const ResetPasswordPage = () => {
   const [value, setValue] = useState("password");
   const inputRef = useRef(null);
 
@@ -19,8 +15,13 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className={`mt-30 ${RegisterStyle.colum}`}>
-      <FormBody title="Регистрация" btn="Зарегистрироваться">
+    <div className={`mt-30 ${resetPassStyle.colum}`}>
+      <FormBody title="Восстановление пароля" btn="Сохранить">
+        <PasswordInput
+          onChange={onChange}
+          value={value}
+          name={"password"}
+        />
         <Input
           type={"text"}
           placeholder={"placeholder"}
@@ -32,17 +33,10 @@ const RegisterPage = () => {
           errorText={"Ошибка"}
           size={"default"}
         />
-        <EmailInput
-          onChange={onChange}
-          value={value}
-          name={"email"}
-          isIcon={false}
-        />
-        <PasswordInput onChange={onChange} value={value} name={"password"} />
       </FormBody>
 
       <p className="text text_type_main-default text_color_inactive">
-        Уже зарегистрированы?
+        Вспомнили пароль?
         <Link to="/login">
           <span className="text text_type_main-default pl-2">Войти</span>
         </Link>
@@ -51,4 +45,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default ResetPasswordPage;

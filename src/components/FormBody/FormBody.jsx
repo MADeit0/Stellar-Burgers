@@ -3,7 +3,7 @@ import formStyle from "./FormBody.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Children } from "react";
 
-const FormBody = ({ children, title }) => {
+const FormBody = ({ children, title, btn }) => {
   return (
     <form className={formStyle.form}>
       <h1 className={`${formStyle.title} text text_type_main-medium`}>
@@ -15,7 +15,7 @@ const FormBody = ({ children, title }) => {
         ))}
       </ul>
       <Button htmlType="button" type="primary" size="large" extraClass="mb-20">
-        Войти
+        {btn}
       </Button>
     </form>
   );

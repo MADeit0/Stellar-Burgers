@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   return (
     <div className="mt-30">
-      <FormBody title="Вход">
+      <FormBody title="Вход" btn="Войти">
         <EmailInput
           onChange={onChange}
           value={value}
@@ -33,7 +33,7 @@ const LoginPage = () => {
           </span>
           <Link to="/register">
             <span className="text text_type_main-default pl-2">
-              Заренистрироваться
+              Зарегистрироваться
             </span>
           </Link>
         </li>
@@ -43,7 +43,7 @@ const LoginPage = () => {
           </span>
           <Link to="/forgot-password">
             <span className="text text_type_main-default pl-2">
-              Востановить пароль
+              Восстановить пароль
             </span>
           </Link>
         </li>

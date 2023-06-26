@@ -1,31 +1,37 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-//import { Test } from './ForgotPasswordPage.styles';
+import forgotPassStyle from "./ForgotPasswordPage.module.css";
 
-const ForgotPasswordPage = (props) => (
-  <div className="ForgotPasswordPageWrapper">
-    Test content
-  </div>
-);
+import FormBody from "../../components/FormBody/FormBody";
+import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
-ForgotPasswordPage.propTypes = {
-  // bla: PropTypes.string,
+import { Link } from "react-router-dom";
+import { useState } from "react";
+
+const ForgotPasswordPage = () => {
+  const [value, setValue] = useState("password");
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  return (
+    <div className={`mt-30 ${forgotPassStyle.colum}`}>
+      <FormBody title="Восстановление пароля" btn="Восстановить">
+        <EmailInput
+          onChange={onChange}
+          value={value}
+          name={"email"}
+          isIcon={false}
+        />
+      </FormBody>
+
+      <p className="text text_type_main-default text_color_inactive">
+        Вспомнили пароль?
+        <Link to="/login">
+          <span className="text text_type_main-default pl-2">Войти</span>
+        </Link>
+      </p>
+    </div>
+  );
 };
 
-ForgotPasswordPage.defaultProps = {
-  // bla: 'test',
-};
-
-const mapStateToProps = state => ({
-  // blabla: state.blabla,
-});
-
-const mapDispatchToProps = dispatch => ({
-  // fnBlaBla: () => dispatch(action.name()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ForgotPasswordPage);
+export default ForgotPasswordPage;

@@ -1,31 +1,55 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-//import { Test } from './RegisterPage.styles';
+import RegisterStyle from "./RegisterPage.module.css";
 
-const RegisterPage = (props) => (
-  <div className="RegisterPageWrapper">
-    Test content
-  </div>
-);
+import FormBody from "../../components/FormBody/FormBody";
+import {
+  EmailInput,
+  Input,
+  PasswordInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-RegisterPage.propTypes = {
-  // bla: PropTypes.string,
+import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
+
+const RegisterPage = () => {
+  const [value, setValue] = useState("password");
+  const inputRef = useRef(null);
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  return (
+    <div className={`mt-30 ${RegisterStyle.colum}`}>
+      <FormBody title="Регистрация" btn="Зарегистрироваться">
+        <Input
+          type={"text"}
+          placeholder={"placeholder"}
+          onChange={(e) => setValue(e.target.value)}
+          value={value}
+          name={"name"}
+          error={false}
+          ref={inputRef}
+          errorText={"Ошибка"}
+          size={"default"}
+          extraClass="ml-1"
+        />
+        <EmailInput
+          onChange={onChange}
+          value={value}
+          name={"email"}
+          isIcon={false}
+        />
+        <PasswordInput onChange={onChange} value={value} name={"password"} />
+      </FormBody>
+
+      <p className="text text_type_main-default text_color_inactive">
+        Уже зарегистрированы?
+        <Link to="/login">
+          <span className="text text_type_main-default pl-2">Войти</span>
+        </Link>
+      </p>
+    </div>
+  );
 };
 
-RegisterPage.defaultProps = {
-  // bla: 'test',
-};
-
-const mapStateToProps = state => ({
-  // blabla: state.blabla,
-});
-
-const mapDispatchToProps = dispatch => ({
-  // fnBlaBla: () => dispatch(action.name()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RegisterPage);
+export default RegisterPage;

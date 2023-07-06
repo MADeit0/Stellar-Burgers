@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUserThunk,} from "./authAction";
+import { registerUserThunk, loginUserThunk} from "./authAction";
 
 const initialState = {
   isAuthChecked: false,
@@ -30,6 +30,17 @@ export const authSlice = createSlice({
         localStorage.setItem("refreshToken", payload.refreshToken);
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
+        state.errorForm = action.payload;
+      })  
+      .addCase(loginUserThunk.pending, (state) => {
+        state.errorForm = null;
+      })
+      .addCase(loginUserThunk.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
+        localStorage.setItem("accessToken", payload.accessToken);
+        localStorage.setItem("refreshToken", payload.refreshToken);
+      })
+      .addCase(loginUserThunk.rejected, (state, action) => {
         state.errorForm = action.payload;
       })  
   },

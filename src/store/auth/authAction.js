@@ -1,7 +1,7 @@
 import { authFetch, updateTokenFetch } from "../../utils/api/axiosClient";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setAuthChecked, setUser } from "./authSlice";
-import { token } from "../../utils/constants";
+import { message, token } from "../../utils/constants";
 
 export const registerUserThunk = createAsyncThunk(
   "user/registerUserThunk",
@@ -15,7 +15,19 @@ export const registerUserThunk = createAsyncThunk(
   }
 );
 
-export const getUser = async () => {
+export const loginUserThunk = createAsyncThunk(
+  "user/loginUserThunk",
+  async (dataUser, { rejectWithValue }) => {
+    try {
+      const res = await authFetch.post("/login", dataUser);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+const getUser = async () => {
   try {
     const res = await updateTokenFetch.get("/user", {
       headers: {
@@ -28,7 +40,7 @@ export const getUser = async () => {
   }
 };
 
-export const refreshToken = async () => {
+const refreshToken = async () => {
   try {
     const res = await authFetch.post("/token", {
       token: localStorage.getItem(token.REFRESH_TOKEN),
@@ -74,7 +86,7 @@ updateTokenFetch.interceptors.response.use(
   },
   async (error) => {
     const rejected = error.response.data;
-    if (rejected.message === "jwt expired") {
+    if (rejected.message === message.JWT_EXPIRED) {
       const refreshData = await refreshToken();
       return refreshData;
     }

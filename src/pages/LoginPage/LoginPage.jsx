@@ -7,24 +7,37 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Link } from "react-router-dom";
-import { useState } from "react";
+
+import useForm from "../../hooks/useForm";
+import { useDispatch } from "react-redux";
+import { loginUserThunk } from "../../store/auth/authAction";
 
 const LoginPage = () => {
-  const [value, setValue] = useState("password");
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const dispatch = useDispatch();
+  const [valueForm, handleChanges] = useForm({
+    email: "",
+    password: "",
+  });
+
+  const handlerSubmit = (e) => {
+    e.preventDefault();
+    dispatch(loginUserThunk(valueForm));
   };
 
   return (
     <div className="mt-30">
-      <FormBody title="Вход" btn="Войти">
+      <FormBody onSubmit={handlerSubmit} title="Вход" btn="Войти">
         <EmailInput
-          onChange={onChange}
-          value={value}
+          onChange={handleChanges}
+          value={valueForm.email}
           name={"email"}
           isIcon={false}
         />
-        <PasswordInput onChange={onChange} value={value} name={"password"} />
+        <PasswordInput
+          onChange={handleChanges}
+          value={valueForm.password}
+          name={"password"}
+        />
       </FormBody>
       <ul className={loginStyle.lists}>
         <li>

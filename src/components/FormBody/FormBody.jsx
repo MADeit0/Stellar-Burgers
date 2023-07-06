@@ -3,9 +3,14 @@ import formStyle from "./FormBody.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Children } from "react";
 
-const FormBody = ({ children, title, btn }) => {
+const FormBody = ({
+  children,
+  title,
+  btn,
+  onSubmit,
+}) => {
   return (
-    <form className={formStyle.form}>
+    <form onSubmit={onSubmit} className={formStyle.form}>
       <h1 className={`${formStyle.title} text text_type_main-medium`}>
         {title}
       </h1>
@@ -14,7 +19,8 @@ const FormBody = ({ children, title, btn }) => {
           <li> {child} </li>
         ))}
       </ul>
-      <Button htmlType="button" type="primary" size="large" extraClass="mb-20">
+
+      <Button htmlType="submit" type="primary" size="large" extraClass="mb-20">
         {btn}
       </Button>
     </form>

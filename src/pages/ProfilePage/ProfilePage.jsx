@@ -36,7 +36,7 @@ const ProfilePage = (props) => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="bb" className={setActive}>
+            <NavLink to="orders" className={setActive}>
               <span className="text text_type_main-medium ">
                 История заказов
               </span>

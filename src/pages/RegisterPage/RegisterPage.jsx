@@ -8,39 +8,53 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+
+import useForm from "../../hooks/useForm";
+import { useDispatch } from "react-redux";
+import { registerUserThunk } from "../../store/auth/authAction";
 
 const RegisterPage = () => {
-  const [value, setValue] = useState("password");
-  const inputRef = useRef(null);
+  const dispatch = useDispatch();
+  const [valueForm, handleChanges] = useForm({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const handlerSubmit = (e) => {
+    e.preventDefault();
+    dispatch(registerUserThunk(valueForm));
   };
 
   return (
     <div className={`mt-30 ${RegisterStyle.colum}`}>
-      <FormBody title="Регистрация" btn="Зарегистрироваться">
+      <FormBody
+        onSubmit={handlerSubmit}
+        title="Регистрация"
+        btn="Зарегистрироваться"
+      >
         <Input
           type={"text"}
-          placeholder={"placeholder"}
-          onChange={(e) => setValue(e.target.value)}
-          value={value}
+          placeholder={"Имя"}
+          onChange={handleChanges}
+          value={valueForm.name}
           name={"name"}
           error={false}
-          ref={inputRef}
           errorText={"Ошибка"}
           size={"default"}
         />
         <EmailInput
-          onChange={onChange}
-          value={value}
+          onChange={handleChanges}
+          value={valueForm.email}
           name={"email"}
           isIcon={false}
         />
-        <PasswordInput onChange={onChange} value={value} name={"password"} />
+        <PasswordInput
+          onChange={handleChanges}
+          value={valueForm.password}
+          name={"password"}
+        />
       </FormBody>
-
       <p className="text text_type_main-default text_color_inactive">
         Уже зарегистрированы?
         <Link to="/login">

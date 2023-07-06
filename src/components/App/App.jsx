@@ -8,16 +8,46 @@ import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "../../pages/ResetPasswordPage/ResetPasswordPage";
 
+import {
+  OnlyAuth,
+  OnlyUnAuth,
+} from "../ProtectedRouteElement/ProtectedRouteElement";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { checkUserAuth } from "../../store/auth/authAction";
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, [dispatch]);
+
   return (
     <Routes>
       <Route path="/" element={<AppHeader />}>
         <Route index element={<HomePage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="reset-password" element={<ResetPasswordPage />} />
+        <Route
+          path="login"
+          element={<OnlyUnAuth component={<LoginPage />} />}
+        />
+        <Route
+          path="register"
+          element={<OnlyUnAuth component={<RegisterPage />} />}
+        />
+        <Route
+          path="profile"
+          element={<OnlyAuth component={<ProfilePage />} />}
+        />
+        <Route
+          path="forgot-password"
+          element={<OnlyAuth component={<ForgotPasswordPage />} />}
+        />
+
+        <Route
+          path="reset-password"
+          element={<OnlyAuth component={<ResetPasswordPage />} />}
+        />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>

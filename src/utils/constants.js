@@ -7,4 +7,13 @@ const ItemTypes = {
   CARD: "card",
 };
 
-export { baseUrl, ingredientsMenu, ItemTypes };
+const token = {
+  ACCESS_TOKEN: "accessToken",
+  REFRESH_TOKEN: "refreshToken",
+};
+
+const message = {
+  JWT_EXPIRED: 'jwt expired'
+}
+
+export { baseUrl, ingredientsMenu, ItemTypes, token, message };

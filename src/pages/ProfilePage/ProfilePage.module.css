@@ -39,10 +39,16 @@
   transition: color 0.2s ease-in-out;
 }
 
+.exit {
+  transition: color 0.2s ease-in-out;
+}
+
+.exit:hover,
 .link:hover {
   color: white;
 }
 
+.exit:active,
 .link:active {
   transition: opacity 0.2s ease-in-out;
   opacity: 0.5;
@@ -52,4 +58,9 @@
   color: white;
   pointer-events: none;
   transition: none;
+}
+
+.btn {
+  all: unset;
+  cursor: pointer;
 }

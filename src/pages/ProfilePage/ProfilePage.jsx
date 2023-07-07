@@ -6,14 +6,17 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { logoutThunk } from "../../store/auth/authAction";
 
 const setActive = ({ isActive }) =>
   `${ProfileStyle.link} ${
     isActive ? ProfileStyle.active : "text_color_inactive"
   }`;
 
-const ProfilePage = (props) => {
+const ProfilePage = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState("password");
   const inputRef = useRef(null);
 
@@ -43,9 +46,12 @@ const ProfilePage = (props) => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="cc" className={setActive}>
-              <span className="text text_type_main-medium ">Выход</span>
-            </NavLink>
+            <button
+              onClick={() => dispatch(logoutThunk())}
+              className={ProfileStyle.btn}
+            >
+              <span className={`${ProfileStyle.exit} text text_type_main-medium text_color_inactive`}>Выход</span>
+            </button>
           </li>
         </ul>
         <p className="text text_type_main-default text_color_inactive">

@@ -27,6 +27,21 @@ export const loginUserThunk = createAsyncThunk(
   }
 );
 
+export const logoutThunk = createAsyncThunk(
+  "user/logoutThunk",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await authFetch.post("/logout", {
+        token: localStorage.getItem(token.REFRESH_TOKEN),
+      });
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+
 const getUser = async () => {
   try {
     const res = await updateTokenFetch.get("/user", {

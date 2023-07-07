@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUserThunk, loginUserThunk} from "./authAction";
+import { registerUserThunk, loginUserThunk, logoutThunk} from "./authAction";
 
 const initialState = {
   isAuthChecked: false,
@@ -43,6 +43,11 @@ export const authSlice = createSlice({
       .addCase(loginUserThunk.rejected, (state, action) => {
         state.errorForm = action.payload;
       })  
+      .addCase(logoutThunk.fulfilled, (state) => {
+        state.user = null;
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      })
   },
 });
 

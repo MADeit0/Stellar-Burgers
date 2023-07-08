@@ -13,10 +13,11 @@ import {
   OnlyUnAuth,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { checkUserAuth } from "../../store/auth/authAction";
 
 function App() {
+  const isForgotPassword = useSelector(({ auth }) => auth.isForgotPassword);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,13 +42,15 @@ function App() {
         />
         <Route
           path="forgot-password"
-          element={<OnlyAuth component={<ForgotPasswordPage />} />}
+          element={<OnlyUnAuth component={<ForgotPasswordPage />} />}
         />
 
-        <Route
-          path="reset-password"
-          element={<OnlyAuth component={<ResetPasswordPage />} />}
-        />
+        {isForgotPassword && (
+          <Route
+            path="reset-password"
+            element={<OnlyUnAuth component={<ResetPasswordPage />} />}
+          />
+        )}
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>

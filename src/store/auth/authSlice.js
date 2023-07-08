@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUserThunk, loginUserThunk, logoutThunk} from "./authAction";
+import {
+  registerUserThunk,
+  loginUserThunk,
+  logoutThunk,
+} from "./authAction";
 
 const initialState = {
   isAuthChecked: false,
   loading: null,
   errorForm: "",
   user: null,
+  isForgotPassword: false,
 };
 
 export const authSlice = createSlice({
@@ -17,6 +22,15 @@ export const authSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload;
+    },
+    forgotPasswordPending: (state) => {
+      state.errorForm = null;
+    },
+    forgotPasswordSuccess: (state, { payload }) => {
+      state.isForgotPassword = payload.success;
+    },
+    forgotPasswordRejected: (state, action) => {
+      state.errorForm = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -31,7 +45,7 @@ export const authSlice = createSlice({
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
         state.errorForm = action.payload;
-      })  
+      })
       .addCase(loginUserThunk.pending, (state) => {
         state.errorForm = null;
       })
@@ -42,15 +56,15 @@ export const authSlice = createSlice({
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
         state.errorForm = action.payload;
-      })  
+      })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-      })
+      });
   },
 });
 
-export const { setAuthChecked, setUser } = authSlice.actions;
+export const { setAuthChecked, setUser, forgotPasswordPending,forgotPasswordSuccess,forgotPasswordRejected } = authSlice.actions;
 
 export default authSlice.reducer;

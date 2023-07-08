@@ -3,22 +3,36 @@ import forgotPassStyle from "./ForgotPasswordPage.module.css";
 import FormBody from "../../components/FormBody/FormBody";
 import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import useForm from "../../hooks/useForm";
+import { forgotPassword } from "../../store/auth/authAction";
 
 const ForgotPasswordPage = () => {
-  const [value, setValue] = useState("password");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [valueForm, handleChanges] = useForm({
+    email: "",
+  });
 
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const handlerSubmit = async (e) => {
+    e.preventDefault();
+
+    dispatch(forgotPassword(valueForm)).then((res) => {
+      navigate("/reset-password");
+    });
   };
 
   return (
     <div className={`mt-30 ${forgotPassStyle.colum}`}>
-      <FormBody title="Восстановление пароля" btn="Восстановить">
+      <FormBody
+        onSubmit={handlerSubmit}
+        title="Восстановление пароля"
+        btn="Восстановить"
+      >
         <EmailInput
-          onChange={onChange}
-          value={value}
+          onChange={handleChanges}
+          value={valueForm.email}
           name={"email"}
           isIcon={false}
         />

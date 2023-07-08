@@ -50,7 +50,11 @@ const ProfilePage = () => {
               onClick={() => dispatch(logoutThunk())}
               className={ProfileStyle.btn}
             >
-              <span className={`${ProfileStyle.exit} text text_type_main-medium text_color_inactive`}>Выход</span>
+              <span
+                className={`${ProfileStyle.exit} text text_type_main-medium text_color_inactive`}
+              >
+                Выход
+              </span>
             </button>
           </li>
         </ul>

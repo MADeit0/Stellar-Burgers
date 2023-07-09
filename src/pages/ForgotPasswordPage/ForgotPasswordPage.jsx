@@ -4,12 +4,11 @@ import FormBody from "../../components/FormBody/FormBody";
 import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import useForm from "../../hooks/useForm";
-import { forgotPassword } from "../../store/auth/authAction";
+import axios from "axios";
+import { baseUrl } from "../../utils/constants";
 
 const ForgotPasswordPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [valueForm, handleChanges] = useForm({
     email: "",
@@ -18,10 +17,15 @@ const ForgotPasswordPage = () => {
   const handlerSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(forgotPassword(valueForm)).then((res) => {
-      localStorage.setItem("emailSent", true)
-      navigate("/reset-password");
-    });
+    axios
+      .post(`${baseUrl}/password-reset`, valueForm)
+      .then((res) => {
+        localStorage.setItem("emailSent", true);
+        navigate("/reset-password");
+      })
+      .catch((error) => {
+        console.log("Ошибка отправки email адреса");
+      });
   };
 
   return (

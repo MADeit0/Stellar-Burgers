@@ -1,14 +1,7 @@
-import axios from "axios";
 import { authFetch, updateTokenFetch } from "../../utils/api/axiosClient";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  forgotPasswordPending,
-  forgotPasswordRejected,
-  forgotPasswordSuccess,
-  setAuthChecked,
-  setUser,
-} from "./authSlice";
-import { baseUrl, message, token } from "../../utils/constants";
+import { setAuthChecked, setUser } from "./authSlice";
+import { message, token } from "../../utils/constants";
 
 export const registerUserThunk = createAsyncThunk(
   "user/registerUserThunk",
@@ -47,18 +40,6 @@ export const logoutThunk = createAsyncThunk(
     }
   }
 );
-
-export const forgotPassword = (email) => async (dispatch) => {
-  try {
-    dispatch(forgotPasswordPending());
-    const res = await axios.post(`${baseUrl}/password-reset`, email);
-    dispatch(forgotPasswordSuccess(res.data));
-    return res.data;
-  } catch (error) {
-    dispatch(forgotPasswordRejected(error.response.data.message));
-    return Promise.reject(error.message);
-  }
-};
 
 const getUser = async () => {
   try {

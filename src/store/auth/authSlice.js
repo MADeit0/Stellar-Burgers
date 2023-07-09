@@ -20,15 +20,6 @@ export const authSlice = createSlice({
     setUser: (state, { payload }) => {
       state.user = payload;
     },
-    forgotPasswordPending: (state) => {
-      state.errorForm = null;
-    },
-    forgotPasswordSuccess: (state, { payload }) => {
-      state.isForgotPassword = payload.success;
-    },
-    forgotPasswordRejected: (state, { payload }) => {
-      state.errorForm = payload;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -66,9 +57,6 @@ export const {
   setAuthChecked,
   setUser,
   togglePasswordRoute,
-  forgotPasswordPending,
-  forgotPasswordSuccess,
-  forgotPasswordRejected,
 } = authSlice.actions;
 
 export default authSlice.reducer;

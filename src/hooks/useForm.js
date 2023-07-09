@@ -6,7 +6,19 @@ const useForm = (inputValues) => {
   const handleChanges = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
-  return [state, handleChanges];
+
+  const resetState = () => {
+    const newState = Object.keys(state).reduce((acc, key) => {
+      return {
+        ...acc,
+        [key]: "",
+      };
+    }, {});
+
+    setState(newState);
+  };
+
+  return [state, handleChanges, resetState];
 };
 
 export default useForm;

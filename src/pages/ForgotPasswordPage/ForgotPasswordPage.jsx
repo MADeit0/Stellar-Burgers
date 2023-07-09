@@ -19,6 +19,7 @@ const ForgotPasswordPage = () => {
     e.preventDefault();
 
     dispatch(forgotPassword(valueForm)).then((res) => {
+      localStorage.setItem("emailSent", true)
       navigate("/reset-password");
     });
   };

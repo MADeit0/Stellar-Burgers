@@ -1,35 +1,57 @@
 import resetPassStyle from "./ResetPasswordPage.module.css";
 
 import FormBody from "../../components/FormBody/FormBody";
-import { Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Input,
+  PasswordInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import useForm from "../../hooks/useForm";
+import axios from "axios";
+import { baseUrl } from "../../utils/constants";
 
 const ResetPasswordPage = () => {
-  const [value, setValue] = useState("password");
-  const inputRef = useRef(null);
+  const navigate = useNavigate();
+  const [valueForm, handleChanges] = useForm({
+    password: "",
+    token: "",
+  });
 
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const handlerSubmit = async (e) => {
+    e.preventDefault();
+
+    axios
+      .post(`${baseUrl}/password-reset/reset`, valueForm)
+      .then((res) => {
+        localStorage.removeItem("emailSent");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log("Неверный код сброса");
+      });
   };
 
-  return (
+  return localStorage.getItem("emailSent") ? (
     <div className={`mt-30 ${resetPassStyle.colum}`}>
-      <FormBody title="Восстановление пароля" btn="Сохранить">
+      <FormBody
+        onSubmit={handlerSubmit}
+        title="Восстановление пароля"
+        btn="Сохранить"
+      >
         <PasswordInput
-          onChange={onChange}
-          value={value}
+          placeholder={"Введите новый пароль"}
+          onChange={handleChanges}
+          value={valueForm?.password}
           name={"password"}
         />
         <Input
           type={"text"}
-          placeholder={"placeholder"}
-          onChange={(e) => setValue(e.target.value)}
-          value={value}
-          name={"name"}
+          placeholder={"Введите код из письма"}
+          onChange={handleChanges}
+          value={valueForm?.token}
+          name={"token"}
           error={false}
-          ref={inputRef}
           errorText={"Ошибка"}
           size={"default"}
         />
@@ -42,6 +64,8 @@ const ResetPasswordPage = () => {
         </Link>
       </p>
     </div>
+  ) : (
+    <Navigate to="/forgot-password" />
   );
 };
 

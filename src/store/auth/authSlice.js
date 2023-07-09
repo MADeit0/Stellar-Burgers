@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  registerUserThunk,
-  loginUserThunk,
-  logoutThunk,
-} from "./authAction";
+import { registerUserThunk, loginUserThunk, logoutThunk } from "./authAction";
 
 const initialState = {
   isAuthChecked: false,
@@ -11,17 +7,18 @@ const initialState = {
   errorForm: "",
   user: null,
   isForgotPassword: false,
+  formMessage: null,
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuthChecked: (state, action) => {
-      state.isAuthChecked = action.payload;
+    setAuthChecked: (state, { payload }) => {
+      state.isAuthChecked = payload;
     },
-    setUser: (state, action) => {
-      state.user = action.payload;
+    setUser: (state, { payload }) => {
+      state.user = payload;
     },
     forgotPasswordPending: (state) => {
       state.errorForm = null;
@@ -29,8 +26,8 @@ export const authSlice = createSlice({
     forgotPasswordSuccess: (state, { payload }) => {
       state.isForgotPassword = payload.success;
     },
-    forgotPasswordRejected: (state, action) => {
-      state.errorForm = action.payload;
+    forgotPasswordRejected: (state, { payload }) => {
+      state.errorForm = payload;
     },
   },
   extraReducers: (builder) => {
@@ -43,8 +40,8 @@ export const authSlice = createSlice({
         localStorage.setItem("accessToken", payload.accessToken);
         localStorage.setItem("refreshToken", payload.refreshToken);
       })
-      .addCase(registerUserThunk.rejected, (state, action) => {
-        state.errorForm = action.payload;
+      .addCase(registerUserThunk.rejected, (state, { payload }) => {
+        state.errorForm = payload;
       })
       .addCase(loginUserThunk.pending, (state) => {
         state.errorForm = null;
@@ -54,8 +51,8 @@ export const authSlice = createSlice({
         localStorage.setItem("accessToken", payload.accessToken);
         localStorage.setItem("refreshToken", payload.refreshToken);
       })
-      .addCase(loginUserThunk.rejected, (state, action) => {
-        state.errorForm = action.payload;
+      .addCase(loginUserThunk.rejected, (state, { payload }) => {
+        state.errorForm = payload;
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
@@ -65,6 +62,13 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuthChecked, setUser, forgotPasswordPending,forgotPasswordSuccess,forgotPasswordRejected } = authSlice.actions;
+export const {
+  setAuthChecked,
+  setUser,
+  togglePasswordRoute,
+  forgotPasswordPending,
+  forgotPasswordSuccess,
+  forgotPasswordRejected,
+} = authSlice.actions;
 
 export default authSlice.reducer;

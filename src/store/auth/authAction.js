@@ -41,6 +41,22 @@ export const logoutThunk = createAsyncThunk(
   }
 );
 
+export const updateDataUserThunk = createAsyncThunk(
+  "user/updateDataUserThunk",
+  async (dataUser, { rejectWithValue }) => {
+    try {
+      const res = await authFetch.patch("/user", dataUser, {
+        headers: {
+          authorization: localStorage.getItem("accessToken"),
+        },
+      });
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const getUser = async () => {
   try {
     const res = await updateTokenFetch.get("/user", {
@@ -81,7 +97,7 @@ export const checkUserAuth = () => (dispatch) => {
   if (localStorage.getItem(token.ACCESS_TOKEN)) {
     getUser()
       .then((user) => {
-        dispatch(setUser(user.data));
+        dispatch(setUser(user.data.user));
       })
       .catch(() => {
         localStorage.removeItem(token.ACCESS_TOKEN);
@@ -95,9 +111,7 @@ export const checkUserAuth = () => (dispatch) => {
 };
 
 updateTokenFetch.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (res) => res,
   async (error) => {
     const rejected = error.response.data;
     if (rejected.message === message.JWT_EXPIRED) {

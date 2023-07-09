@@ -23,13 +23,6 @@
   padding: 0;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  grid-area: center;
-  gap: 24px;
-}
-
 .link {
   display: inline-block;
   list-style-type: none;

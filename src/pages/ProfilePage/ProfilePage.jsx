@@ -4,11 +4,14 @@ import {
   Input,
   EmailInput,
   PasswordInput,
+  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { logoutThunk } from "../../store/auth/authAction";
+import { logoutThunk, updateDataUserThunk } from "../../store/auth/authAction";
+import FormBody from "../../components/FormBody/FormBody";
+import useForm from "../../hooks/useForm";
 
 const setActive = ({ isActive }) =>
   `${ProfileStyle.link} ${
@@ -16,18 +19,42 @@ const setActive = ({ isActive }) =>
   }`;
 
 const ProfilePage = () => {
+  const { email, name } = useSelector(({ auth }) => auth.user);
   const dispatch = useDispatch();
-  const [value, setValue] = useState("password");
   const inputRef = useRef(null);
-
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
+  const [valueForm, handleChanges, setValueForm] = useForm({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    alert("Icon Click Callback");
+    const input = inputRef.current;
+    input.disabled = false;
+    input.focus();
+    input.classList.remove("input__textfield-disabled");
   };
+
+  const disabledToggle = () => {
+    const input = inputRef.current;
+    input.classList.add("input__textfield-disabled");
+    input.disabled = true;
+  };
+
+  const handlerSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateDataUserThunk(valueForm));
+    setValueForm({ ...valueForm, password: "" });
+  };
+
+  const handleCancelForm = () => {
+    setValueForm({ ...valueForm, name: name, email: email, password: "" });
+  };
+
+  useEffect(() => {
+    handleCancelForm();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className={ProfileStyle.profile}>
@@ -62,13 +89,15 @@ const ProfilePage = () => {
           В&nbsp;этом разделе вы&nbsp;можете изменить свои персональные данные
         </p>
       </div>
-      <form className={ProfileStyle.form}>
+      <FormBody onSubmit={handlerSubmit} btn="Изменить" isBtnVisible={true}>
         <Input
+          disabled={true}
+          onBlur={disabledToggle}
           type={"text"}
           placeholder={"Имя"}
-          onChange={onChange}
+          onChange={handleChanges}
+          value={valueForm.name}
           icon={"EditIcon"}
-          value={value}
           name={"name"}
           error={false}
           ref={inputRef}
@@ -77,19 +106,28 @@ const ProfilePage = () => {
           size={"default"}
         />
         <EmailInput
-          onChange={onChange}
-          value={value}
+          onChange={handleChanges}
+          value={valueForm.email}
           name={"email"}
           placeholder="Логин"
           isIcon={true}
         />
         <PasswordInput
-          onChange={onChange}
-          value={value}
+          onChange={handleChanges}
+          value={valueForm.password}
           name={"password"}
           icon="EditIcon"
         />
-      </form>
+        <Button
+          htmlType="reset"
+          type="primary"
+          size="large"
+          extraClass="mb-20"
+          onClick={handleCancelForm}
+        >
+          Cancel
+        </Button>
+      </FormBody>
     </div>
   );
 };

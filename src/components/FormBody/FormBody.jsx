@@ -8,6 +8,7 @@ const FormBody = ({
   title,
   btn,
   onSubmit,
+  isBtnVisible,
 }) => {
   return (
     <form onSubmit={onSubmit} className={formStyle.form}>
@@ -20,9 +21,9 @@ const FormBody = ({
         ))}
       </ul>
 
-      <Button htmlType="submit" type="primary" size="large" extraClass="mb-20">
+      { isBtnVisible && <Button htmlType="submit" type="primary" size="large" extraClass="mb-20">
         {btn}
-      </Button>
+      </Button>}
     </form>
   );
 };

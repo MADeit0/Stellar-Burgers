@@ -57,3 +57,11 @@
   all: unset;
   cursor: pointer;
 }
+
+.text__color_red {
+  color: red;
+}
+
+.text__color_purple {
+  color: purple;
+}

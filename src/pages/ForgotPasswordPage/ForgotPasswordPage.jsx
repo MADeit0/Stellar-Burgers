@@ -1,16 +1,21 @@
 import forgotPassStyle from "./ForgotPasswordPage.module.css";
 
 import FormBody from "../../components/FormBody/FormBody";
-import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Button,
+  EmailInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import axios from "axios";
 import { baseUrl } from "../../utils/constants";
+import { useState } from "react";
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
-  const [valueForm, handleChanges] = useForm({
+  const [message, setMessage] = useState("");
+  const [valueForm, handleChanges, isMessage, showMessage] = useForm({
     email: "",
   });
 
@@ -22,9 +27,11 @@ const ForgotPasswordPage = () => {
       .then((res) => {
         localStorage.setItem("emailSent", true);
         navigate("/reset-password");
+        setMessage("");
       })
       .catch((error) => {
-        console.log("Ошибка отправки email адреса");
+        showMessage()
+        setMessage("Ошибка отправки email адреса");
       });
   };
 
@@ -33,7 +40,9 @@ const ForgotPasswordPage = () => {
       <FormBody
         onSubmit={handlerSubmit}
         title="Восстановление пароля"
-        btn="Восстановить"
+        colorText="red"
+        message={message}
+        isMessage={isMessage}
       >
         <EmailInput
           onChange={handleChanges}
@@ -41,9 +50,12 @@ const ForgotPasswordPage = () => {
           name={"email"}
           isIcon={false}
         />
+        <Button htmlType="submit" type="primary" size="large">
+          Восстановить
+        </Button>
       </FormBody>
 
-      <p className="text text_type_main-default text_color_inactive">
+      <p className="text text_type_main-default text_color_inactive mt-20">
         Вспомнили пароль?
         <Link to="/login">
           <span className="text text_type_main-default pl-2">Войти</span>

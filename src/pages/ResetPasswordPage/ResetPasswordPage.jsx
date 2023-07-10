@@ -2,6 +2,7 @@ import resetPassStyle from "./ResetPasswordPage.module.css";
 
 import FormBody from "../../components/FormBody/FormBody";
 import {
+  Button,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -10,10 +11,12 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import axios from "axios";
 import { baseUrl } from "../../utils/constants";
+import { useState } from "react";
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
-  const [valueForm, handleChanges] = useForm({
+  const [message, setMessage] = useState("");
+  const [valueForm, handleChanges, isMessage, showMessage] = useForm({
     password: "",
     token: "",
   });
@@ -28,7 +31,8 @@ const ResetPasswordPage = () => {
         navigate("/login");
       })
       .catch((error) => {
-        console.log("Неверный код сброса");
+        showMessage()
+        setMessage("Неверный код сброса");
       });
   };
 
@@ -37,7 +41,9 @@ const ResetPasswordPage = () => {
       <FormBody
         onSubmit={handlerSubmit}
         title="Восстановление пароля"
-        btn="Сохранить"
+        colorText="red"
+        message={message}
+        isMessage={isMessage}
       >
         <PasswordInput
           placeholder={"Введите новый пароль"}
@@ -55,9 +61,16 @@ const ResetPasswordPage = () => {
           errorText={"Ошибка"}
           size={"default"}
         />
+        <Button
+          htmlType="submit"
+          type="primary"
+          size="large"
+        >
+          Сохранить
+        </Button>
       </FormBody>
 
-      <p className="text text_type_main-default text_color_inactive">
+      <p className="text text_type_main-default text_color_inactive mt-20">
         Вспомнили пароль?
         <Link to="/login">
           <span className="text text_type_main-default pl-2">Войти</span>

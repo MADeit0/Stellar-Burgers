@@ -2,6 +2,7 @@ import RegisterStyle from "./RegisterPage.module.css";
 
 import FormBody from "../../components/FormBody/FormBody";
 import {
+  Button,
   EmailInput,
   Input,
   PasswordInput,
@@ -12,10 +13,12 @@ import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { registerUserThunk } from "../../store/auth/authAction";
+import { useState } from "react";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
-  const [valueForm, handleChanges] = useForm({
+  const [message, setMessage] = useState("");
+  const [valueForm, handleChanges, isMessage, showMessage] = useForm({
     name: "",
     email: "",
     password: "",
@@ -23,7 +26,12 @@ const RegisterPage = () => {
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUserThunk(valueForm));
+    dispatch(registerUserThunk(valueForm))
+      .unwrap()
+      .catch((err) => {
+        showMessage()
+        setMessage("Произошла ошибка при регистрации");
+      });
   };
 
   return (
@@ -31,7 +39,9 @@ const RegisterPage = () => {
       <FormBody
         onSubmit={handlerSubmit}
         title="Регистрация"
-        btn="Зарегистрироваться"
+        colorText="red"
+        message={message}
+        isMessage={isMessage}
       >
         <Input
           type={"text"}
@@ -54,8 +64,11 @@ const RegisterPage = () => {
           value={valueForm.password}
           name={"password"}
         />
+        <Button htmlType="submit" type="primary" size="large">
+          Зарегистрироваться
+        </Button>
       </FormBody>
-      <p className="text text_type_main-default text_color_inactive">
+      <p className="text text_type_main-default text_color_inactive mt-20">
         Уже зарегистрированы?
         <Link to="/login">
           <span className="text text_type_main-default pl-2">Войти</span>

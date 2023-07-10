@@ -6,7 +6,7 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logoutThunk, updateDataUserThunk } from "../../store/auth/authAction";
@@ -22,11 +22,19 @@ const ProfilePage = () => {
   const { email, name } = useSelector(({ auth }) => auth.user);
   const dispatch = useDispatch();
   const inputRef = useRef(null);
-  const [valueForm, handleChanges, setValueForm] = useForm({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [colorText, setColorText] = useState("purple");
+  const [message, setMessage] = useState("");
+  const [valueForm, handleChanges, isMessage, showMessage, setValueForm] =
+    useForm({
+      name: "",
+      email: "",
+      password: "",
+    });
+
+  const isFormChanged =
+    valueForm.name !== name ||
+    valueForm.email !== email ||
+    !!valueForm.password;
 
   const onIconClick = () => {
     const input = inputRef.current;
@@ -43,18 +51,38 @@ const ProfilePage = () => {
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateDataUserThunk(valueForm));
+
+    dispatch(updateDataUserThunk(valueForm))
+      .unwrap()
+      .then((res) => {
+        showMessage();
+        setMessage("Данные изменены успешно");
+        setColorText("purple");
+      })
+      .catch((err) => {
+        showMessage();
+        setMessage("Возникла ошибка при отправке данных");
+        setColorText("red");
+      });
+
     setValueForm({ ...valueForm, password: "" });
   };
 
-  const handleCancelForm = () => {
+  const handledDfaultValue = () => {
     setValueForm({ ...valueForm, name: name, email: email, password: "" });
+    setMessage("");
   };
 
   useEffect(() => {
-    handleCancelForm();
+    handledDfaultValue();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (isFormChanged) {
+      setMessage("");
+    }
+  }, [isFormChanged]);
 
   return (
     <div className={ProfileStyle.profile}>
@@ -89,7 +117,12 @@ const ProfilePage = () => {
           В&nbsp;этом разделе вы&nbsp;можете изменить свои персональные данные
         </p>
       </div>
-      <FormBody onSubmit={handlerSubmit} btn="Изменить" isBtnVisible={true}>
+      <FormBody
+        onSubmit={handlerSubmit}
+        colorText={colorText}
+        message={message}
+        isMessage={isMessage}
+      >
         <Input
           disabled={true}
           onBlur={disabledToggle}
@@ -118,15 +151,21 @@ const ProfilePage = () => {
           name={"password"}
           icon="EditIcon"
         />
-        <Button
-          htmlType="reset"
-          type="primary"
-          size="large"
-          extraClass="mb-20"
-          onClick={handleCancelForm}
-        >
-          Cancel
-        </Button>
+        {isFormChanged && (
+          <div>
+            <Button htmlType="submit" type="primary" size="large">
+              Изменить
+            </Button>
+            <Button
+              htmlType="reset"
+              type="secondary"
+              size="large"
+              onClick={handledDfaultValue}
+            >
+              Сбросить
+            </Button>
+          </div>
+        )}
       </FormBody>
     </div>
   );

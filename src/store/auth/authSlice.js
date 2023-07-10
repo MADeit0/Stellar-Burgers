@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUserThunk, loginUserThunk, logoutThunk } from "./authAction";
+import {
+  registerUserThunk,
+  loginUserThunk,
+  logoutThunk,
+  updateDataUserThunk,
+} from "./authAction";
 
 const initialState = {
   isAuthChecked: false,
-  loading: null,
-  errorForm: "",
   user: null,
-  isForgotPassword: false,
-  formMessage: null,
 };
 
 export const authSlice = createSlice({
@@ -23,40 +24,28 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUserThunk.pending, (state) => {
-        state.errorForm = null;
-      })
       .addCase(registerUserThunk.fulfilled, (state, { payload }) => {
         state.user = payload.user;
         localStorage.setItem("accessToken", payload.accessToken);
         localStorage.setItem("refreshToken", payload.refreshToken);
-      })
-      .addCase(registerUserThunk.rejected, (state, { payload }) => {
-        state.errorForm = payload;
-      })
-      .addCase(loginUserThunk.pending, (state) => {
-        state.errorForm = null;
       })
       .addCase(loginUserThunk.fulfilled, (state, { payload }) => {
         state.user = payload.user;
         localStorage.setItem("accessToken", payload.accessToken);
         localStorage.setItem("refreshToken", payload.refreshToken);
       })
-      .addCase(loginUserThunk.rejected, (state, { payload }) => {
-        state.errorForm = payload;
-      })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-      });
+      })
+      .addCase(updateDataUserThunk.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
+      })
   },
 });
 
-export const {
-  setAuthChecked,
-  setUser,
-  togglePasswordRoute,
-} = authSlice.actions;
+export const { setAuthChecked, setUser, togglePasswordRoute } =
+  authSlice.actions;
 
 export default authSlice.reducer;

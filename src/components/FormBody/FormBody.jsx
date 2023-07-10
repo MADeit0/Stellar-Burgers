@@ -1,14 +1,14 @@
 import formStyle from "./FormBody.module.css";
 
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Children } from "react";
 
 const FormBody = ({
   children,
   title,
-  btn,
   onSubmit,
-  isBtnVisible,
+  colorText,
+  message,
+  isMessage,
 }) => {
   return (
     <form onSubmit={onSubmit} className={formStyle.form}>
@@ -21,9 +21,9 @@ const FormBody = ({
         ))}
       </ul>
 
-      { isBtnVisible && <Button htmlType="submit" type="primary" size="large" extraClass="mb-20">
-        {btn}
-      </Button>}
+      <p className="text text_type_main-default" style={{ color: colorText }}>
+        {isMessage && message}
+      </p>
     </form>
   );
 };

@@ -1,4 +1,4 @@
-import { authFetch, updateTokenFetch } from "../../utils/api/axiosClient";
+import { authInstance, updateTokenInstance } from "../../utils/api/axiosClient";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setAuthChecked, setUser } from "./authSlice";
 import { message, token } from "../../utils/constants";
@@ -7,7 +7,7 @@ export const registerUserThunk = createAsyncThunk(
   "user/registerUserThunk",
   async (dataUser, { rejectWithValue }) => {
     try {
-      const res = await authFetch.post("/register", dataUser);
+      const res = await authInstance.post("/register", dataUser);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -19,7 +19,7 @@ export const loginUserThunk = createAsyncThunk(
   "user/loginUserThunk",
   async (dataUser, { rejectWithValue }) => {
     try {
-      const res = await authFetch.post("/login", dataUser);
+      const res = await authInstance.post("/login", dataUser);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -31,7 +31,7 @@ export const logoutThunk = createAsyncThunk(
   "user/logoutThunk",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await authFetch.post("/logout", {
+      const res = await authInstance.post("/logout", {
         token: localStorage.getItem(token.REFRESH_TOKEN),
       });
       return res.data;
@@ -45,7 +45,7 @@ export const updateDataUserThunk = createAsyncThunk(
   "user/updateDataUserThunk",
   async (dataUser, { rejectWithValue }) => {
     try {
-      const res = await authFetch.patch("/user", dataUser, {
+      const res = await authInstance.patch("/user", dataUser, {
         headers: {
           authorization: localStorage.getItem("accessToken"),
         },
@@ -59,7 +59,7 @@ export const updateDataUserThunk = createAsyncThunk(
 
 const getUser = async () => {
   try {
-    const res = await updateTokenFetch.get("/user", {
+    const res = await updateTokenInstance.get("/user", {
       headers: {
         authorization: localStorage.getItem("accessToken"),
       },
@@ -72,14 +72,14 @@ const getUser = async () => {
 
 const refreshToken = async () => {
   try {
-    const res = await authFetch.post("/token", {
+    const res = await authInstance.post("/token", {
       token: localStorage.getItem(token.REFRESH_TOKEN),
     });
     localStorage.setItem(token.ACCESS_TOKEN, res.data.accessToken);
     localStorage.setItem(token.REFRESH_TOKEN, res.data.refreshToken);
 
     if (res.status === 200) {
-      const uploadUser = await authFetch.get("/user", {
+      const uploadUser = await authInstance.get("/user", {
         headers: {
           authorization: localStorage.getItem(token.ACCESS_TOKEN),
         },
@@ -110,7 +110,7 @@ export const checkUserAuth = () => (dispatch) => {
   }
 };
 
-updateTokenFetch.interceptors.response.use(
+updateTokenInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
     const rejected = error.response.data;

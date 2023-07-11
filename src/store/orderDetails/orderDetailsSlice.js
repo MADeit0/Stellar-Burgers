@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseUrl } from "../../utils/constants";
+import axios from "axios";
 
 const initialState = {
   name: "",
@@ -12,19 +13,20 @@ export const postConstructorData = createAsyncThunk(
   "orderDetails/postConstructorData",
   async (ingredientsId, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${baseUrl}/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const res = await axios.post(
+        `${baseUrl}/orders`,
+        {
           ingredients: ingredientsId.map((item) => item._id),
-        }),
-      });
-      if (!res.ok) {
-        throw new Error("Sending data failed!");
-      }
-      return await res.json();
-    } catch (err) {
-      return rejectWithValue(err.message);
+        },
+        {
+          headers: {
+            authorization: localStorage.getItem("refreshToken"),
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

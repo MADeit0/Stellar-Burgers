@@ -7,20 +7,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { ItemTypes } from "../../utils/constants";
-import { openIngredientDetailsModal } from "../../store/modal/modalSlice";
-import { getDetailsIngredient } from "../../store/ingredientDetails/ingredientDetailsSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Ingredient = ({ ingredient }) => {
+  const location = useLocation();
   const { name, price, image, _id } = ingredient;
   const [count, setCount] = useState("");
-  const dispatch = useDispatch();
   const { otherStuffings, bunUp, bunDown } = useSelector(
     ({ burgerConstructor }) => burgerConstructor
   );
-
+  
   useEffect(() => {
     const stuffings = [bunUp, ...otherStuffings, bunDown];
     const sum = stuffings.filter((item) => item._id === _id).length;
@@ -35,13 +34,12 @@ const Ingredient = ({ ingredient }) => {
     }),
   });
 
-  const handleOpenModal = () => {
-    dispatch(getDetailsIngredient(ingredient));
-    dispatch(openIngredientDetailsModal());
-  };
-
   return (
-    <button className={ingredientStyle.button} onClick={handleOpenModal}>
+    <Link
+      to={`/ingredients/${_id}`}
+      state={{ background: location }}
+      className={ingredientStyle.button}
+    >
       <DragPreviewImage connect={preview} src={image} />
       <img
         ref={dragRef}
@@ -58,8 +56,14 @@ const Ingredient = ({ ingredient }) => {
       <p className={` ${ingredientStyle.text} text text_type_main-default`}>
         {name}
       </p>
-      {!!count &&<Counter count={count} size="default" extraClass={`m-1 ${ingredientStyle.count}` }/>}
-    </button>
+      {!!count && (
+        <Counter
+          count={count}
+          size="default"
+          extraClass={`m-1 ${ingredientStyle.count}`}
+        />
+      )}
+    </Link>
   );
 };
 

@@ -3,21 +3,15 @@ import HomeStyle from "./HomePage.module.css";
 import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor.jsx";
 import OrderDetails from "../../components/OrderDetails/OrderDetails.jsx";
-import IngredientDetails from "../../components/IngredientDetails/IngredientDetails.jsx";
 import Modal from "../../components/Modal/Modal.jsx";
-import {
-  closeIngredientDetailsModal,
-  closeOrderModal,
-} from "../../store/modal/modalSlice";
+import { isOpenedOrderModal } from "../../store/modal/modalSlice";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 function HomePage() {
-  const ingredientDetailsModal = useSelector(
-    ({ modal }) => modal.ingredientDetailsModal
-  );
+  const dispatch = useDispatch();
   const orderModal = useSelector(({ modal }) => modal.orderModal);
 
   return (
@@ -29,13 +23,12 @@ function HomePage() {
         </DndProvider>
       </div>
       {orderModal && (
-        <Modal onClose={closeOrderModal}>
+        <Modal
+          onClose={() => {
+            dispatch(isOpenedOrderModal(false));
+          }}
+        >
           <OrderDetails />
-        </Modal>
-      )}
-      {ingredientDetailsModal && (
-        <Modal onClose={closeIngredientDetailsModal}>
-          <IngredientDetails />
         </Modal>
       )}
     </>

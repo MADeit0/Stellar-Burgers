@@ -6,34 +6,27 @@ import ModalOverlay from "../ModalOverlay/ModalOverlay";
 
 import { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useDispatch } from "react-redux";
 
 const modalRootElement = document.querySelector("#react-modals");
 
 const Modal = (props) => {
   const { children, onClose } = props;
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     const handleCloseKey = (e) => {
       if (e.key === "Escape") {
-        dispatch(onClose());
+        onClose();
       }
     };
     document.addEventListener("keyup", handleCloseKey);
     return () => document.removeEventListener("keyup", handleCloseKey);
-  }, [dispatch, onClose]);
-
-  const handleCloseButton = () => {
-    dispatch(onClose());
-  };
+  }, [onClose]);
 
   return ReactDOM.createPortal(
     <>
       <div className={`${ModalStyle.container} pr-10 pl-10`}>
         <button
-          onClick={handleCloseButton}
+          onClick={onClose}
           className={`${ModalStyle.leave} pt-15 pr-10`}
           type="button"
           title="Закрыть окно"
@@ -43,7 +36,7 @@ const Modal = (props) => {
         </button>
         {children}
       </div>
-      <ModalOverlay onClose={handleCloseButton} />
+      <ModalOverlay onClose={onClose} />
     </>,
     modalRootElement
   );

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import AppHeader from "../AppHeader/AppHeader";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 import HomePage from "../../pages/HomePage/HomePage";
@@ -8,48 +8,78 @@ import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "../../pages/ResetPasswordPage/ResetPasswordPage";
 
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
+
 import {
   OnlyAuth,
   OnlyUnAuth,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
+
+import { checkUserAuth } from "../../store/auth/authAction";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { checkUserAuth } from "../../store/auth/authAction";
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
 
   useEffect(() => {
     dispatch(checkUserAuth());
   }, [dispatch]);
 
+  const handleModalClose = () => {
+    navigate(-1);
+  };
+
   return (
-    <Routes>
-      <Route path="/" element={<AppHeader />}>
-        <Route index element={<HomePage />} />
-        <Route
-          path="login"
-          element={<OnlyUnAuth component={<LoginPage />} />}
-        />
-        <Route
-          path="register"
-          element={<OnlyUnAuth component={<RegisterPage />} />}
-        />
-        <Route
-          path="profile"
-          element={<OnlyAuth component={<ProfilePage />} />}
-        />
-        <Route
-          path="forgot-password"
-          element={<OnlyUnAuth component={<ForgotPasswordPage />} />}
-        />
-        <Route
-          path="reset-password"
-          element={<OnlyUnAuth component={<ResetPasswordPage />} />}
-        />
-      </Route>
-      <Route path="*" element={<ErrorPage />} />
-    </Routes>
+    <>
+      <Routes location={background || location}>
+        <Route path="/" element={<AppHeader />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="login"
+            element={<OnlyUnAuth component={<LoginPage />} />}
+          />
+          <Route
+            path="register"
+            element={<OnlyUnAuth component={<RegisterPage />} />}
+          />
+          <Route
+            path="profile"
+            element={<OnlyAuth component={<ProfilePage />} />}
+          />
+          <Route
+            path="forgot-password"
+            element={<OnlyUnAuth component={<ForgotPasswordPage />} />}
+          />
+          <Route
+            path="reset-password"
+            element={<OnlyUnAuth component={<ResetPasswordPage />} />}
+          />
+          <Route
+            path="/ingredients/:ingredientId"
+            element={<IngredientDetails />}
+          />
+        </Route>
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+
+      {background && (
+        <Routes>
+          <Route
+            path="/ingredients/:ingredientId"
+            element={
+              <Modal onClose={handleModalClose}>
+                <IngredientDetails />
+              </Modal>
+            }
+          ></Route>
+        </Routes>
+      )}
+    </>
   );
 }
 

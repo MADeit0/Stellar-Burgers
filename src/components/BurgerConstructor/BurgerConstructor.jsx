@@ -12,17 +12,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 
 import { postConstructorData } from "../../store/orderDetails/orderDetailsSlice";
-import { openOrderModal } from "../../store/modal/modalSlice";
+import { isOpenedOrderModal } from "../../store/modal/modalSlice";
 import {
   addIngredient,
   addBun,
 } from "../../store/burgerConstructor/burgerConstructorSlice";
+import { useNavigate } from "react-router-dom";
 
 const { BUN } = ingredientsMenu;
 
 const BurgerConstructor = () => {
   const [totalSum, setTotalSum] = useState(0);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const ingredients = useSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredients
@@ -30,6 +32,8 @@ const BurgerConstructor = () => {
   const { otherStuffings, bunUp, bunDown, isBun } = useSelector(
     ({ burgerConstructor }) => burgerConstructor
   );
+  const isAuthChecked = useSelector(({ auth }) => auth.isAuthChecked);
+  const user = useSelector(({ auth }) => auth.user);
 
   const [{ isHover }, dropRef] = useDrop({
     accept: ItemTypes.INGREDIENTS,
@@ -52,8 +56,12 @@ const BurgerConstructor = () => {
   }, [otherStuffings, bunUp, bunDown]);
 
   const handleOpenModal = () => {
-    dispatch(openOrderModal());
-    dispatch(postConstructorData([bunUp, ...otherStuffings, bunDown]));
+    if (isAuthChecked && user) {
+      dispatch(postConstructorData([bunUp, ...otherStuffings, bunDown]));
+      dispatch(isOpenedOrderModal(true));
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -75,7 +83,7 @@ const BurgerConstructor = () => {
             />
           </div>
         ) : (
-          <p>выберите булку</p>
+          <p className="text text_type_main-default">Перетащите булку</p>
         ))}
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
         {otherStuffings.map(

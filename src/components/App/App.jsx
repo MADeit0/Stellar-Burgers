@@ -19,6 +19,8 @@ import {
 import { checkUserAuth } from "../../store/auth/authAction";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import OrdersPage from "../../pages/OrdersPage/OrdersPage";
+import ProfilePageForm from "../../pages/ProfilePage/ProfilePageForm/ProfilePageForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,7 +52,11 @@ function App() {
           <Route
             path="profile"
             element={<OnlyAuth component={<ProfilePage />} />}
-          />
+          >
+            <Route index element={<ProfilePageForm />} />
+            <Route path="orders" element={<OrdersPage />} />
+          </Route>
+
           <Route
             path="forgot-password"
             element={<OnlyUnAuth component={<ForgotPasswordPage />} />}

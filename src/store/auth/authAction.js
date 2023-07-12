@@ -47,7 +47,7 @@ export const updateDataUserThunk = createAsyncThunk(
     try {
       const res = await authInstance.patch("/user", dataUser, {
         headers: {
-          authorization: localStorage.getItem("accessToken"),
+          authorization: localStorage.getItem(token.ACCESS_TOKEN),
         },
       });
       return res.data;
@@ -61,7 +61,7 @@ const getUser = async () => {
   try {
     const res = await updateTokenInstance.get("/user", {
       headers: {
-        authorization: localStorage.getItem("accessToken"),
+        authorization: localStorage.getItem(token.ACCESS_TOKEN),
       },
     });
     return res;

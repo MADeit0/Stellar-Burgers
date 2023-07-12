@@ -63,8 +63,8 @@ function App() {
             path="/ingredients/:ingredientId"
             element={<IngredientDetails />}
           />
+          <Route path="*" element={<ErrorPage />} />
         </Route>
-        <Route path="*" element={<ErrorPage />} />
       </Routes>
 
       {background && (

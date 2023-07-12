@@ -5,6 +5,7 @@ import {
   logoutThunk,
   updateDataUserThunk,
 } from "./authAction";
+import { token } from "../../utils/constants";
 
 const initialState = {
   isAuthChecked: false,
@@ -26,18 +27,18 @@ export const authSlice = createSlice({
     builder
       .addCase(registerUserThunk.fulfilled, (state, { payload }) => {
         state.user = payload.user;
-        localStorage.setItem("accessToken", payload.accessToken);
-        localStorage.setItem("refreshToken", payload.refreshToken);
+        localStorage.setItem(token.ACCESS_TOKEN, payload.accessToken);
+        localStorage.setItem(token.REFRESH_TOKEN, payload.refreshToken);
       })
       .addCase(loginUserThunk.fulfilled, (state, { payload }) => {
         state.user = payload.user;
-        localStorage.setItem("accessToken", payload.accessToken);
-        localStorage.setItem("refreshToken", payload.refreshToken);
+        localStorage.setItem(token.ACCESS_TOKEN, payload.accessToken);
+        localStorage.setItem(token.REFRESH_TOKEN, payload.refreshToken);
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        localStorage.removeItem(token.ACCESS_TOKEN);
+        localStorage.removeItem(token.REFRESH_TOKEN);
       })
       .addCase(updateDataUserThunk.fulfilled, (state, { payload }) => {
         state.user = payload.user;

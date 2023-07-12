@@ -1,8 +1,6 @@
 import ingredientStyle from "./IngredientDetails.module.css";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
+import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 
 const textStyle = "text text_type_main-default text_color_inactive";
@@ -10,7 +8,6 @@ const textStyle = "text text_type_main-default text_color_inactive";
 const IngredientDetails = () => {
   const { ingredientId } = useParams();
   const location = useLocation();
-  const dispatch = useDispatch();
 
   const details = useSelector(({ burgerIngredients }) =>
     burgerIngredients.ingredients.find((item) => item._id === ingredientId)
@@ -19,13 +16,6 @@ const IngredientDetails = () => {
     details || "";
 
   const background = location.state && location.state.background;
-
-  useEffect(() => {
-    if (!details) {
-      dispatch(fetchIngredientsDetails());
-    }
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <>

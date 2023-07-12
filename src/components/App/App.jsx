@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import OrdersPage from "../../pages/OrdersPage/OrdersPage";
 import ProfilePageForm from "../../pages/ProfilePage/ProfilePageForm/ProfilePageForm";
+import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,11 @@ function App() {
   useEffect(() => {
     dispatch(checkUserAuth());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchIngredientsDetails());
+    // eslint-disable-next-line
+  }, []);
 
   const handleModalClose = () => {
     navigate(-1);

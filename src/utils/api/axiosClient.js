@@ -7,13 +7,3 @@ export const authInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-export const updateTokenInstance = axios.create({
-  baseURL: `${baseUrl}/auth`,
-  headers: {
-    "Content-Type": "application/json",
-    
-  },
-});
-
-

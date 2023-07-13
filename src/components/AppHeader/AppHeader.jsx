@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, Link } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -37,7 +37,9 @@ const AppHeader = () => {
               </li>
             </ul>
           </nav>
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
           <div className={headerStyle.profile}>
             <NavLink to="/profile" className={setActive}>
               <ProfileIcon type="secondary" />

@@ -1,4 +1,4 @@
-import { authInstance, updateTokenInstance } from "../../utils/api/axiosClient";
+import { authInstance } from "../../utils/api/axiosClient";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setAuthChecked, setUser } from "./authSlice";
 import { message, token } from "../../utils/constants";
@@ -57,67 +57,52 @@ export const updateDataUserThunk = createAsyncThunk(
   }
 );
 
-const getUser = async () => {
-  try {
-    const res = await updateTokenInstance.get("/user", {
-      headers: {
-        authorization: localStorage.getItem(token.ACCESS_TOKEN),
-      },
-    });
-    return res;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-const refreshToken = async () => {
-  try {
-    const res = await authInstance.post("/token", {
-      token: localStorage.getItem(token.REFRESH_TOKEN),
-    });
-    localStorage.setItem(token.ACCESS_TOKEN, res.data.accessToken);
-    localStorage.setItem(token.REFRESH_TOKEN, res.data.refreshToken);
-
-    if (res.status === 200) {
-      const uploadUser = await authInstance.get("/user", {
+export const checkUserAuth = () => async (dispatch) => {
+  if (localStorage.getItem(token.ACCESS_TOKEN)) {
+    try {
+      const res = await authInstance.get("/user", {
         headers: {
           authorization: localStorage.getItem(token.ACCESS_TOKEN),
         },
       });
-      return uploadUser;
+      dispatch(setUser(res.data.user));
+      return res;
+    } catch (error) {
+      localStorage.removeItem(token.ACCESS_TOKEN);
+      localStorage.removeItem(token.REFRESH_TOKEN);
+      dispatch(setUser({}));
+    } finally {
+      dispatch(setAuthChecked(true));
     }
-
-    return res;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const checkUserAuth = () => (dispatch) => {
-  if (localStorage.getItem(token.ACCESS_TOKEN)) {
-    getUser()
-      .then((user) => {
-        dispatch(setUser(user.data.user));
-      })
-      .catch(() => {
-        localStorage.removeItem(token.ACCESS_TOKEN);
-        localStorage.removeItem(token.REFRESH_TOKEN);
-        dispatch(setUser({}));
-      })
-      .finally(() => dispatch(setAuthChecked(true)));
   } else {
     dispatch(setAuthChecked(true));
   }
 };
 
-updateTokenInstance.interceptors.response.use(
+authInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
+    const originalRequest = error.config;
     const rejected = error.response.data;
+
     if (rejected.message === message.JWT_EXPIRED) {
-      const refreshData = await refreshToken();
-      return refreshData;
+      try {
+        const refreshData = await authInstance.post("/token", {
+          token: localStorage.getItem(token.REFRESH_TOKEN),
+        });
+        localStorage.setItem(token.ACCESS_TOKEN, refreshData.data.accessToken);
+        localStorage.setItem(
+          token.REFRESH_TOKEN,
+          refreshData.data.refreshToken
+        );
+
+        originalRequest.headers.Authorization = localStorage.getItem(
+          token.ACCESS_TOKEN
+        );
+        return await authInstance(originalRequest);
+      } catch (error) {
+        Promise.reject(error);
+      }
     }
-    return Promise.reject(error);
   }
 );

@@ -1,46 +1,97 @@
-import appStyle from "./App.module.css";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import AppHeader from "../AppHeader/AppHeader";
+import ErrorPage from "../../pages/ErrorPage/ErrorPage";
+import HomePage from "../../pages/HomePage/HomePage";
+import ProfilePage from "../../pages/ProfilePage/ProfilePage";
+import LoginPage from "../../pages/LoginPage/LoginPage";
+import RegisterPage from "../../pages/RegisterPage/RegisterPage";
+import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPasswordPage from "../../pages/ResetPasswordPage/ResetPasswordPage";
 
-import AppHeader from "../AppHeader/AppHeader.jsx";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients.jsx";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor.jsx";
-import OrderDetails from "../OrderDetails/OrderDetails.jsx";
-import IngredientDetails from "../IngredientDetails/IngredientDetails.jsx";
-import Modal from "../Modal/Modal.jsx";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
+
 import {
-  closeIngredientDetailsModal,
-  closeOrderModal,
-} from "../../store/modal/modalSlice";
+  OnlyAuth,
+  OnlyUnAuth,
+} from "../ProtectedRouteElement/ProtectedRouteElement";
 
-import { useSelector } from "react-redux";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { checkUserAuth } from "../../store/auth/authAction";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import OrdersPage from "../../pages/OrdersPage/OrdersPage";
+import ProfilePageForm from "../../pages/ProfilePage/ProfilePageForm/ProfilePageForm";
+import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
 
 function App() {
-  const ingredientDetailsModal = useSelector(
-    ({ modal }) => modal.ingredientDetailsModal
-  );
-  const orderModal = useSelector(({ modal }) => modal.orderModal);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
+
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchIngredientsDetails());
+    // eslint-disable-next-line
+  }, []);
+
+  const handleModalClose = () => {
+    navigate(-1);
+  };
 
   return (
-    <div className={`${appStyle.container} pb-10`}>
-      <AppHeader />
-      <main className={appStyle.section}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
-      {orderModal && (
-        <Modal onClose={closeOrderModal}>
-          <OrderDetails />
-        </Modal>
+    <>
+      <Routes location={background || location}>
+        <Route path="/" element={<AppHeader />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="login"
+            element={<OnlyUnAuth component={<LoginPage />} />}
+          />
+          <Route
+            path="register"
+            element={<OnlyUnAuth component={<RegisterPage />} />}
+          />
+          <Route
+            path="profile"
+            element={<OnlyAuth component={<ProfilePage />} />}
+          >
+            <Route index element={<ProfilePageForm />} />
+            <Route path="orders" element={<OrdersPage />} />
+          </Route>
+
+          <Route
+            path="forgot-password"
+            element={<OnlyUnAuth component={<ForgotPasswordPage />} />}
+          />
+          <Route
+            path="reset-password"
+            element={<OnlyUnAuth component={<ResetPasswordPage />} />}
+          />
+          <Route
+            path="/ingredients/:ingredientId"
+            element={<IngredientDetails />}
+          />
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
+      </Routes>
+
+      {background && (
+        <Routes>
+          <Route
+            path="/ingredients/:ingredientId"
+            element={
+              <Modal onClose={handleModalClose}>
+                <IngredientDetails />
+              </Modal>
+            }
+          ></Route>
+        </Routes>
       )}
-      {ingredientDetailsModal && (
-        <Modal onClose={closeIngredientDetailsModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
-    </div>
+    </>
   );
 }
 

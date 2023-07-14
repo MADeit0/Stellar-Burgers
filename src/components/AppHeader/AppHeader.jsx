@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet, Link } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
@@ -14,39 +14,46 @@ const AppHeader = () => {
     }`;
 
   return (
-    <header className={`${headerStyle.header} pt-4 pb-4`}>
-      <div className={headerStyle.container}>
-        <nav className={headerStyle.navigation}>
-          <ul className={headerStyle.lists}>
-            <li>
-              <NavLink to="/" className={setActive}>
-                <BurgerIcon type="primary" />
-                <span className="text text_type_main-default pl-2">
-                  Конструктор
-                </span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="./b" className={setActive}>
-                <ListIcon type="secondary" />
-                <span className="text text_type_main-default pl-2">
-                  Лента заказов
-                </span>
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-        <Logo />
-        <div className={headerStyle.profile}>
-          <NavLink to="./c" className={setActive}>
-            <ProfileIcon type="secondary" />
-            <span className="text text_type_main-default pl-2">
-              Личный кабинет
-            </span>
-          </NavLink>
+    <>
+      <header className={`${headerStyle.header} pt-4 pb-4`}>
+        <div className={headerStyle.container}>
+          <nav className={headerStyle.navigation}>
+            <ul className={headerStyle.lists}>
+              <li>
+                <NavLink to="/" className={setActive}>
+                  <BurgerIcon type="primary" />
+                  <span className="text text_type_main-default pl-2">
+                    Конструктор
+                  </span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/feed" className={setActive}>
+                  <ListIcon type="secondary" />
+                  <span className="text text_type_main-default pl-2">
+                    Лента заказов
+                  </span>
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+          <Link to="/">
+            <Logo />
+          </Link>
+          <div className={headerStyle.profile}>
+            <NavLink to="/profile" className={setActive}>
+              <ProfileIcon type="secondary" />
+              <span className="text text_type_main-default pl-2">
+                Личный кабинет
+              </span>
+            </NavLink>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <main className={`${headerStyle.content} pb-10`}>
+        <Outlet />
+      </main>
+    </>
   );
 };
 

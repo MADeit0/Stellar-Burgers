@@ -4,10 +4,9 @@ import { ingredientsMenu } from "../../utils/constants";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
+import { useSelector } from "react-redux";
 
 const { BUN, SAUCE, MAIN } = ingredientsMenu;
 const options = {
@@ -16,9 +15,10 @@ const options = {
 };
 
 const BurgerIngredients = () => {
-  const dispatch = useDispatch();
   const [current, setCurrent] = useState(BUN);
-  const loading = useSelector(({ burgerIngredients }) => burgerIngredients.loading);
+  const loading = useSelector(
+    ({ burgerIngredients }) => burgerIngredients.loading
+  );
   const isBun = useSelector(({ burgerConstructor }) => burgerConstructor.isBun);
 
   const { ref: refBun, inView: viewBun, entry: bunEntry } = useInView(options);
@@ -32,10 +32,6 @@ const BurgerIngredients = () => {
     inView: viewMain,
     entry: mainEntry,
   } = useInView(options);
-
-  useEffect(() => {
-    dispatch(fetchIngredientsDetails());
-  }, [dispatch]);
 
   const onTabChange = (menu, entry) => {
     setCurrent(menu);

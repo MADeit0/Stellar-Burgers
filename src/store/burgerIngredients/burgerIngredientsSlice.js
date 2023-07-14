@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseUrl } from "../../utils/constants";
+import axios from "axios";
 
 const initialState = {
   ingredients: [],
@@ -11,13 +12,10 @@ export const fetchIngredientsDetails = createAsyncThunk(
   "burgerIngredients/fetchIngredientsDetails",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${baseUrl}/ingredients`);
-      if (!res.ok) {
-        throw new Error("Server Error!");
-      }
-      return await res.json();
-    } catch (err) {
-      return rejectWithValue(err.message);
+      const res = await axios.get(`${baseUrl}/ingredients`);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

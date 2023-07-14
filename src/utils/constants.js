@@ -13,7 +13,8 @@ const token = {
 };
 
 const message = {
-  JWT_EXPIRED: 'jwt expired'
-}
+  JWT_EXPIRED: "jwt expired",
+  INVALID_TOKEN: "invalid token",
+};
 
 export { baseUrl, ingredientsMenu, ItemTypes, token, message };

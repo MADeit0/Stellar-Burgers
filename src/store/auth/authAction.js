@@ -2,6 +2,7 @@ import { authInstance } from "../../utils/api/axiosClient";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setAuthChecked, setUser } from "./authSlice";
 import { message, token } from "../../utils/constants";
+import { store } from "../store";
 
 export const registerUserThunk = createAsyncThunk(
   "user/registerUserThunk",
@@ -70,7 +71,7 @@ export const checkUserAuth = () => async (dispatch) => {
     } catch (error) {
       localStorage.removeItem(token.ACCESS_TOKEN);
       localStorage.removeItem(token.REFRESH_TOKEN);
-      dispatch(setUser({}));
+      dispatch(setUser(null));
     } finally {
       dispatch(setAuthChecked(true));
     }
@@ -103,6 +104,12 @@ authInstance.interceptors.response.use(
       } catch (error) {
         Promise.reject(error);
       }
+    }
+    if (rejected.message === message.INVALID_TOKEN) {
+      localStorage.removeItem(token.ACCESS_TOKEN);
+      localStorage.removeItem(token.REFRESH_TOKEN);
+      store.dispatch(setUser(null));
+      throw new Error(console.error("invalid user data"));
     }
   }
 );

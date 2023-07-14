@@ -57,6 +57,7 @@ const BurgerConstructor = () => {
 
   const handleOpenModal = () => {
     if (isAuthChecked && user) {
+      console.log(!!user)
       dispatch(postConstructorData([bunUp, ...otherStuffings, bunDown]));
       dispatch(isOpenedOrderModal(true));
     } else {

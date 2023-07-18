@@ -16,7 +16,7 @@ import {
   OnlyUnAuth,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
 
-import { checkUserAuth } from "../../store/auth/authAction";
+import { checkUserAuth } from "../../store/auth/authMiddleware";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import OrdersPage from "../../pages/OrdersPage/OrdersPage";

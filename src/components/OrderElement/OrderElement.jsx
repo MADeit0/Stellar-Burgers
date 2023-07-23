@@ -6,27 +6,37 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { formatDate } from "./service";
 
+const statusDic = {
+  pending: { status: "Готовится", color: "while" },
+  created: { status: "Создан", color: "while" },
+  done: { status: "Выполнен", color: "#00CCCC" },
+};
+
 const OrderElement = () => {
   const dispatch = useDispatch();
   const [totalSum, setTotalSum] = useState(0);
   ////////////////////////////////
-  const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders[4]);
+  const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders[1]);
   const ingredientDict = useSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
   const success = useSelector(({ wsFeeds }) => wsFeeds.data?.success);
+
   const ingredientsList = ordersList?.ingredients || [];
+  const cookingStatus = ordersList?.status;
 
-  const total = ingredientsList.reduce((acc, id) => acc + ingredientDict[id].price, 0);
+  const total = ingredientsList.reduce(
+    (acc, id) => acc + ingredientDict[id].price,
+    0
+  );
 
-  
   useLayoutEffect(() => {
     dispatch(wsFeedsActions.startConnecting());
   }, []);
 
   useEffect(() => {
-    setTotalSum(total)
-  },[total]);
+    setTotalSum(total);
+  }, [total]);
   ////////////////////////////////
 
   return (
@@ -38,8 +48,11 @@ const OrderElement = () => {
         <p className={` ${orderStyle.title} text text_type_main-medium`}>
           {ordersList?.name}
         </p>
-        <p className={`${orderStyle.status} text text_type_main-small`}>
-          Создан
+        <p
+          className={`${orderStyle.status} text text_type_main-small`}
+          style={{ color: statusDic[cookingStatus].color }}
+        >
+          {statusDic[cookingStatus].status}
         </p>
         <time
           className={` ${orderStyle.date}text text_type_main-default text_color_inactive`}

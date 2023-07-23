@@ -2,23 +2,31 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import orderStyle from "./OrderElement.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { wsFeedsActions } from "../../store/wsFeeds/wsFeedsSlice";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { formatDate } from "./service";
 
 const OrderElement = () => {
   const dispatch = useDispatch();
+  const [totalSum, setTotalSum] = useState(0);
   ////////////////////////////////
-  const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders[1]);
+  const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders[4]);
   const ingredientDict = useSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
   const success = useSelector(({ wsFeeds }) => wsFeeds.data?.success);
   const ingredientsList = ordersList?.ingredients || [];
 
-  useEffect(() => {
+  const total = ingredientsList.reduce((acc, id) => acc + ingredientDict[id].price, 0);
+
+  
+  useLayoutEffect(() => {
     dispatch(wsFeedsActions.startConnecting());
   }, []);
+
+  useEffect(() => {
+    setTotalSum(total)
+  },[total]);
   ////////////////////////////////
 
   return (
@@ -71,7 +79,7 @@ const OrderElement = () => {
           </ul>
         </div>
         <div className={orderStyle.price}>
-          <span className="text text_type_digits-default">480</span>
+          <span className="text text_type_digits-default">{totalSum}</span>
           <CurrencyIcon type="primary" />
         </div>
       </section>

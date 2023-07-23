@@ -12,7 +12,7 @@ const setActive = ({ isActive }) =>
 const ProfilePage = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  
+
   return (
     <div className={ProfileStyle.profile}>
       <div className={ProfileStyle.column}>
@@ -54,9 +54,7 @@ const ProfilePage = () => {
           </p>
         )}
       </div>
-      <div>
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 };

@@ -3,7 +3,8 @@ import { baseUrl } from "../../utils/constants";
 import axios from "axios";
 
 const initialState = {
-  ingredients: [],
+  ingredients: null,
+  ingredientsDict: null,
   loading: null,
   error: null,
 };
@@ -33,6 +34,13 @@ export const burgerIngredientsSlice = createSlice({
       .addCase(fetchIngredientsDetails.fulfilled, (state, action) => {
         state.loading = "succeeded";
         state.ingredients = action.payload.data;
+
+        const ingredientsDict = state.ingredients.reduce((acc, item) => {
+          acc[item._id] = item;
+
+          return acc;
+        }, {});
+        state.ingredientsDict = ingredientsDict;
       })
       .addCase(fetchIngredientsDetails.rejected, (state, action) => {
         state.loading = "failed";

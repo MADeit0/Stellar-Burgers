@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import OrdersPage from "../../pages/OrdersPage/OrdersPage";
 import ProfilePageForm from "../../pages/ProfilePage/ProfilePageForm/ProfilePageForm";
 import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
+import OrderElement from "../OrderElement/OrderElement";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,12 +56,14 @@ function App() {
             path="register"
             element={<OnlyUnAuth component={<RegisterPage />} />}
           />
+          <Route path="feed" element={<OrderElement />} />
           <Route
             path="profile"
             element={<OnlyAuth component={<ProfilePage />} />}
           >
             <Route index element={<ProfilePageForm />} />
             <Route path="orders" element={<OrdersPage />} />
+            {/* <Route path="orders" element={<OrderElement />} /> */}
           </Route>
 
           <Route

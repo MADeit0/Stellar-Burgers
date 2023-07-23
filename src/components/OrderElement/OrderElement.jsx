@@ -1,10 +1,10 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderStyle from "./OrderElement.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { wsFeedsActions } from "../../store/wsFeeds/wsFeedsSlice";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useLayoutEffect, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { formatDate } from "./service";
+import PropTypes from "prop-types";
 
 const statusDic = {
   pending: { status: "Готовится", color: "while" },
@@ -12,18 +12,21 @@ const statusDic = {
   done: { status: "Выполнен", color: "#00CCCC" },
 };
 
-const OrderElement = () => {
-  const dispatch = useDispatch();
+const OrderElement = ({
+  wsSuccess,
+  ingredients,
+  status,
+  number,
+  name,
+  createdAt,
+}) => {
   const [totalSum, setTotalSum] = useState(0);
-  ////////////////////////////////
-  const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders[1]);
   const ingredientDict = useSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
-  const success = useSelector(({ wsFeeds }) => wsFeeds.data?.success);
 
-  const ingredientsList = ordersList?.ingredients || [];
-  const cookingStatus = ordersList?.status;
+  const ingredientsList = ingredients;
+  const cookingStatus = status;
 
   const total = ingredientsList.reduce(
     (acc, id) => acc + ingredientDict[id].price,
@@ -31,33 +34,34 @@ const OrderElement = () => {
   );
 
   useLayoutEffect(() => {
-    dispatch(wsFeedsActions.startConnecting());
+    setTotalSum(total);
+    // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    setTotalSum(total);
-  }, [total]);
-  ////////////////////////////////
-
   return (
-    success && (
-      <section className={orderStyle.container}>
+    wsSuccess && (
+      <section
+        className={status ? orderStyle.container : orderStyle.status_inactive}
+      >
         <p className={` ${orderStyle.order} text text_type_digits-default`}>
-          {`#${ordersList?.number}`}
+          {`#${number}`}
         </p>
         <p className={` ${orderStyle.title} text text_type_main-medium`}>
-          {ordersList?.name}
+          {name}
         </p>
-        <p
-          className={`${orderStyle.status} text text_type_main-small`}
-          style={{ color: statusDic[cookingStatus].color }}
-        >
-          {statusDic[cookingStatus].status}
-        </p>
+        {status && (
+          <p
+            className={`${orderStyle.status} text text_type_main-small`}
+            style={{ color: statusDic[cookingStatus]?.color }}
+          >
+            {statusDic[cookingStatus].status}
+          </p>
+        )}
+
         <time
           className={` ${orderStyle.date}text text_type_main-default text_color_inactive`}
         >
-          {formatDate(ordersList?.createdAt)}
+          {formatDate(createdAt)}
         </time>
         <div className={orderStyle.list}>
           <ul className={orderStyle.items}>
@@ -98,6 +102,24 @@ const OrderElement = () => {
       </section>
     )
   );
+};
+
+OrderElement.defaultProps = {
+  ingredients: null,
+  wsSuccess: false,
+  status: "",
+  number: "",
+  name: "",
+  createdAt: "",
+};
+
+OrderElement.propTypes = {
+  ingredients: PropTypes.array.isRequired,
+  wsSuccess: PropTypes.bool.isRequired,
+  status: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
 };
 
 export default OrderElement;

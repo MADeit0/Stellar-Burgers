@@ -17,28 +17,28 @@ export const wsFeedsSlice = createSlice({
     },
     open(state) {
       state.isConnected = true;
-      state.loading = "open";
       state.error = undefined;
+      state.loading = "open";
     },
     message(state, { payload }) {
       state.isConnected = true;
-      state.loading = "open";
       state.data = payload;
       state.error = undefined;
+      state.loading = "open";
     },
     sendMessage() {},
     close(state) {
-      state.loading = "close";
       state.error = undefined;
+      state.loading = "close";
     },
     error(state, { payload }) {
-      state.loading = "close";
       state.error = payload;
+      state.loading = "close";
     },
     disconnect(state) {
       state.isConnected = false;
-      state.loading = "close";
       state.error = undefined;
+      state.loading = "close";
     },
   },
 });

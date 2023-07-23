@@ -14,6 +14,15 @@
   box-sizing: border-box;
   padding: 24px;
 }
+
+.status_inactive {
+  composes: container;
+  grid-template-areas:
+    "order date"
+    "title title"
+    "ingredients price";
+}
+
 .order {
   grid-area: order;
 }

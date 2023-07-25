@@ -5,17 +5,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
 import { wsFeedsActions } from "../../store/wsFeeds/wsFeedsSlice";
 import { nanoid } from "@reduxjs/toolkit";
+import CompletedOrdersBoard from "../../components/CompletedOrdersBoard/CompletedOrdersBoard";
+
+const getOrdersStatus = (ordersList, status) => {
+  const statusList = ordersList?.filter((list) => list.status === status);
+  if (statusList && statusList.length > 20) {
+    return statusList.slice(0, 20);
+  }
+  return statusList;
+};
 
 const FeedPage = () => {
   const dispatch = useDispatch();
 
   const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders);
   const success = useSelector(({ wsFeeds }) => wsFeeds.data?.success);
+  const total = useSelector(({ wsFeeds }) => wsFeeds.data?.total);
+  const totalToday = useSelector(({ wsFeeds }) => wsFeeds.data?.totalToday);
 
   useLayoutEffect(() => {
     dispatch(wsFeedsActions.startConnecting());
     // eslint-disable-next-line
   }, []);
+
+  const ordersDone = getOrdersStatus(ordersList, "done");
+  const ordersPending = getOrdersStatus(ordersList, "pending")
 
   return (
     success && (
@@ -43,6 +57,13 @@ const FeedPage = () => {
               ))}
             </ScrollBar>
           </section>
+          <CompletedOrdersBoard
+            total={total}
+            totalToday={totalToday}
+            wsSuccess={success}
+            ordersDone={ordersDone}
+            ordersPending={ordersPending}
+          />
         </div>
       </>
     )

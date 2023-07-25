@@ -25,13 +25,8 @@ const OrderElement = ({
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
 
-  const ingredientsList = ingredients;
-  const cookingStatus = status;
-
-  const total = ingredientsList.reduce(
-    (acc, id) => acc + ingredientDict[id].price,
-    0
-  );
+  const total = ingredients.reduce(
+    (acc, id) => acc + ingredientDict[id]?.price,0);
 
   useLayoutEffect(() => {
     setTotalSum(total);
@@ -52,9 +47,9 @@ const OrderElement = ({
         {status && (
           <p
             className={`${orderStyle.status} text text_type_main-small`}
-            style={{ color: statusDic[cookingStatus]?.color }}
+            style={{ color: statusDic[status]?.color }}
           >
-            {statusDic[cookingStatus].status}
+            {statusDic[status]?.status}
           </p>
         )}
 
@@ -65,9 +60,9 @@ const OrderElement = ({
         </time>
         <div className={orderStyle.list}>
           <ul className={orderStyle.items}>
-            {ingredientsList.slice(0, 6).map((id, index) => {
+            {ingredients.slice(0, 6).map((id, index) => {
               const isManyIngredients =
-                index === 5 && ingredientsList.length > 6;
+                index === 5 && ingredients.length > 6;
               return (
                 <li
                   key={nanoid()}
@@ -80,14 +75,14 @@ const OrderElement = ({
                         ? orderStyle.inactive
                         : orderStyle.stuffing
                     }
-                    src={ingredientDict[id].image_mobile}
-                    alt={ingredientDict[id].name}
+                    src={ingredientDict[id]?.image_mobile}
+                    alt={ingredientDict[id]?.name}
                   />
                   {isManyIngredients && (
                     <span
                       className={`${orderStyle.count} text text_type_digits-default`}
                     >
-                      {`+${ingredientsList.length - index - 1}`}
+                      {`+${ingredients.length - index - 1}`}
                     </span>
                   )}
                 </li>

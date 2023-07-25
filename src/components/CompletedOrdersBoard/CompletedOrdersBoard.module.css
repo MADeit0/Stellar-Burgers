@@ -1,0 +1,23 @@
+.container {
+  width: max-content;
+  width: 536px;
+  display: grid;
+  row-gap: 60px;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 36px;
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  list-style-type: none;
+  max-height: 250px;
+  min-height: 125px;
+  margin: 0;
+  padding: 0;
+}

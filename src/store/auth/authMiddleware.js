@@ -2,6 +2,7 @@ import { authInstance } from "../../utils/api/axiosClient";
 import { setAuthChecked, setUser } from "./authSlice";
 import { message, token } from "../../utils/constants";
 import { store } from "../store";
+import axios from "axios";
 
 
 export const checkUserAuth = () => async (dispatch) => {
@@ -46,7 +47,7 @@ authInstance.interceptors.response.use(
         originalRequest.headers.Authorization = localStorage.getItem(
           token.ACCESS_TOKEN
         );
-        return await authInstance(originalRequest);
+        return await axios(originalRequest);
       } catch (error) {
         Promise.reject(error);
       }

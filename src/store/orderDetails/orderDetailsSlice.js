@@ -20,7 +20,7 @@ export const postConstructorData = createAsyncThunk(
         },
         {
           headers: {
-            authorization: localStorage.getItem("refreshToken"),
+            authorization: localStorage.getItem("accessToken"),
           },
         }
       );

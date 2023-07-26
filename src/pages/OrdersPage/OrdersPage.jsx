@@ -1,25 +1,25 @@
 import ordersStyle from "./OrdersPage.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import { wsFeedsActions } from "../../store/wsFeeds/wsFeedsSlice";
 import ScrollBar from "../../components/ScrollBar/ScrollBar";
 import OrderElement from "../../components/OrderElement/OrderElement";
 import { nanoid } from "@reduxjs/toolkit";
 import { useLayoutEffect } from "react";
+import { wsOrdersActions } from "../../store/wsOrders/wsOrdersSlice";
 
 export default function OrdersPage() {
   const dispatch = useDispatch();
 
-  const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders);
-  const success = useSelector(({ wsFeeds }) => wsFeeds.data?.success);
+  const ordersList = useSelector(({ wsOrders }) => wsOrders.data?.orders);
+  const success = useSelector(({ wsOrders }) => wsOrders.data?.success);
 
   useLayoutEffect(() => {
-    dispatch(wsFeedsActions.startConnecting());
+    dispatch(wsOrdersActions.startConnecting());
     // eslint-disable-next-line
   }, []);
 
   return (
-    <div className={ordersStyle.container}>
+    success && <div className={ordersStyle.container}>
       <ScrollBar>
         {ordersList.map((order) => (
           <OrderElement

@@ -7,6 +7,8 @@ import orderDetailsReducer from "./orderDetails/orderDetailsSlice";
 import authReducer from "./auth/authSlice";
 import wsFeedsReducer from "./wsFeeds/wsFeedsSlice";
 import { feedsSocketMiddleware } from "./wsFeeds/wsFeedsMiddleware";
+import { ordersSocketMiddleware } from "./wsOrders/wsOrdersMiddleware";
+import wsOrdersReducer from "./wsOrders/wsOrdersSlice";
 
 
 export const store = configureStore({
@@ -17,9 +19,10 @@ export const store = configureStore({
     modal: modalReducer,
     auth: authReducer,
     wsFeeds: wsFeedsReducer,
+    wsOrders: wsOrdersReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat([feedsSocketMiddleware])
+    return getDefaultMiddleware().concat([feedsSocketMiddleware, ordersSocketMiddleware])
   },
   devTools: true,
 });

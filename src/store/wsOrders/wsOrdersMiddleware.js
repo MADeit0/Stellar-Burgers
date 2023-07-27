@@ -1,6 +1,6 @@
 import { token, wsUrl } from "../../utils/constants";
 import { wsOrdersActions } from "./wsOrdersSlice";
-
+// Invalid or missing token
 export const ordersSocketMiddleware = (store) => {
   let socket = null;
   return (next) => (action) => {

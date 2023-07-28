@@ -25,11 +25,14 @@ const FeedPage = () => {
 
   useLayoutEffect(() => {
     dispatch(wsFeedsActions.startConnecting());
-    // eslint-disable-next-line
-  }, []);
+
+    return () => {
+      dispatch(wsFeedsActions.disconnect());
+    };
+  }, [dispatch]);
 
   const ordersDone = getOrdersStatus(ordersList, "done");
-  const ordersPending = getOrdersStatus(ordersList, "pending")
+  const ordersPending = getOrdersStatus(ordersList, "pending");
 
   return (
     success && (
@@ -49,7 +52,6 @@ const FeedPage = () => {
                   key={nanoid()}
                   wsSuccess={success}
                   ingredients={order.ingredients}
-                  // status={order.status}
                   number={order.number}
                   name={order.name}
                   createdAt={order.createdAt}

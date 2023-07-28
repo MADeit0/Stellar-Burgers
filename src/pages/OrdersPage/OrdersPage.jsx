@@ -15,8 +15,11 @@ export default function OrdersPage() {
 
   useLayoutEffect(() => {
     dispatch(wsOrdersActions.startConnecting());
-    // eslint-disable-next-line
-  }, []);
+    return () => {
+      dispatch(wsOrdersActions.disconnect())
+    }
+ 
+  }, [dispatch]);
 
   return (
     success && <div className={ordersStyle.container}>

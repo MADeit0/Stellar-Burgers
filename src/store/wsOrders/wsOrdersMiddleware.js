@@ -1,26 +1,39 @@
 import { token, wsUrl } from "../../utils/constants";
+import { checkUserAuth } from "../auth/authMiddleware";
 import { wsOrdersActions } from "./wsOrdersSlice";
-// Invalid or missing token
+
 export const ordersSocketMiddleware = (store) => {
   let socket = null;
   return (next) => (action) => {
     const isConnectionEstablished =
       socket && store.getState().wsOrders.isConnected;
 
-    if (wsOrdersActions.startConnecting.match(action)) {
+    const openSocket = () => {
       const accessToken = localStorage
         .getItem(token.ACCESS_TOKEN)
         .replace("Bearer ", "");
-      
+
       socket = new WebSocket(`${wsUrl}?token=${accessToken}`);
       socket.onopen = () => {
         store.dispatch(wsOrdersActions.open());
       };
+    };
+
+    if (wsOrdersActions.startConnecting.match(action)) {
+      
+      openSocket();
 
       socket.onmessage = (event) => {
         const { data } = event;
         const parsedData = JSON.parse(data);
         store.dispatch(wsOrdersActions.message(parsedData));
+
+        if (parsedData.message === "Invalid or missing token") {
+          store.dispatch(checkUserAuth()).then((res) => {
+            store.dispatch(wsOrdersActions.disconnect())
+            store.dispatch(wsOrdersActions.startConnecting())
+          });
+        }
       };
 
       socket.onclose = () => {

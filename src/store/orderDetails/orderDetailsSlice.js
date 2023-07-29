@@ -12,7 +12,7 @@ export const postConstructorData = createAsyncThunk(
   "orderDetails/postConstructorData",
   async (ingredientsId, { rejectWithValue }) => {
     try {
-      const res = await orderInstance.post("/orders", {
+      const res = await orderInstance.post("", {
         ingredients: ingredientsId.map((item) => item._id),
       });
       return res.data;

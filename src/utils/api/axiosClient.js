@@ -11,7 +11,7 @@ export const authInstance = axios.create({
 });
 
 export const orderInstance = authInstance.create({
-  baseURL: baseUrl,
+  baseURL: `${baseUrl}/orders`,
   headers: {
     authorization: localStorage.getItem(token.ACCESS_TOKEN),
   },

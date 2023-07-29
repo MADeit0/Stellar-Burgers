@@ -1,3 +1,9 @@
 .container {
-    grid-area: 1/2/ 1/4;
+  grid-area: 1/2/ 1/4;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
 }

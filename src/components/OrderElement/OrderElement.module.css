@@ -13,6 +13,7 @@
   gap: 24px;
   box-sizing: border-box;
   padding: 24px;
+  transition: all 0.2s ease-in-out;
 }
 
 .status_inactive {
@@ -22,6 +23,11 @@
     "title title"
     "ingredients price";
 }
+
+.container:hover {
+  background-color: #2F2F37;
+}
+
 
 .order {
   grid-area: order;

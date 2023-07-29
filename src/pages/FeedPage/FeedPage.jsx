@@ -6,6 +6,7 @@ import { useLayoutEffect } from "react";
 import { wsFeedsActions } from "../../store/wsFeeds/wsFeedsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import CompletedOrdersBoard from "../../components/CompletedOrdersBoard/CompletedOrdersBoard";
+import { Link, useLocation } from "react-router-dom";
 
 const getOrdersStatus = (ordersList, status) => {
   const statusList = ordersList?.filter((list) => list.status === status);
@@ -17,6 +18,7 @@ const getOrdersStatus = (ordersList, status) => {
 
 const FeedPage = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const ordersList = useSelector(({ wsFeeds }) => wsFeeds.data?.orders);
   const success = useSelector(({ wsFeeds }) => wsFeeds.data?.success);
@@ -48,14 +50,19 @@ const FeedPage = () => {
 
             <ScrollBar>
               {ordersList.map((order) => (
-                <OrderElement
-                  key={nanoid()}
-                  wsSuccess={success}
-                  ingredients={order.ingredients}
-                  number={order.number}
-                  name={order.name}
-                  createdAt={order.createdAt}
-                />
+                <Link 
+                to={`/feed/${order.number}`} 
+                state={{ background: location }}
+                className={feedStyle.link}
+                key={nanoid()}>
+                  <OrderElement
+                    wsSuccess={success}
+                    ingredients={order.ingredients}
+                    number={order.number}
+                    name={order.name}
+                    createdAt={order.createdAt}
+                  />
+                </Link>
               ))}
             </ScrollBar>
           </section>

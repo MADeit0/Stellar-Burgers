@@ -10,7 +10,7 @@ const IngredientDetails = () => {
   const location = useLocation();
 
   const details = useSelector(({ burgerIngredients }) =>
-    burgerIngredients.ingredients.find((item) => item._id === ingredientId)
+    burgerIngredients.ingredients?.find((item) => item._id === ingredientId)
   );
   const { name, calories, proteins, fat, image_large, carbohydrates } =
     details || "";

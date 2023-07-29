@@ -8,3 +8,9 @@
   .board {
     width: min-content;
   }
+
+  .link {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+  }

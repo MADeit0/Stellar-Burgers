@@ -15,7 +15,9 @@ export function formatDate(dateString) {
     case 1:
       timeAgo = `вчера`;
       break;
-    case days < 5:
+    case 2:
+    case 3:
+    case 4:
       timeAgo = `${days} дня назад`;
       break;
     default:

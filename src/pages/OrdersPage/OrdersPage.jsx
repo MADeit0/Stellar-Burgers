@@ -20,30 +20,32 @@ export default function OrdersPage() {
     return () => {
       dispatch(wsOrdersActions.disconnect());
     };
-  }, [dispatch]);
-  
+    //eslint-disable-next-line
+  }, []);
+
   return (
     success && (
       <div className={ordersStyle.container}>
-        <ScrollBar>
-          {
-          ordersList.map((order) => (
-            <Link
-              to={`/profile/orders/${order.number}`}
-              state={{ background: location }}
-              className={ordersStyle.link}
-              key={nanoid()}
-            >
-              <OrderElement
-                wsSuccess={success}
-                ingredients={order.ingredients}
-                status={order.status}
-                number={order.number}
-                name={order.name}
-                createdAt={order.createdAt}
-              />
-            </Link>
-          )).reverse()}
+        <ScrollBar maxHeight="66.4vh">
+          {ordersList
+            .map((order) => (
+              <Link
+                to={`/profile/orders/${order.number}`}
+                state={{ background: location }}
+                className={ordersStyle.link}
+                key={nanoid()}
+              >
+                <OrderElement
+                  wsSuccess={success}
+                  ingredients={order.ingredients}
+                  status={order.status}
+                  number={order.number}
+                  name={order.name}
+                  createdAt={order.createdAt}
+                />
+              </Link>
+            ))
+            .reverse()}
         </ScrollBar>
       </div>
     )

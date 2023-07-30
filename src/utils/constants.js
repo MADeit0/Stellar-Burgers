@@ -18,4 +18,10 @@ const message = {
   INVALID_TOKEN: "invalid token",
 };
 
-export { baseUrl, wsUrl, ingredientsMenu, ItemTypes, token, message };
+const statusDic = {
+  pending: { status: "Готовится", color: "while" },
+  created: { status: "Создан", color: "while" },
+  done: { status: "Выполнен", color: "#00CCCC" },
+};
+
+export { baseUrl, wsUrl, ingredientsMenu, ItemTypes, token, message, statusDic };

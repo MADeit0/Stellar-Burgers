@@ -3,14 +3,9 @@ import orderStyle from "./OrderElement.module.css";
 import { useSelector } from "react-redux";
 import { useLayoutEffect, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
-import { formatDate } from "./service";
+import { formatDate } from "../../service";
 import PropTypes from "prop-types";
-
-const statusDic = {
-  pending: { status: "Готовится", color: "while" },
-  created: { status: "Создан", color: "while" },
-  done: { status: "Выполнен", color: "#00CCCC" },
-};
+import { statusDic } from "../../utils/constants";
 
 const OrderElement = ({
   wsSuccess,
@@ -25,10 +20,11 @@ const OrderElement = ({
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
 
-  const total = ingredients.reduce(
-    (acc, id) => acc + ingredientDict[id]?.price,0);
-
   useLayoutEffect(() => {
+    const total = ingredients.reduce(
+      (acc, id) => acc + ingredientDict[id]?.price,
+      0
+    );
     setTotalSum(total);
     // eslint-disable-next-line
   }, []);
@@ -61,8 +57,7 @@ const OrderElement = ({
         <div className={orderStyle.list}>
           <ul className={orderStyle.items}>
             {ingredients.slice(0, 6).map((id, index) => {
-              const isManyIngredients =
-                index === 5 && ingredients.length > 6;
+              const isManyIngredients = index === 5 && ingredients.length > 6;
               return (
                 <li
                   key={nanoid()}
@@ -80,7 +75,7 @@ const OrderElement = ({
                   />
                   {isManyIngredients && (
                     <span
-                      className={`${orderStyle.count} text text_type_digits-default`}
+                      className={`${orderStyle.count} text text_type_main-default`}
                     >
                       {`+${ingredients.length - index - 1}`}
                     </span>

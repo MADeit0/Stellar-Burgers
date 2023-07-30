@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-height: 66.4vh;
   overflow-y: scroll;
   padding-right: 8px;
 }
@@ -13,7 +12,7 @@
 }
 
 .scroll::-webkit-scrollbar-thumb {
-  height: 492px;
+  height: 78.8%;
   background-color: rgba(133, 133, 173, 1);
 }
 

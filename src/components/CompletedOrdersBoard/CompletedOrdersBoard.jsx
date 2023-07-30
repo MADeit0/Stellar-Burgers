@@ -1,5 +1,6 @@
 import { nanoid } from "@reduxjs/toolkit";
 import boardStyle from "./CompletedOrdersBoard.module.css";
+import PropTypes from "prop-types";
 
 const CompletedOrdersBoard = ({
   total,
@@ -10,7 +11,7 @@ const CompletedOrdersBoard = ({
 }) => {
   return (
     wsSuccess && (
-      <section className={`pt-30 ${boardStyle.container}`}>
+      <section className={`pt-25 ${boardStyle.container}`}>
         <div className={boardStyle.table}>
           <div>
             <p className="text text_type_main-medium pb-6">Готовы:</p>
@@ -59,8 +60,16 @@ CompletedOrdersBoard.defaultProps = {
   total: null,
   totalToday: null,
   wsSuccess: false,
-  ordersDone:[],
-  ordersPending: []
+  ordersDone: [],
+  ordersPending: [],
+};
+
+CompletedOrdersBoard.propTypes = {
+  total: PropTypes.number.isRequired,
+  totalToday: PropTypes.number.isRequired,
+  wsSuccess: PropTypes.bool.isRequired,
+  ordersDone: PropTypes.array.isRequired,
+  ordersPending: PropTypes.array.isRequired,
 };
 
 export default CompletedOrdersBoard;

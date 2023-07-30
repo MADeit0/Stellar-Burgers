@@ -79,6 +79,10 @@
 .price {
   grid-area: price;
   justify-self: end;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
 }
 
 .stuffing {

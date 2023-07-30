@@ -27,11 +27,11 @@ const FeedPage = () => {
 
   useLayoutEffect(() => {
     dispatch(wsFeedsActions.startConnecting());
-
     return () => {
       dispatch(wsFeedsActions.disconnect());
     };
-  }, [dispatch]);
+    //eslint-disable-next-line
+  }, []);
 
   const ordersDone = getOrdersStatus(ordersList, "done");
   const ordersPending = getOrdersStatus(ordersList, "pending");
@@ -48,13 +48,14 @@ const FeedPage = () => {
               Лента заказов
             </h1>
 
-            <ScrollBar>
+            <ScrollBar maxHeight="66.4vh">
               {ordersList.map((order) => (
-                <Link 
-                to={`/feed/${order.number}`} 
-                state={{ background: location }}
-                className={feedStyle.link}
-                key={nanoid()}>
+                <Link
+                  to={`/feed/${order.number}`}
+                  state={{ background: location }}
+                  className={feedStyle.link}
+                  key={nanoid()}
+                >
                   <OrderElement
                     wsSuccess={success}
                     ingredients={order.ingredients}

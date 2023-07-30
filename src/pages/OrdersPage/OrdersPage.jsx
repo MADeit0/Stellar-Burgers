@@ -1,12 +1,12 @@
 import ordersStyle from "./OrdersPage.module.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import ScrollBar from "../../components/ScrollBar/ScrollBar";
 import OrderElement from "../../components/OrderElement/OrderElement";
 import { nanoid } from "@reduxjs/toolkit";
 import { useLayoutEffect } from "react";
-import { wsOrdersActions } from "../../store/wsOrders/wsOrdersSlice";
 import { Link, useLocation } from "react-router-dom";
+import { wsOrdersActions } from "../../store/ws/wsSlice";
+import { token, wsUrl } from "../../utils/constants";
 
 export default function OrdersPage() {
   const dispatch = useDispatch();
@@ -16,9 +16,15 @@ export default function OrdersPage() {
   const success = useSelector(({ wsOrders }) => wsOrders.data?.success);
 
   useLayoutEffect(() => {
-    dispatch(wsOrdersActions.startConnecting());
+    const accessToken = localStorage
+      .getItem(token.ACCESS_TOKEN)
+      .replace("Bearer ", "");
+
+    dispatch(
+      wsOrdersActions.actions.startConnecting(`${wsUrl}?token=${accessToken}`)
+    );
     return () => {
-      dispatch(wsOrdersActions.disconnect());
+      dispatch(wsOrdersActions.actions.disconnect());
     };
     //eslint-disable-next-line
   }, []);

@@ -3,10 +3,13 @@ import OrderElement from "../../components/OrderElement/OrderElement";
 import ScrollBar from "../../components/ScrollBar/ScrollBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
-import { wsFeedsActions } from "../../store/wsFeeds/wsFeedsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import CompletedOrdersBoard from "../../components/CompletedOrdersBoard/CompletedOrdersBoard";
 import { Link, useLocation } from "react-router-dom";
+import { wsFeedsActions } from "../../store/ws/wsSlice";
+import { wsUrl } from "../../utils/constants";
+
+
 
 const getOrdersStatus = (ordersList, status) => {
   const statusList = ordersList?.filter((list) => list.status === status);
@@ -26,9 +29,9 @@ const FeedPage = () => {
   const totalToday = useSelector(({ wsFeeds }) => wsFeeds.data?.totalToday);
 
   useLayoutEffect(() => {
-    dispatch(wsFeedsActions.startConnecting());
+    dispatch(wsFeedsActions.actions.startConnecting(`${wsUrl}/all`));
     return () => {
-      dispatch(wsFeedsActions.disconnect());
+      dispatch(wsFeedsActions.actions.disconnect());
     };
     //eslint-disable-next-line
   }, []);

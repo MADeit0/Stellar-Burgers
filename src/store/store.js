@@ -5,11 +5,8 @@ import modalReducer from "./modal/modalSlice";
 import burgerConstructorReducer from "./burgerConstructor/burgerConstructorSlice";
 import orderDetailsReducer from "./orderDetails/orderDetailsSlice";
 import authReducer from "./auth/authSlice";
-import wsFeedsReducer from "./wsFeeds/wsFeedsSlice";
-import { feedsSocketMiddleware } from "./wsFeeds/wsFeedsMiddleware";
-import { ordersSocketMiddleware } from "./wsOrders/wsOrdersMiddleware";
-import wsOrdersReducer from "./wsOrders/wsOrdersSlice";
-
+import { socketMiddleware } from "./ws/wsMiddleware";
+import { wsOrdersActions, wsFeedsActions } from "./ws/wsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,11 +15,14 @@ export const store = configureStore({
     orderDetails: orderDetailsReducer,
     modal: modalReducer,
     auth: authReducer,
-    wsFeeds: wsFeedsReducer,
-    wsOrders: wsOrdersReducer,
+    wsFeeds: wsFeedsActions.reducer,
+    wsOrders: wsOrdersActions.reducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat([feedsSocketMiddleware, ordersSocketMiddleware])
+    return getDefaultMiddleware().concat([
+      socketMiddleware(wsFeedsActions.actions, "wsFeeds"),
+      socketMiddleware(wsOrdersActions.actions, "wsOrders"),
+    ]);
   },
   devTools: true,
 });

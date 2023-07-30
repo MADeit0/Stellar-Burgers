@@ -7,8 +7,9 @@ import { useSelector } from "react-redux";
 
 const IngredientsBoard = forwardRef(
   ({ title, menu, isView, setState, active }, ref) => {
-    const ingredients = useSelector(
-      ({ burgerIngredients }) => burgerIngredients.ingredients
+
+    const ingredientDict = useSelector(
+      ({ burgerIngredients }) => burgerIngredients.ingredientsDict
     );
 
     useEffect(() => {
@@ -22,7 +23,7 @@ const IngredientsBoard = forwardRef(
           {title}
         </h2>
         <ul className={`${IngredientsBoardStyle.box} pr-4 pl-4`}>
-          {ingredients.map(
+          { Object.values(ingredientDict).map(
             (item) =>
               item.type === menu && (
                 <li

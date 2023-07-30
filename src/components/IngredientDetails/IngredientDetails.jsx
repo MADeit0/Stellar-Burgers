@@ -9,13 +9,15 @@ const IngredientDetails = () => {
   const { ingredientId } = useParams();
   const location = useLocation();
 
-  const details = useSelector(({ burgerIngredients }) =>
-    burgerIngredients.ingredients?.find((item) => item._id === ingredientId)
+  const ingredientDict = useSelector(
+    ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
-  const { name, calories, proteins, fat, image_large, carbohydrates } =
-    details || "";
 
   const background = location.state && location.state.background;
+
+  const details = ingredientDict && ingredientDict[ingredientId];
+  const { name, calories, proteins, fat, image_large, carbohydrates } =
+    details || "";
 
   return (
     <>

@@ -26,9 +26,10 @@ const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const ingredients = useSelector(
-    ({ burgerIngredients }) => burgerIngredients.ingredients
+  const ingredientDict = useSelector(
+    ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
+
   const { otherStuffings, bunUp, bunDown, isBun } = useSelector(
     ({ burgerConstructor }) => burgerConstructor
   );
@@ -41,8 +42,7 @@ const BurgerConstructor = () => {
       isHover: !!monitor.isOver(),
     }),
     drop(itemId) {
-      const menu = ingredients.find((item) => item._id === itemId._id);
-
+      const menu = ingredientDict[itemId._id]
       menu.type === BUN
         ? dispatch(addBun(menu))
         : dispatch(addIngredient(menu));

@@ -1,4 +1,3 @@
-import { nanoid } from "@reduxjs/toolkit";
 import boardStyle from "./CompletedOrdersBoard.module.css";
 import PropTypes from "prop-types";
 
@@ -17,7 +16,7 @@ const CompletedOrdersBoard = ({
             <p className="text text_type_main-medium pb-6">Готовы:</p>
             <ul className={boardStyle.orders} style={{ color: "#0cc" }}>
               {ordersDone.map((order) => (
-                <li className="text text_type_digits-default" key={nanoid()}>
+                <li className="text text_type_digits-default" key={order._id}>
                   {order.number}
                 </li>
               ))}
@@ -27,7 +26,7 @@ const CompletedOrdersBoard = ({
             <p className="text text_type_main-medium pb-6">В работе:</p>
             <ul className={boardStyle.orders}>
               {ordersPending.map((order) => (
-                <li className="text text_type_digits-default" key={nanoid()}>
+                <li className="text text_type_digits-default" key={order._id}>
                   {order.number}
                 </li>
               ))}

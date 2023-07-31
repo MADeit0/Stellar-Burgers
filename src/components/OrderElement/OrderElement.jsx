@@ -2,7 +2,6 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import orderStyle from "./OrderElement.module.css";
 import { useSelector } from "react-redux";
 import { useLayoutEffect, useState } from "react";
-import { nanoid } from "@reduxjs/toolkit";
 import { formatDate } from "../../service";
 import PropTypes from "prop-types";
 import { statusDic } from "../../utils/constants";
@@ -25,6 +24,7 @@ const OrderElement = ({
       (acc, id) => acc + ingredientDict[id]?.price,
       0
     );
+
     setTotalSum(total);
     // eslint-disable-next-line
   }, []);
@@ -60,7 +60,7 @@ const OrderElement = ({
               const isManyIngredients = index === 5 && ingredients.length > 6;
               return (
                 <li
-                  key={nanoid()}
+                  key={index}
                   className={index !== 0 ? orderStyle.indent : orderStyle.item}
                   style={{ zIndex: 10 - index }}
                 >

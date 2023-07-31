@@ -3,7 +3,6 @@ import OrderElement from "../../components/OrderElement/OrderElement";
 import ScrollBar from "../../components/ScrollBar/ScrollBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
-import { nanoid } from "@reduxjs/toolkit";
 import CompletedOrdersBoard from "../../components/CompletedOrdersBoard/CompletedOrdersBoard";
 import { Link, useLocation } from "react-router-dom";
 import { wsFeedsActions } from "../../store/ws/wsSlice";
@@ -57,7 +56,7 @@ const FeedPage = () => {
                   to={`/feed/${order.number}`}
                   state={{ background: location }}
                   className={feedStyle.link}
-                  key={nanoid()}
+                  key={order._id}
                 >
                   <OrderElement
                     wsSuccess={success}

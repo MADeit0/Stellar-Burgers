@@ -2,7 +2,6 @@ import ordersStyle from "./OrdersPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import ScrollBar from "../../components/ScrollBar/ScrollBar";
 import OrderElement from "../../components/OrderElement/OrderElement";
-import { nanoid } from "@reduxjs/toolkit";
 import { useLayoutEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { wsOrdersActions } from "../../store/ws/wsSlice";
@@ -39,7 +38,7 @@ export default function OrdersPage() {
                 to={`/profile/orders/${order.number}`}
                 state={{ background: location }}
                 className={ordersStyle.link}
-                key={nanoid()}
+                key={order._id}
               >
                 <OrderElement
                   wsSuccess={success}

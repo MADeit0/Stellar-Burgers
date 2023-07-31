@@ -86,7 +86,7 @@ const OrderElement = ({
           </ul>
         </div>
         <div className={orderStyle.price}>
-          <span className="text text_type_digits-default">{totalSum}</span>
+          <span className="text text_type_digits-default">{totalSum.toString()}</span>
           <CurrencyIcon type="primary" />
         </div>
       </section>

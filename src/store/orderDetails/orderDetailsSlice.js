@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { interceptorsAuth, orderInstance } from "../../utils/api/axiosClient";
 
 const initialState = {
-  name: "",
+  name: null,
   number: null,
   loading: null,
   error: null,
@@ -32,6 +32,8 @@ export const orderDetailsSlice = createSlice({
       .addCase(postConstructorData.pending, (state) => {
         state.loading = "pending";
         state.error = null;
+        state.name = null;
+        state.number = null;
       })
       .addCase(postConstructorData.fulfilled, (state, action) => {
         state.loading = "succeeded";
@@ -41,6 +43,8 @@ export const orderDetailsSlice = createSlice({
       .addCase(postConstructorData.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.payload;
+        state.name = null;
+        state.number = null;
       });
   },
 });

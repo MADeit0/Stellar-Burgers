@@ -1,0 +1,106 @@
+.container {
+  grid-area: 1/2/ 1/4;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: center;
+  grid-template-areas:
+    "order date"
+    "title title"
+    "status status"
+    "ingredients price";
+  background-color: #1c1c21;
+  border-radius: 40px;
+  gap: 24px;
+  box-sizing: border-box;
+  padding: 24px;
+  transition: all 0.2s ease-in-out;
+}
+
+.status_inactive {
+  composes: container;
+  grid-template-areas:
+    "order date"
+    "title title"
+    "ingredients price";
+}
+
+.container:hover {
+  background-color: #2F2F37;
+}
+
+
+.order {
+  grid-area: order;
+}
+
+.title {
+  grid-area: title;
+}
+
+.date {
+  grid-area: date;
+}
+
+.status {
+  grid-area: status;
+}
+
+.list {
+  grid-area: ingredients;
+}
+
+.items {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  position: relative;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(#1c1c21, #1c1c21) padding-box,
+    linear-gradient(45deg, #801ab2, #4c4cff) border-box;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.indent {
+  composes: item;
+  margin-left: -20px;
+}
+
+.price {
+  grid-area: price;
+  justify-self: end;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.stuffing {
+  grid-area: 1/1;
+  height: inherit;
+  width: inherit;
+  object-fit: cover;
+  background-color: #131316;
+}
+
+.inactive {
+  composes: stuffing;
+  background-color: rgba(19, 19, 22, 0.3);
+  opacity: 0.5;
+}
+
+.count {
+  z-index: 1;
+  opacity: 1;
+  grid-area: 1/1;
+}

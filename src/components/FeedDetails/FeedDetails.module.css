@@ -1,0 +1,78 @@
+
+ .container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.indent_left {
+  align-self: flex-start;
+}
+
+
+.item {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: min-content 1fr min-content;
+  grid-auto-flow: column;
+gap: 16px;
+  width: 100%;
+}
+
+.ring {
+justify-self: flex-start;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(#1c1c21, #1c1c21) padding-box,
+    linear-gradient(45deg, #801ab2, #4c4cff) border-box;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.img {
+  grid-area: 1/1;
+  height: inherit;
+  width: inherit;
+  object-fit: cover;
+  background-color: #131316;
+}
+
+ .items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.price {
+  justify-self: end;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.date {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.name {
+  justify-self: flex-start;
+}
+
+.scroll {
+  width: 100%;
+}

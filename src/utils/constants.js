@@ -1,4 +1,5 @@
 const baseUrl = "https://norma.nomoreparties.space/api";
+const wsUrl = "wss://norma.nomoreparties.space/orders";
 
 const ingredientsMenu = { BUN: "bun", SAUCE: "sauce", MAIN: "main" };
 
@@ -17,4 +18,10 @@ const message = {
   INVALID_TOKEN: "invalid token",
 };
 
-export { baseUrl, ingredientsMenu, ItemTypes, token, message };
+const statusDic = {
+  pending: { status: "Готовится", color: "while" },
+  created: { status: "Создан", color: "while" },
+  done: { status: "Выполнен", color: "#00CCCC" },
+};
+
+export { baseUrl, wsUrl, ingredientsMenu, ItemTypes, token, message, statusDic };

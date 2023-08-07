@@ -9,19 +9,21 @@ import ForgotPasswordPage from "../../pages/ForgotPasswordPage/ForgotPasswordPag
 import ResetPasswordPage from "../../pages/ResetPasswordPage/ResetPasswordPage";
 
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import Modal from "../Modal/Modal";
 
+import Modal from "../Modal/Modal";
 import {
   OnlyAuth,
   OnlyUnAuth,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
 
-import { checkUserAuth } from "../../store/auth/authAction";
+import { checkUserAuth } from "../../store/auth/authMiddleware";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import OrdersPage from "../../pages/OrdersPage/OrdersPage";
 import ProfilePageForm from "../../pages/ProfilePage/ProfilePageForm/ProfilePageForm";
 import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
+import FeedPage from "../../pages/FeedPage/FeedPage";
+import FeedDetails from "../FeedDetails/FeedDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +57,7 @@ function App() {
             path="register"
             element={<OnlyUnAuth component={<RegisterPage />} />}
           />
+          <Route path="feed" element={<FeedPage />} />
           <Route
             path="profile"
             element={<OnlyAuth component={<ProfilePage />} />}
@@ -75,6 +78,8 @@ function App() {
             path="/ingredients/:ingredientId"
             element={<IngredientDetails />}
           />
+          <Route path="/feed/:orderId" element={<FeedDetails />} />
+          <Route path="/profile/orders/:orderId" element={<FeedDetails />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
@@ -86,6 +91,24 @@ function App() {
             element={
               <Modal onClose={handleModalClose}>
                 <IngredientDetails />
+              </Modal>
+            }
+          ></Route>
+
+          <Route
+            path="/feed/:orderId"
+            element={
+              <Modal onClose={handleModalClose}>
+                <FeedDetails />
+              </Modal>
+            }
+          ></Route>
+
+          <Route
+            path="/profile/orders/:orderId"
+            element={
+              <Modal onClose={handleModalClose}>
+                <FeedDetails />
               </Modal>
             }
           ></Route>

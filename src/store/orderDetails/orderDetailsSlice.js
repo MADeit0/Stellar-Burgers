@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { baseUrl } from "../../utils/constants";
-import axios from "axios";
+import { interceptorsAuth, orderInstance } from "../../utils/api/axiosClient";
+import { token } from "../../utils/constants";
 
 const initialState = {
-  name: "",
+  name: null,
   number: null,
   loading: null,
   error: null,
@@ -13,14 +13,14 @@ export const postConstructorData = createAsyncThunk(
   "orderDetails/postConstructorData",
   async (ingredientsId, { rejectWithValue }) => {
     try {
-      const res = await axios.post(
-        `${baseUrl}/orders`,
+      const res = await orderInstance.post(
+        "",
         {
           ingredients: ingredientsId.map((item) => item._id),
         },
         {
           headers: {
-            authorization: localStorage.getItem("refreshToken"),
+            authorization: localStorage.getItem(token.ACCESS_TOKEN),
           },
         }
       );
@@ -31,6 +31,8 @@ export const postConstructorData = createAsyncThunk(
   }
 );
 
+orderInstance.interceptors.response.use((res) => res, interceptorsAuth);
+
 export const orderDetailsSlice = createSlice({
   name: "orderDetails",
   initialState,
@@ -39,6 +41,8 @@ export const orderDetailsSlice = createSlice({
       .addCase(postConstructorData.pending, (state) => {
         state.loading = "pending";
         state.error = null;
+        state.name = null;
+        state.number = null;
       })
       .addCase(postConstructorData.fulfilled, (state, action) => {
         state.loading = "succeeded";
@@ -48,6 +52,8 @@ export const orderDetailsSlice = createSlice({
       .addCase(postConstructorData.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.payload;
+        state.name = null;
+        state.number = null;
       });
   },
 });

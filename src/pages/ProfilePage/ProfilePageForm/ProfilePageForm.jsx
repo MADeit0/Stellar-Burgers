@@ -57,11 +57,11 @@ const ProfilePageForm = () => {
         setColorText("red");
       });
 
-    setValueForm({ ...valueForm, password: "" });
+    setValueForm((prev) => ({ ...prev, ...valueForm, password: "" }));
   };
 
   const handledDfaultValue = () => {
-    setValueForm({ ...valueForm, name: name, email: email, password: "" });
+    setValueForm((prev) => ({ ...prev, ...valueForm, name: name, email: email, password: "" }));
     setMessage("");
   };
 

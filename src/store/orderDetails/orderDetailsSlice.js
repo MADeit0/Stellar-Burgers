@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { interceptorsAuth, orderInstance } from "../../utils/api/axiosClient";
+import { token } from "../../utils/constants";
 
 const initialState = {
   name: null,
@@ -12,9 +13,17 @@ export const postConstructorData = createAsyncThunk(
   "orderDetails/postConstructorData",
   async (ingredientsId, { rejectWithValue }) => {
     try {
-      const res = await orderInstance.post("", {
-        ingredients: ingredientsId.map((item) => item._id),
-      });
+      const res = await orderInstance.post(
+        "",
+        {
+          ingredients: ingredientsId.map((item) => item._id),
+        },
+        {
+          headers: {
+            authorization: localStorage.getItem(token.ACCESS_TOKEN),
+          },
+        }
+      );
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);

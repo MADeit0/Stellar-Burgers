@@ -1,5 +1,5 @@
 import ingredientStyle from "./Ingredient.module.css";
-import ingredientType from "../../utils/types.js";
+import ingredientType from "../../utils/types";
 
 import {
   CurrencyIcon,

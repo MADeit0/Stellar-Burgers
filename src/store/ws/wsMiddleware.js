@@ -1,5 +1,5 @@
 import { wsUrl, token } from "../../utils/constants";
-import { checkUserAuth } from "../auth/authMiddleware";
+import { checkUserAuthThunk } from "../auth/authAction";
 
 export const socketMiddleware = (actions, reducer) => {
   let socket = null;
@@ -21,7 +21,7 @@ export const socketMiddleware = (actions, reducer) => {
         store.dispatch(actions.message(parsedData));
 
         if (parsedData.message === "Invalid or missing token") {
-          store.dispatch(checkUserAuth()).then((res) => {
+          store.dispatch(checkUserAuthThunk()).then((res) => {
 
             const accessToken = localStorage
             .getItem(token.ACCESS_TOKEN)

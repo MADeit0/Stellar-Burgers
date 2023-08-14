@@ -16,3 +16,19 @@ const ingredientType = PropTypes.shape({
 });
 
 export default ingredientType;
+
+export type User = {
+  email?: string;
+  name?: string;
+  password?: string,
+};
+
+export type UserToken = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type ResponseAuth = {
+  message: string;
+  success: boolean;
+};

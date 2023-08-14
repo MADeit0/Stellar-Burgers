@@ -16,23 +16,30 @@ import {
   OnlyUnAuth,
 } from "../ProtectedRouteElement/ProtectedRouteElement";
 
-import { checkUserAuth } from "../../store/auth/authMiddleware";
+import { checkUserAuthThunk } from "../../store/auth/authAction";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import OrdersPage from "../../pages/OrdersPage/OrdersPage";
 import ProfilePageForm from "../../pages/ProfilePage/ProfilePageForm/ProfilePageForm";
 import { fetchIngredientsDetails } from "../../store/burgerIngredients/burgerIngredientsSlice";
 import FeedPage from "../../pages/FeedPage/FeedPage";
 import FeedDetails from "../FeedDetails/FeedDetails";
+import { useAppDispatch } from "../../hooks/hook";
+import { token } from "../../utils/constants";
+import { setAuthChecked } from "../../store/auth/authSlice";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state && location.state.background;
 
   useEffect(() => {
-    dispatch(checkUserAuth());
+if (localStorage.getItem(token.ACCESS_TOKEN)) {
+  dispatch(checkUserAuthThunk());
+} else {
+  dispatch(setAuthChecked(true));
+}
+
   }, [dispatch]);
 
   useEffect(() => {

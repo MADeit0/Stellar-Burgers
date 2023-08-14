@@ -1,13 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   registerUserThunk,
   loginUserThunk,
   logoutThunk,
   updateDataUserThunk,
+  checkUserAuthThunk,
 } from "./authAction";
 import { token } from "../../utils/constants";
+import { User } from "../../utils/types";
 
-const initialState = {
+interface AuthState {
+  isAuthChecked: boolean;
+  user: User | null;
+}
+
+const initialState: AuthState = {
   isAuthChecked: false,
   user: null,
 };
@@ -16,10 +23,10 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuthChecked: (state, { payload }) => {
+    setAuthChecked: (state, { payload }: PayloadAction<boolean>) => {
       state.isAuthChecked = payload;
     },
-    setUser: (state, { payload }) => {
+    setUser: (state, { payload }: PayloadAction<User | null>) => {
       state.user = payload;
     },
   },
@@ -40,13 +47,26 @@ export const authSlice = createSlice({
         localStorage.removeItem(token.ACCESS_TOKEN);
         localStorage.removeItem(token.REFRESH_TOKEN);
       })
-      .addCase(updateDataUserThunk.fulfilled, (state, { payload }) => {
-        state.user = payload.user;
+      .addCase(
+        updateDataUserThunk.fulfilled,
+        (state, { payload }) => {
+          state.user = payload.user;
+        }
+      )
+      .addCase(checkUserAuthThunk.rejected, (state) => {
+        state.user = null;
+        state.isAuthChecked = true;
       })
+      .addCase(
+        checkUserAuthThunk.fulfilled,
+        (state, { payload }) => {
+          state.user = payload.user;
+          state.isAuthChecked = true;
+        }
+      );
   },
 });
 
-export const { setAuthChecked, setUser, togglePasswordRoute } =
-  authSlice.actions;
+export const { setAuthChecked, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

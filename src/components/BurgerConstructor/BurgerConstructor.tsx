@@ -63,7 +63,12 @@ const BurgerConstructor = () => {
     setTotalSum(total);
   }, [otherStuffings, bunUp, bunDown]);
 
-  const handleOpenModal = () => {
+  /**
+   * Диспатчит массив объектов и состояние с помощью которого открывается модальное окно,
+   *или перенаправляет на страницу входа пользователя
+   * @returns {void}
+   */
+  const handleOpenModal = (): void => {
     if (isAuthChecked && user) {
       dispatch(postConstructorData([bunUp, ...otherStuffings, bunDown]));
       dispatch(isOpenedOrderModal(true));

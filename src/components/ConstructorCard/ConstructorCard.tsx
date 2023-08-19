@@ -87,7 +87,13 @@ const ConstructorCard = (props: ConstructorCardProps ) => {
   const opacity = isDrag ? 0 : 1;
   drag(drop(ref));
 
-  const onDelete = () => {
+  /**
+   *Отправляет диспатч с данными id карточки который сравнисается в массиве,
+   * и удаляет ингредиент из конструктора
+   * 
+   *@returns {void}
+   */
+  const onDelete = (): void => {
     dispatch(deleteIngredient({fakeId}));
   };
   return (

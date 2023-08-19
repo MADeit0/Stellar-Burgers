@@ -17,10 +17,12 @@ const ingredientType = PropTypes.shape({
 
 export default ingredientType;
 
+export type Loading = "idle" | "pending" | "succeeded" | "failed";
+
 export type User = {
   email?: string;
   name?: string;
-  password?: string,
+  password?: string;
 };
 
 export type UserToken = {
@@ -28,7 +30,24 @@ export type UserToken = {
   refreshToken: string;
 };
 
-export type ResponseAuth = {
+export type AuthResponseConfig = {
   message: string;
   success: boolean;
+};
+export type ErrorResponseConfig = AuthResponseConfig;
+
+export type Tingredient = {
+  calories: number;
+  carbohydrates: number;
+  fat: number;
+  image: string;
+  image_large: string;
+  image_mobile: string;
+  name: string;
+  price: number;
+  proteins: number;
+  type: string;
+  __v: number;
+  _id: string;
+  fakeId?: string;
 };

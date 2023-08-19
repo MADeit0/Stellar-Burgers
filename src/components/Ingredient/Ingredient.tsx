@@ -1,5 +1,5 @@
 import ingredientStyle from "./Ingredient.module.css";
-import ingredientType from "../../utils/types";
+import { Tingredient } from "../../utils/types";
 
 import {
   CurrencyIcon,
@@ -7,22 +7,26 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { ItemTypes } from "../../utils/constants";
-import { useSelector } from "react-redux";
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../hooks/hook";
 
-const Ingredient = ({ ingredient }) => {
+interface ingredientProps {
+  ingredient: Tingredient;
+}
+
+const Ingredient = ({ ingredient }: ingredientProps) => {
   const location = useLocation();
   const { name, price, image, _id } = ingredient;
-  const [count, setCount] = useState("");
-  const { otherStuffings, bunUp, bunDown } = useSelector(
+  const [count, setCount] = useState(0);
+  const { otherStuffings, bunUp, bunDown } = useAppSelector(
     ({ burgerConstructor }) => burgerConstructor
   );
-  
+
   useEffect(() => {
     const stuffings = [bunUp, ...otherStuffings, bunDown];
-    const sum = stuffings.filter((item) => item._id === _id).length;
+    const sum = stuffings.filter((item) => item && item._id === _id).length;
     setCount(sum);
   }, [otherStuffings, bunUp, bunDown, _id]);
 
@@ -65,10 +69,6 @@ const Ingredient = ({ ingredient }) => {
       )}
     </Link>
   );
-};
-
-Ingredient.propTypes = {
-  ingredient: ingredientType.isRequired,
 };
 
 export default Ingredient;

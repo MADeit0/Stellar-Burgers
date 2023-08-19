@@ -1,9 +1,9 @@
 import HomeStyle from "./HomePage.module.css";
 
 import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor.jsx";
-import OrderDetails from "../../components/OrderDetails/OrderDetails.jsx";
-import Modal from "../../components/Modal/Modal.jsx";
+import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
+import OrderDetails from "../../components/OrderDetails/OrderDetails";
+import Modal from "../../components/Modal/Modal";
 import { isOpenedOrderModal } from "../../store/modal/modalSlice";
 
 import { useDispatch, useSelector } from "react-redux";

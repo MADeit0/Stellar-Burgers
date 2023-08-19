@@ -7,7 +7,7 @@ import axios, {
 import { baseUrl, message, token } from "../constants";
 import { store } from "../../store/store";
 import { setUser } from "../../store/auth/authSlice";
-import { ResponseAuth, UserToken } from "../types";
+import { AuthResponseConfig, UserToken } from "../types";
 
 export const authInstance: AxiosInstance = axios.create({
   baseURL: `${baseUrl}/auth`,
@@ -33,14 +33,14 @@ export const orderInstance: AxiosInstance = axios.create({
  * и повторно выполняет оригинальный запрос с обновленным токеном
  */
 export const interceptorsAuth = async (
-  error: AxiosError<ResponseAuth, InternalAxiosRequestConfig<unknown[]>>
+  error: AxiosError<AuthResponseConfig, InternalAxiosRequestConfig<unknown[]>>
 ) => {
-  const originalRequest = error.config!; // Сохранение оригинального запроса
   const rejected = error.response?.data; // Получение данных об отклоненном запросе
-
+  
   // Проверка, если токен JWT истек
   if (rejected?.message === message.JWT_EXPIRED) {
     try {
+      const originalRequest = error.config!; // Сохранение оригинального запроса
       // Обновление токена с помощью запроса к authInstance
       const refreshData: AxiosResponse<UserToken> = await authInstance.post(
         "/token",

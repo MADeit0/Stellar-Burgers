@@ -1,5 +1,4 @@
 import cardStyle from "./ConstructorCardStyles.module.css";
-import PropTypes from "prop-types";
 
 import {
   ConstructorElement,
@@ -9,21 +8,35 @@ import {
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
+import type { Identifier, XYCoord } from 'dnd-core'
 
 import {
   deleteIngredient,
   moveCard,
 } from "../../store/burgerConstructor/burgerConstructorSlice";
 import { ItemTypes } from "../../utils/constants";
-import ingredientType from "../../utils/types";
 
-const ConstructorCard = (props) => {
+interface ConstructorCardProps {
+  name: string
+   price: number
+   image: string
+   fakeId: string
+   index: number
+}
+
+interface DragItem {
+  index: number
+  id: string
+  type: string
+}
+
+const ConstructorCard = (props: ConstructorCardProps ) => {
   const { name, price, image, fakeId, index } = props;
 
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
 
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
     accept: ItemTypes.CARD,
     collect(monitor) {
       return {
@@ -41,10 +54,13 @@ const ConstructorCard = (props) => {
       }
 
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -72,7 +88,7 @@ const ConstructorCard = (props) => {
   drag(drop(ref));
 
   const onDelete = () => {
-    dispatch(deleteIngredient(fakeId));
+    dispatch(deleteIngredient({fakeId}));
   };
   return (
     <li
@@ -91,11 +107,6 @@ const ConstructorCard = (props) => {
       />
     </li>
   );
-};
-
-ConstructorCard.propTypes = {
-  props: ingredientType,
-  fakeId: PropTypes.string.isRequired,
 };
 
 export default ConstructorCard;

@@ -8,50 +8,58 @@ import ConstructorCard from "../ConstructorCard/ConstructorCard";
 
 import { ItemTypes, ingredientsMenu } from "../../utils/constants";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useDrop } from "react-dnd";
+import { DropTargetMonitor, useDrop } from "react-dnd";
 
-import { postConstructorData } from "../../store/orderDetails/orderDetailsSlice";
+import { postConstructorData } from "../../store/orderDetails/orderDetailsAction";
 import { isOpenedOrderModal } from "../../store/modal/modalSlice";
 import {
   addIngredient,
   addBun,
 } from "../../store/burgerConstructor/burgerConstructorSlice";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { Tingredient } from "../../utils/types";
 
 const { BUN } = ingredientsMenu;
 
 const BurgerConstructor = () => {
   const [totalSum, setTotalSum] = useState(0);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const ingredientDict = useSelector(
+  const ingredientDict = useAppSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
 
-  const { otherStuffings, bunUp, bunDown, isBun } = useSelector(
+  const { otherStuffings, bunUp, bunDown, isBun } = useAppSelector(
     ({ burgerConstructor }) => burgerConstructor
   );
-  const isAuthChecked = useSelector(({ auth }) => auth.isAuthChecked);
-  const user = useSelector(({ auth }) => auth.user);
+  const isAuthChecked = useAppSelector(({ auth }) => auth.isAuthChecked);
+  const user = useAppSelector(({ auth }) => auth.user);
 
   const [{ isHover }, dropRef] = useDrop({
     accept: ItemTypes.INGREDIENTS,
-    collect: (monitor) => ({
+    collect: (monitor: DropTargetMonitor) => ({
       isHover: !!monitor.isOver(),
     }),
-    drop(itemId) {
-      const menu = ingredientDict[itemId._id]
-      menu.type === BUN
-        ? dispatch(addBun(menu))
-        : dispatch(addIngredient(menu));
+    drop(itemId: Tingredient) {
+      if (ingredientDict) {
+        const menu = ingredientDict[itemId._id];
+        menu.type === BUN
+          ? dispatch(addBun(menu))
+          : dispatch(addIngredient(menu));
+      }
     },
   });
 
   useEffect(() => {
     const price = [bunUp, ...otherStuffings, bunDown];
-    const total = price.reduce((acc, cur) => acc + cur.price, 0) || 0;
+    const total = price.reduce((acc, cur) => {
+      if (cur) {
+        return acc + cur.price;
+      }
+      return acc;
+    }, 0);
     setTotalSum(total);
   }, [otherStuffings, bunUp, bunDown]);
 
@@ -71,20 +79,20 @@ const BurgerConstructor = () => {
         burgerConstructorsStyle.board
       } pt-25`}
     >
-      {bunUp &&
-        (bunUp.type === BUN ? (
-          <div className="ml-8 pl-4 pr-6">
-            <ConstructorElement
-              type={"top"}
-              isLocked={true}
-              text={`${bunUp.name} (верх)`}
-              price={bunUp.price}
-              thumbnail={bunUp.image_mobile}
-            />
-          </div>
-        ) : (
-          <p className="text text_type_main-default">Перетащите булку</p>
-        ))}
+      {bunUp && bunUp.type === BUN ? (
+        <div className="ml-8 pl-4 pr-6">
+          <ConstructorElement
+            type={"top"}
+            isLocked={true}
+            text={`${bunUp.name} (верх)`}
+            price={bunUp.price}
+            thumbnail={bunUp.image_mobile}
+          />
+        </div>
+      ) : (
+        <p className="text text_type_main-default">Перетащите булку</p>
+      )}
+
       <ul className={`${burgerConstructorsStyle.lists} pl-4 pr-4`}>
         {otherStuffings.map(
           (item, i) =>
@@ -93,7 +101,7 @@ const BurgerConstructor = () => {
                 name={item.name}
                 price={item.price}
                 image={item.image_mobile}
-                fakeId={item.fakeId}
+                fakeId={item.fakeId!}
                 key={item.fakeId}
                 index={i}
               />
@@ -113,7 +121,7 @@ const BurgerConstructor = () => {
       )}
       <div className={`${burgerConstructorsStyle.price} pt-10 pr-4`}>
         <div className={burgerConstructorsStyle.count}>
-          <p className="text text_type_digits-medium">{totalSum}</p>
+          <p className="text text_type_digits-medium">{totalSum || 0}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button

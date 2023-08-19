@@ -2,11 +2,11 @@ import ingredientsStyle from "./BurgerIngredients.module.css";
 import { ingredientsMenu } from "../../utils/constants";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientsBoard from "../IngredientsBoard/IngredientsBoard.jsx";
+import IngredientsBoard from "../IngredientsBoard/IngredientsBoard";
 
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/hook";
 
 const { BUN, SAUCE, MAIN } = ingredientsMenu;
 const options = {
@@ -16,26 +16,37 @@ const options = {
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState(BUN);
-  const loading = useSelector(
+  const loading = useAppSelector(
     ({ burgerIngredients }) => burgerIngredients.loading
   );
-  const isBun = useSelector(({ burgerConstructor }) => burgerConstructor.isBun);
+  const isBun = useAppSelector(
+    ({ burgerConstructor }) => burgerConstructor.isBun
+  );
 
   const { ref: refBun, inView: viewBun, entry: bunEntry } = useInView(options);
-  const {
-    ref: refSauce,
-    inView: viewSauce,
-    entry: sauceEntry,
-  } = useInView(options);
-  const {
-    ref: refMain,
-    inView: viewMain,
-    entry: mainEntry,
-  } = useInView(options);
-
-  const onTabChange = (menu, entry) => {
-    setCurrent(menu);
-    entry.target.scrollIntoView({ behavior: "smooth" });
+  const { ref: refSauce, inView: viewSauce, entry: sauceEntry } = useInView(
+    options
+  );
+  const { ref: refMain, inView: viewMain, entry: mainEntry } = useInView(
+    options
+  );
+  /**Обрабатывает изменение текущей вкладки и прокручивает видимый элемент.
+   *
+   * @function onTabChange
+   * @param {string} menu строка с именем на которое будет происходить переключение вкладки
+   * @param {IntersectionObserverEntry | undefined} entry  объект, содержащий информацию
+   * о пересечении элемента с наблюдателем пересечений.
+   * @returns {void}
+   */
+  const onTabChange = (
+    menu: string,
+    entry: IntersectionObserverEntry | undefined
+  ): void => {
+    if (entry) {
+      setCurrent(menu);
+      const target = entry.target;
+      target.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -50,7 +61,7 @@ const BurgerIngredients = () => {
         <Tab
           value={BUN}
           active={current === BUN}
-          onClick={() => {
+          onClick={(): void => {
             onTabChange(BUN, bunEntry);
           }}
         >
@@ -59,7 +70,7 @@ const BurgerIngredients = () => {
         <Tab
           value={SAUCE}
           active={current === SAUCE}
-          onClick={() => {
+          onClick={(): void => {
             onTabChange(SAUCE, sauceEntry);
           }}
         >
@@ -68,7 +79,7 @@ const BurgerIngredients = () => {
         <Tab
           value={MAIN}
           active={current === MAIN}
-          onClick={() => {
+          onClick={(): void => {
             onTabChange(MAIN, mainEntry);
           }}
         >

@@ -6,13 +6,13 @@ import OrderDetails from "../../components/OrderDetails/OrderDetails";
 import Modal from "../../components/Modal/Modal";
 import { isOpenedOrderModal } from "../../store/modal/modalSlice";
 
-import { useDispatch, useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 
 function HomePage() {
-  const dispatch = useDispatch();
-  const orderModal = useSelector(({ modal }) => modal.orderModal);
+  const dispatch = useAppDispatch();
+  const orderModal = useAppSelector(({ modal }) => modal.orderModal);
 
   return (
     <>

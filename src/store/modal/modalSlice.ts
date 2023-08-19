@@ -1,6 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface modalState {
+  orderModal: boolean;
+}
+
+const initialState: modalState = {
   orderModal: false,
 };
 
@@ -8,7 +12,7 @@ export const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    isOpenedOrderModal(state, { payload }) {
+    isOpenedOrderModal(state, { payload }: PayloadAction<boolean>) {
       state.orderModal = payload;
     },
   },

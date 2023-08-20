@@ -2,6 +2,7 @@ import ingredientStyle from "./IngredientDetails.module.css";
 
 import { useLocation, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hook";
+import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 
 const textStyle = "text text_type_main-default text_color_inactive";
 
@@ -12,7 +13,6 @@ const IngredientDetails = () => {
   const ingredientDict = useAppSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
-
   const background = location.state && location.state.background;
 
   const details =
@@ -22,7 +22,7 @@ const IngredientDetails = () => {
 
   return (
     <>
-      {details && (
+      {!!details ? (
         <div
           className={`${ingredientStyle.container} ${!background && "mt-30"}`}
         >
@@ -59,6 +59,8 @@ const IngredientDetails = () => {
             </li>
           </ul>
         </div>
+      ) : (
+        <ErrorPage />
       )}
     </>
   );

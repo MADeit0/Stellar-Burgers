@@ -1,13 +1,20 @@
 import boardStyle from "./CompletedOrdersBoard.module.css";
-import PropTypes from "prop-types";
+
+interface CompletedOrdersBoardProps {
+  total: number;
+  totalToday: number;
+  wsSuccess: boolean;
+  ordersDone: any[];
+  ordersPending: any[];
+}
 
 const CompletedOrdersBoard = ({
-  total,
-  totalToday,
-  wsSuccess,
+  total = 0,
+  totalToday = 0,
+  wsSuccess = false,
   ordersDone,
   ordersPending,
-}) => {
+}: CompletedOrdersBoardProps) => {
   return (
     wsSuccess && (
       <section className={`pt-25 ${boardStyle.container}`}>
@@ -53,22 +60,6 @@ const CompletedOrdersBoard = ({
       </section>
     )
   );
-};
-
-CompletedOrdersBoard.defaultProps = {
-  total: null,
-  totalToday: null,
-  wsSuccess: false,
-  ordersDone: [],
-  ordersPending: [],
-};
-
-CompletedOrdersBoard.propTypes = {
-  total: PropTypes.number.isRequired,
-  totalToday: PropTypes.number.isRequired,
-  wsSuccess: PropTypes.bool.isRequired,
-  ordersDone: PropTypes.array.isRequired,
-  ordersPending: PropTypes.array.isRequired,
 };
 
 export default CompletedOrdersBoard;

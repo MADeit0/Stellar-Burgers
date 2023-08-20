@@ -7,7 +7,7 @@ import { useAppSelector } from "../../hooks/hook";
 
 interface OrderElementProps {
   ingredients: string[];
-  wsSuccess: false;
+  wsSuccess: boolean;
   status: "pending" | "created" | "done";
   number: number;
   name: string;

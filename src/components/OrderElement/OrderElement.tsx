@@ -1,36 +1,44 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderStyle from "./OrderElement.module.css";
-import { useSelector } from "react-redux";
 import { useLayoutEffect, useState } from "react";
 import { formatDate } from "../../service";
-import PropTypes from "prop-types";
 import { statusDic } from "../../utils/constants";
+import { useAppSelector } from "../../hooks/hook";
+
+interface OrderElementProps {
+  ingredients: string[];
+  wsSuccess: false;
+  status: "pending" | "created" | "done";
+  number: number;
+  name: string;
+  createdAt: string;
+}
 
 const OrderElement = ({
-  wsSuccess,
   ingredients,
-  status,
-  number,
+  wsSuccess = false,
+  status = "pending",
+  number = 0,
   name,
   createdAt,
-}) => {
+}: OrderElementProps) => {
   const [totalSum, setTotalSum] = useState(0);
-  const ingredientDict = useSelector(
+  const ingredientDict = useAppSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
 
   useLayoutEffect(() => {
-    const total = ingredients.reduce(
-      (acc, id) => acc + ingredientDict[id]?.price,
-      0
-    );
+    const total = !!ingredientDict
+      ? ingredients.reduce((acc, id) => acc + ingredientDict[id]?.price, 0)
+      : 0;
 
     setTotalSum(total);
     // eslint-disable-next-line
   }, []);
 
   return (
-    wsSuccess && (
+    wsSuccess &&
+    ingredientDict && (
       <section
         className={status ? orderStyle.container : orderStyle.status_inactive}
       >
@@ -86,30 +94,14 @@ const OrderElement = ({
           </ul>
         </div>
         <div className={orderStyle.price}>
-          <span className="text text_type_digits-default">{totalSum.toString()}</span>
+          <span className="text text_type_digits-default">
+            {totalSum.toString()}
+          </span>
           <CurrencyIcon type="primary" />
         </div>
       </section>
     )
   );
-};
-
-OrderElement.defaultProps = {
-  ingredients: null,
-  wsSuccess: false,
-  status: "",
-  number: "",
-  name: "",
-  createdAt: "",
-};
-
-OrderElement.propTypes = {
-  ingredients: PropTypes.array.isRequired,
-  wsSuccess: PropTypes.bool.isRequired,
-  status: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
 };
 
 export default OrderElement;

@@ -1,16 +1,24 @@
 import formStyle from "./FormBody.module.css";
-import PropTypes from "prop-types";
 
-import { Children } from "react";
+import { CSSProperties, Children, ReactNode } from "react";
+
+interface FormBodyProps {
+  children: ReactNode;
+  title: string;
+  onSubmit: () => void;
+  colorText: CSSProperties["color"];
+  message: string;
+  isMessage: boolean;
+}
 
 const FormBody = ({
   children,
-  title,
+  title = "",
   onSubmit,
   colorText,
   message,
   isMessage,
-}) => {
+}: FormBodyProps) => {
   return (
     <form onSubmit={onSubmit} className={formStyle.form}>
       <h1 className={`${formStyle.title} text text_type_main-medium`}>
@@ -27,19 +35,6 @@ const FormBody = ({
       </p>
     </form>
   );
-};
-
-FormBody.defaultProps = {
-  title: "",
-};
-
-FormBody.propTypes = {
-  children: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  colorText: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
-  isMessage: PropTypes.bool.isRequired,
 };
 
 export default FormBody;

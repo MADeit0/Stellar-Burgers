@@ -10,7 +10,7 @@ import ResetPasswordPage from "../../pages/ResetPasswordPage/ResetPasswordPage";
 
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
-import Modal from "../Modal/Modal";
+import Modal from "../Modal/Modal.tsx";
 import {
   OnlyAuth,
   OnlyUnAuth,

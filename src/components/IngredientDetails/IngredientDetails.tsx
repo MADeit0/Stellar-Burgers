@@ -1,7 +1,7 @@
 import ingredientStyle from "./IngredientDetails.module.css";
 
-import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
+import { useAppSelector } from "../../hooks/hook";
 
 const textStyle = "text text_type_main-default text_color_inactive";
 
@@ -9,15 +9,16 @@ const IngredientDetails = () => {
   const { ingredientId } = useParams();
   const location = useLocation();
 
-  const ingredientDict = useSelector(
+  const ingredientDict = useAppSelector(
     ({ burgerIngredients }) => burgerIngredients.ingredientsDict
   );
 
   const background = location.state && location.state.background;
 
-  const details = ingredientDict && ingredientDict[ingredientId];
-  const { name, calories, proteins, fat, image_large, carbohydrates } =
-    details || "";
+  const details =
+    ingredientId !== undefined &&
+    ingredientDict &&
+    ingredientDict[ingredientId];
 
   return (
     <>
@@ -32,24 +33,29 @@ const IngredientDetails = () => {
           >
             Детали ингредиента
           </h3>
-          <img width="480" height="240" alt={name} src={image_large} />
-          <p className="text text_type_main-medium pt-4 pb-8">{name}</p>
+          <img
+            width="480"
+            height="240"
+            alt={details.name}
+            src={details.image_large}
+          />
+          <p className="text text_type_main-medium pt-4 pb-8">{details.name}</p>
           <ul className={`${ingredientStyle.table} pb-15`}>
             <li className={ingredientStyle.list}>
               <p className={textStyle}>Калории,ккал</p>
-              <p className={textStyle}>{calories}</p>
+              <p className={textStyle}>{details.calories}</p>
             </li>
             <li className={ingredientStyle.list}>
               <p className={textStyle}>Белки, г</p>
-              <p className={textStyle}>{proteins}</p>
+              <p className={textStyle}>{details.proteins}</p>
             </li>
             <li className={ingredientStyle.list}>
               <p className={textStyle}>Жиры, г</p>
-              <p className={textStyle}>{fat}</p>
+              <p className={textStyle}>{details.fat}</p>
             </li>
             <li className={ingredientStyle.list}>
               <p className={textStyle}>Углеводы, г</p>
-              <p className={textStyle}>{carbohydrates}</p>
+              <p className={textStyle}>{details.carbohydrates}</p>
             </li>
           </ul>
         </div>

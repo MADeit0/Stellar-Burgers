@@ -8,7 +8,8 @@ import {
 import headerStyle from "./AppHeader.module.css";
 
 const AppHeader = () => {
-  const setActive = ({ isActive }) =>
+  
+  const setActive = ({ isActive }: { isActive: boolean }): string =>
     `p-5 ${headerStyle.link} ${
       isActive ? headerStyle.active : "text_color_inactive"
     }`;

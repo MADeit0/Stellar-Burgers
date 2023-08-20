@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
 import imgDone from "../../images/done.png";
+import { useAppSelector } from "../../hooks/hook";
 
 const OrderDetails = () => {
-  const { number, loading } = useSelector(({ orderDetails }) => orderDetails);
+  const { number, loading } = useAppSelector(({ orderDetails }) => orderDetails);
 
   return (
     <>

@@ -4,44 +4,65 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { updateDataUserThunk } from "../../../store/auth/authAction";
 import FormBody from "../../../components/FormBody/FormBody";
 import useForm from "../../../hooks/useForm";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hook";
+import { User } from "../../../utils/types";
 
 const ProfilePageForm = () => {
-  const { email, name } = useSelector(({ auth }) => auth.user);
-  const dispatch = useDispatch();
-  const inputRef = useRef(null);
+  const user = useAppSelector(({ auth }) => auth.user);
+  const dispatch = useAppDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [colorText, setColorText] = useState("purple");
   const [message, setMessage] = useState("");
-  const [valueForm, handleChanges, isMessage, showMessage, setValueForm] =
-    useForm({
-      name: "",
-      email: "",
-      password: "",
-    });
+  const [
+    valueForm,
+    handleChanges,
+    isMessage,
+    showMessage,
+    setValueForm,
+  ] = useForm<User>({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const isFormChanged =
-    valueForm.name !== name ||
-    valueForm.email !== email ||
+    valueForm.name !== user?.name ||
+    valueForm.email !== user?.email ||
     !!valueForm.password;
 
+  /**
+   * Обработчик клика по иконке, устанавливает фокус и активирует поле ввода.
+   */
   const onIconClick = () => {
     const input = inputRef.current;
-    input.disabled = false;
-    input.focus();
-    input.classList.remove("input__textfield-disabled");
+    if (input) {
+      input.disabled = false;
+      input.focus();
+      input.classList.remove("input__textfield-disabled");
+    }
   };
 
+  /**
+   * Отключает поле ввода.
+   */
   const disabledToggle = () => {
     const input = inputRef.current;
-    input.classList.add("input__textfield-disabled");
-    input.disabled = true;
+    if (input) {
+      input.classList.add("input__textfield-disabled");
+      input.disabled = true;
+    }
   };
 
-  const handlerSubmit = (e) => {
+  /**
+   * Обработчик события отправки формы для изменения данных пользователя.
+   * @param {FormEvent<HTMLFormElement>} e - Событие отправки формы.
+   * @returns {void}
+   */
+  const handlerSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     dispatch(updateDataUserThunk(valueForm))
@@ -60,13 +81,24 @@ const ProfilePageForm = () => {
     setValueForm((prev) => ({ ...prev, ...valueForm, password: "" }));
   };
 
-  const handledDfaultValue = () => {
-    setValueForm((prev) => ({ ...prev, ...valueForm, name: name, email: email, password: "" }));
-    setMessage("");
+  /**
+   *  Возвращает изначальные данные пользователя которые существуют до подтверждения и перезаписи текущимию данными
+   */
+  const handledDefaultValue = () => {
+    if (user) {
+      setValueForm((prev) => ({
+        ...prev,
+        ...valueForm,
+        name: user.name,
+        email: user.email,
+        password: "",
+      }));
+      setMessage("");
+    }
   };
 
   useEffect(() => {
-    handledDfaultValue();
+    handledDefaultValue();
     // eslint-disable-next-line
   }, []);
 
@@ -78,6 +110,7 @@ const ProfilePageForm = () => {
 
   return (
     <FormBody
+      title=""
       onSubmit={handlerSubmit}
       colorText={colorText}
       message={message}
@@ -89,7 +122,7 @@ const ProfilePageForm = () => {
         type={"text"}
         placeholder={"Имя"}
         onChange={handleChanges}
-        value={valueForm.name}
+        value={valueForm.name || ""}
         icon={"EditIcon"}
         name={"name"}
         error={false}
@@ -100,14 +133,14 @@ const ProfilePageForm = () => {
       />
       <EmailInput
         onChange={handleChanges}
-        value={valueForm.email}
+        value={valueForm.email || ""}
         name={"email"}
         placeholder="Логин"
         isIcon={true}
       />
       <PasswordInput
         onChange={handleChanges}
-        value={valueForm.password}
+        value={valueForm.password || ""}
         name={"password"}
         icon="EditIcon"
       />
@@ -120,7 +153,7 @@ const ProfilePageForm = () => {
             htmlType="reset"
             type="secondary"
             size="large"
-            onClick={handledDfaultValue}
+            onClick={handledDefaultValue}
           >
             Сбросить
           </Button>

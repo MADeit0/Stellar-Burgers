@@ -1,17 +1,22 @@
 import ProfileStyle from "./ProfilePage.module.css";
-
-import { useDispatch } from "react-redux";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { logoutThunk } from "../../store/auth/authAction";
+import { useAppDispatch } from "../../hooks/hook";
 
-const setActive = ({ isActive }) =>
+  /**
+   *Генерирует строку с классами для активного элемента.
+   *
+   * @param {{ isActive: boolean }} { isActive } Флаг активности элемента
+   * @returns {string} Строка с классами для активного элемента.
+   */
+const setActive = ({ isActive }: { isActive: boolean }): string =>
   `${ProfileStyle.link} ${
     isActive ? ProfileStyle.active : "text_color_inactive"
   }`;
 
 const ProfilePage = () => {
   const { pathname } = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div className={ProfileStyle.profile}>

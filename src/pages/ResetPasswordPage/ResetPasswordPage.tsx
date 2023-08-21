@@ -11,19 +11,26 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import axios from "axios";
 import { baseUrl } from "../../utils/constants";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { User } from "../../utils/types";
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [valueForm, handleChanges, isMessage, showMessage] = useForm({
+  const [valueForm, handleChanges, isMessage, showMessage] = useForm<User>({
     password: "",
     token: "",
   });
 
-  const handlerSubmit = async (e) => {
+  /**
+ * Обработчик события отправки формы для сброса пароля.
+ * @param {FormEvent<HTMLFormElement>} e - Событие отправки формы.
+ * @returns {void}
+ */
+  const handlerSubmit = (
+    e: FormEvent<HTMLFormElement>
+  ): void => {
     e.preventDefault();
-
     axios
       .post(`${baseUrl}/password-reset/reset`, valueForm)
       .then((res) => {
@@ -31,7 +38,7 @@ const ResetPasswordPage = () => {
         navigate("/login");
       })
       .catch((error) => {
-        showMessage()
+        showMessage();
         setMessage("Неверный код сброса");
       });
   };
@@ -48,24 +55,20 @@ const ResetPasswordPage = () => {
         <PasswordInput
           placeholder={"Введите новый пароль"}
           onChange={handleChanges}
-          value={valueForm?.password}
+          value={valueForm?.password || ''}
           name={"password"}
         />
         <Input
           type={"text"}
           placeholder={"Введите код из письма"}
           onChange={handleChanges}
-          value={valueForm?.token}
+          value={valueForm?.token || ''}
           name={"token"}
           error={false}
           errorText={"Ошибка"}
           size={"default"}
         />
-        <Button
-          htmlType="submit"
-          type="primary"
-          size="large"
-        >
+        <Button htmlType="submit" type="primary" size="large">
           Сохранить
         </Button>
       </FormBody>

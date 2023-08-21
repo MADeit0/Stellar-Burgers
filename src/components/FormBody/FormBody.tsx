@@ -1,11 +1,11 @@
 import formStyle from "./FormBody.module.css";
 
-import { CSSProperties, Children, ReactNode } from "react";
+import { CSSProperties, Children, FormEvent, ReactNode } from "react";
 
 interface FormBodyProps {
   children: ReactNode;
   title: string;
-  onSubmit: () => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   colorText: CSSProperties["color"];
   message: string;
   isMessage: boolean;

@@ -8,7 +8,12 @@ import {
 import headerStyle from "./AppHeader.module.css";
 
 const AppHeader = () => {
-  
+  /**
+   *Генерирует строку с классами для активного элемента.
+   *
+   * @param {{ isActive: boolean }} { isActive } Флаг активности элемента
+   * @returns {string} Строка с классами для активного элемента.
+   */
   const setActive = ({ isActive }: { isActive: boolean }): string =>
     `p-5 ${headerStyle.link} ${
       isActive ? headerStyle.active : "text_color_inactive"

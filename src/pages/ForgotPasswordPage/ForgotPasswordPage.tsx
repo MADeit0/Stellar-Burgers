@@ -10,27 +10,35 @@ import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import axios from "axios";
 import { baseUrl } from "../../utils/constants";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { User } from "../../utils/types";
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [valueForm, handleChanges, isMessage, showMessage] = useForm({
+  const [valueForm, handleChanges, isMessage, showMessage] = useForm<User>({
     email: "",
   });
 
-  const handlerSubmit = async (e) => {
+  /**
+   * Обработчик события отправки формы для отправки токена на почту.
+   * @param {FormEvent<HTMLFormElement>} e - Событие отправки формы.
+   * @returns {void}
+   */
+  const handlerSubmit = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
 
     axios
       .post(`${baseUrl}/password-reset`, valueForm)
       .then((res) => {
-        localStorage.setItem("emailSent", true);
+        localStorage.setItem("emailSent", "true");
         navigate("/reset-password");
         setMessage("");
       })
       .catch((error) => {
-        showMessage()
+        showMessage();
         setMessage("Ошибка отправки email адреса");
       });
   };
@@ -46,7 +54,7 @@ const ForgotPasswordPage = () => {
       >
         <EmailInput
           onChange={handleChanges}
-          value={valueForm.email}
+          value={valueForm.email || ""}
           name={"email"}
           isIcon={false}
         />

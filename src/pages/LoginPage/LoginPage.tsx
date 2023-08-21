@@ -10,19 +10,25 @@ import {
 import { Link } from "react-router-dom";
 
 import useForm from "../../hooks/useForm";
-import { useDispatch } from "react-redux";
 import { loginUserThunk } from "../../store/auth/authAction";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { User } from "../../utils/types";
+import { useAppDispatch } from "../../hooks/hook";
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [message, setMessage] = useState("");
-  const [valueForm, handleChanges, isMessage, showMessage] = useForm({
+  const [valueForm, handleChanges, isMessage, showMessage] = useForm<User>({
     email: "",
     password: "",
   });
 
-  const handlerSubmit = (e) => {
+  /**
+   * Обработчик события отправки формы для входа пользователя.
+   * @param {FormEvent<HTMLFormElement>} e - Событие отправки формы.
+   * @returns {void}
+   */
+  const handlerSubmit = (e:FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(loginUserThunk(valueForm))
       .unwrap()
@@ -43,13 +49,13 @@ const LoginPage = () => {
       >
         <EmailInput
           onChange={handleChanges}
-          value={valueForm.email}
+          value={valueForm.email || ''}
           name={"email"}
           isIcon={false}
         />
         <PasswordInput
           onChange={handleChanges}
-          value={valueForm.password}
+          value={valueForm.password || ''}
           name={"password"}
         />
         <Button htmlType="submit" type="primary" size="large">

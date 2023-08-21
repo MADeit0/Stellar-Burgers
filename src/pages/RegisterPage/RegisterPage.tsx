@@ -11,25 +11,31 @@ import {
 import { Link } from "react-router-dom";
 
 import useForm from "../../hooks/useForm";
-import { useDispatch } from "react-redux";
 import { registerUserThunk } from "../../store/auth/authAction";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { useAppDispatch } from "../../hooks/hook";
+import { User } from "../../utils/types";
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [message, setMessage] = useState("");
-  const [valueForm, handleChanges, isMessage, showMessage] = useForm({
+  const [valueForm, handleChanges, isMessage, showMessage] = useForm<User>({
     name: "",
     email: "",
     password: "",
   });
 
-  const handlerSubmit = (e) => {
+    /**
+ * Обработчик события отправки формы для регистрации.
+ * @param {FormEvent<HTMLFormElement>} e - Событие отправки формы.
+ * @returns {void}
+ */
+  const handlerSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(registerUserThunk(valueForm))
       .unwrap()
       .catch((err) => {
-        showMessage()
+        showMessage();
         setMessage("Произошла ошибка при регистрации");
       });
   };
@@ -47,7 +53,7 @@ const RegisterPage = () => {
           type={"text"}
           placeholder={"Имя"}
           onChange={handleChanges}
-          value={valueForm.name}
+          value={valueForm.name || ""}
           name={"name"}
           error={false}
           errorText={"Ошибка"}
@@ -55,13 +61,13 @@ const RegisterPage = () => {
         />
         <EmailInput
           onChange={handleChanges}
-          value={valueForm.email}
+          value={valueForm.email || ""}
           name={"email"}
           isIcon={false}
         />
         <PasswordInput
           onChange={handleChanges}
-          value={valueForm.password}
+          value={valueForm.password || ""}
           name={"password"}
         />
         <Button htmlType="submit" type="primary" size="large">

@@ -10,7 +10,7 @@ import ResetPasswordPage from "../../pages/ResetPasswordPage/ResetPasswordPage";
 
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
-import Modal from "../Modal/Modal.tsx";
+import Modal from "../Modal/Modal";
 import {
   OnlyAuth,
   OnlyUnAuth,
@@ -34,12 +34,11 @@ function App() {
   const background = location.state && location.state.background;
 
   useEffect(() => {
-if (localStorage.getItem(token.ACCESS_TOKEN)) {
-  dispatch(checkUserAuthThunk());
-} else {
-  dispatch(setAuthChecked(true));
-}
-
+    if (localStorage.getItem(token.ACCESS_TOKEN)) {
+      dispatch(checkUserAuthThunk());
+    } else {
+      dispatch(setAuthChecked(true));
+    }
   }, [dispatch]);
 
   useEffect(() => {

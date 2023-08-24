@@ -18,6 +18,7 @@ const ingredientType = PropTypes.shape({
 export default ingredientType;
 
 export type Loading = "idle" | "pending" | "succeeded" | "failed";
+export type StatusWs = "pending" | "created" | "done";
 
 export type User = {
   email?: string;
@@ -52,3 +53,4 @@ export type Tingredient = {
   _id: string;
   fakeId?: string;
 };
+

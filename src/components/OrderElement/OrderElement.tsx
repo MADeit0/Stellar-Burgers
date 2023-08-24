@@ -4,11 +4,12 @@ import { useLayoutEffect, useState } from "react";
 import { formatDate } from "../../service";
 import { statusDic } from "../../utils/constants";
 import { useAppSelector } from "../../hooks/hook";
+import { StatusWs } from "../../utils/types";
 
 interface OrderElementProps {
   ingredients: string[];
   wsSuccess: boolean;
-  status: "pending" | "created" | "done";
+  status?: StatusWs;
   number: number;
   name: string;
   createdAt: string;
@@ -37,8 +38,8 @@ const OrderElement = ({
   }, []);
 
   return (
-    wsSuccess &&
-    ingredientDict && (
+    <>
+     { wsSuccess && ingredientDict && (
       <section
         className={status ? orderStyle.container : orderStyle.status_inactive}
       >
@@ -100,7 +101,8 @@ const OrderElement = ({
           <CurrencyIcon type="primary" />
         </div>
       </section>
-    )
+      )}
+    </>
   );
 };
 

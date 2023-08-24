@@ -36,7 +36,7 @@ export const interceptorsAuth = async (
   error: AxiosError<AuthResponseConfig, InternalAxiosRequestConfig<unknown[]>>
 ) => {
   const rejected = error.response?.data; // Получение данных об отклоненном запросе
-  
+
   // Проверка, если токен JWT истек
   if (rejected?.message === message.JWT_EXPIRED) {
     try {
@@ -64,6 +64,11 @@ export const interceptorsAuth = async (
       store.dispatch(setUser(null));
       return Promise.reject(error);
     }
+  } else if (rejected?.message === message.INVALID_TOKEN) {
+    localStorage.removeItem(token.ACCESS_TOKEN);
+    localStorage.removeItem(token.REFRESH_TOKEN);
+    store.dispatch(setUser(null));
+    console.error("Неверный токен");
   }
   return Promise.reject(error);
 };

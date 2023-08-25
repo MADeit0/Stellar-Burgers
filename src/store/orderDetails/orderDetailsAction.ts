@@ -28,6 +28,15 @@ interface OrderResponseConfig {
   order: OrderData;
 }
 
+
+/**
+ * Асинхронное действие для отправки id списка заказанных ингредиентов. 
+ * @async
+ * @function postConstructorData
+ * @param {(Tingredient | null)[]} ingredientsId массив с ингредиентами
+ * @returns {Promise<OrderResponseConfig>} Объект, со статусом выполнения заказа и номером заказа.
+ * @throws { rejectValue: string } Строка с сообщением об ошибке если промис не вернул ответ.
+ */
 export const postConstructorData = createAsyncThunk<
   OrderResponseConfig,
   (Tingredient | null)[],

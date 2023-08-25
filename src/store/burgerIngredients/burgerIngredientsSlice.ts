@@ -3,8 +3,6 @@ import { baseUrl } from "../../utils/constants";
 import axios, { AxiosError } from "axios";
 import { Loading, ErrorResponseConfig, Tingredient } from "../../utils/types";
 
-
-
 interface BurgerIngredientsStore {
   ingredientsDict: { [key: string]: Tingredient } | null;
   loading: Loading;
@@ -29,12 +27,15 @@ export const burgerIngredientsSlice = createSlice({
       })
       .addCase(fetchIngredientsDetails.fulfilled, (state, { payload }) => {
         state.loading = "succeeded";
- 
-        const ingredientsDict = payload.data.reduce((acc: { [key: string]: Tingredient }, item) => {
-          acc[item._id] = item;
 
-          return acc;
-        }, {});
+        const ingredientsDict = payload.data.reduce(
+          (acc: { [key: string]: Tingredient }, item) => {
+            acc[item._id] = item;
+
+            return acc;
+          },
+          {}
+        );
         state.ingredientsDict = ingredientsDict;
       })
       .addCase(fetchIngredientsDetails.rejected, (state, { payload }) => {
@@ -44,8 +45,13 @@ export const burgerIngredientsSlice = createSlice({
   },
 });
 
-export default burgerIngredientsSlice.reducer;
-
+/**
+ * Асинхронное действие для получения главного списка всех ингредиентов.
+ * @async
+ * @function fetchIngredientsDetails
+ * @returns {Promise< { data: Tingredient[] }>} Объект, с детальным списком всех ингредиентов.
+ * @throws { rejectValue: string } Строка с сообщением об ошибке если промис не вернул ответ.
+ */
 export const fetchIngredientsDetails = createAsyncThunk<
   { data: Tingredient[] },
   undefined,
@@ -67,3 +73,4 @@ export const fetchIngredientsDetails = createAsyncThunk<
   }
 );
 
+export default burgerIngredientsSlice.reducer;

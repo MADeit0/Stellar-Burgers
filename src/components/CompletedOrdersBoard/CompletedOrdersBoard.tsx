@@ -1,4 +1,4 @@
-import { Orders } from "../../store/ws/wsSlice";
+import { Orders } from "../../utils/types";
 import boardStyle from "./CompletedOrdersBoard.module.css";
 
 interface CompletedOrdersBoardProps {

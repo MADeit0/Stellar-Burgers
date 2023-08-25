@@ -1,9 +1,15 @@
-export function formatDate(dateString) {
-  //dateString = ISO 8601 Extended YYYY-MM-DDTHH:mm:ss.sssZ";
+
+/**
+ * Форматирует дату и время в соответствии с требуемым форматом.
+ * @param {Date} dateString - Строка, содержащая дату и время в формате ISO 8601 (YYYY-MM-DDTHH:mm:ss.sssZ).
+ * @returns {string} Отформатированная строка с указанием времени, прошедшего с момента указанной даты.
+ */
+export function formatDate(dateString: Date): string {
+
 
   let timeAgo = "";
-  const date = new Date(dateString);
-  const currentDate = new Date();
+  const date = new Date(dateString).getTime();
+  const currentDate = new Date().getTime();
 
   const timeDiff = Math.abs(currentDate - date);
   const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
@@ -25,7 +31,7 @@ export function formatDate(dateString) {
       break;
   }
 
-  const options = {
+  const options: Intl.DateTimeFormatOptions = {
     hour: "numeric",
     minute: "numeric",
     timeZoneName: "short",

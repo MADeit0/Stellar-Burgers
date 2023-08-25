@@ -1,24 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { StatusWs } from "../../utils/types";
+import { WebSocketData } from "../../utils/types";
 
-export type Orders = {
-  _id: string;
-  ingredients: string[];
-  status: StatusWs;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  number: number;
-};
-
-export type FeedsWs = {
-  orders: Orders[];
-  success: boolean;
-  total: number;
-  totalToday: number;
-};
-
-export type WebSocketData = FeedsWs & { message: string;}
 
 export interface CreateWebSocketState {
   isConnected: boolean;

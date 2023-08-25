@@ -4,9 +4,10 @@ import ScrollBar from "../../components/ScrollBar/ScrollBar";
 import { useLayoutEffect } from "react";
 import CompletedOrdersBoard from "../../components/CompletedOrdersBoard/CompletedOrdersBoard";
 import { Link, useLocation } from "react-router-dom";
-import { Orders, wsFeedsSlice } from "../../store/ws/wsSlice";
+import { wsFeedsSlice } from "../../store/ws/wsSlice";
 import { wsUrl } from "../../utils/constants";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { Orders } from "../../utils/types";
 
 const { startConnecting, disconnect } = wsFeedsSlice.actions;
 
@@ -48,47 +49,49 @@ const FeedPage = () => {
   const ordersPending = getOrdersStatus(ordersList, "pending");
 
   return (
-    success && (
-      <>
-        <div className={feedStyle.section}>
-          <section
-            className={`${feedStyle.board} pt-10`}
-            aria-label="ингредиенты"
-          >
-            <h1 className="text text_text text_type_main-large pb-5">
-              Лента заказов
-            </h1>
+    <>
+      {success && (
+        <>
+          <div className={feedStyle.section}>
+            <section
+              className={`${feedStyle.board} pt-10`}
+              aria-label="ингредиенты"
+            >
+              <h1 className="text text_text text_type_main-large pb-5">
+                Лента заказов
+              </h1>
 
-            <ScrollBar maxHeight="66.4vh">
-              {ordersList &&
-                ordersList.map((order) => (
-                  <Link
-                    to={`/feed/${order.number}`}
-                    state={{ background: location }}
-                    className={feedStyle.link}
-                    key={order._id}
-                  >
-                    <OrderElement
-                      wsSuccess={success}
-                      ingredients={order.ingredients}
-                      number={order.number}
-                      name={order.name}
-                      createdAt={order.createdAt}
-                    />
-                  </Link>
-                ))}
-            </ScrollBar>
-          </section>
-          <CompletedOrdersBoard
-            total={total ?? 0}
-            totalToday={totalToday ?? 0}
-            wsSuccess={success}
-            ordersDone={ordersDone}
-            ordersPending={ordersPending}
-          />
-        </div>
-      </>
-    )
+              <ScrollBar maxHeight="66.4vh">
+                {ordersList &&
+                  ordersList.map((order) => (
+                    <Link
+                      to={`/feed/${order.number}`}
+                      state={{ background: location }}
+                      className={feedStyle.link}
+                      key={order._id}
+                    >
+                      <OrderElement
+                        wsSuccess={success}
+                        ingredients={order.ingredients}
+                        number={order.number}
+                        name={order.name}
+                        createdAt={order.createdAt}
+                      />
+                    </Link>
+                  ))}
+              </ScrollBar>
+            </section>
+            <CompletedOrdersBoard
+              total={total ?? 0}
+              totalToday={totalToday ?? 0}
+              wsSuccess={success}
+              ordersDone={ordersDone}
+              ordersPending={ordersPending}
+            />
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

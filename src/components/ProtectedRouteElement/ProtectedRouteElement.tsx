@@ -3,7 +3,7 @@ import { useAppSelector } from "../../hooks/hook";
 import { ReactElement } from "react";
 
 interface ProtectedProps {
-  onlyUnAuth: boolean;
+  onlyUnAuth?: boolean;
   component: ReactElement;
 }
 

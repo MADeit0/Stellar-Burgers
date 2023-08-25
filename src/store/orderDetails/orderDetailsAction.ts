@@ -7,8 +7,8 @@ import { ErrorResponseConfig, Tingredient } from "../../utils/types";
 type Owner = {
   name: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 type OrderData = {
@@ -16,8 +16,8 @@ type OrderData = {
   _id: string;
   owner: Owner;
   status: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   number: number;
   price: number;
 };

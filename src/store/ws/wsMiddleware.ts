@@ -1,8 +1,9 @@
 import { Middleware, MiddlewareAPI } from "@reduxjs/toolkit";
 import { wsUrl, token } from "../../utils/constants";
 import { checkUserAuthThunk } from "../auth/authAction";
-import { WebSocketData, createWebSocketSlice } from "./wsSlice";
+import { createWebSocketSlice } from "./wsSlice";
 import { AppDispatch, RootState } from "../store";
+import { WebSocketData } from "../../utils/types";
 
 export const socketMiddleware = (reducer: string): Middleware => {
   const createWebSocketActions = createWebSocketSlice(reducer).actions;

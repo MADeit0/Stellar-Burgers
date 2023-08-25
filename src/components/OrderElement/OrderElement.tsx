@@ -12,7 +12,7 @@ interface OrderElementProps {
   status?: StatusWs;
   number: number;
   name: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 const OrderElement = ({

@@ -7,7 +7,8 @@ import axios from "axios";
 import { formatDate } from "../../service";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppSelector } from "../../hooks/hook";
-import { FeedsWs, Orders } from "../../store/ws/wsSlice";
+import { FeedsWs, Orders } from "../../utils/types";
+
 
 type Ingredients = { id: string; count: number }[];
 type FeedOrderResponse = Omit<FeedsWs, "total" | "totalToday">;

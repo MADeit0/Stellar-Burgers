@@ -54,3 +54,22 @@ export type Tingredient = {
   fakeId?: string;
 };
 
+export type Orders = {
+  _id: string;
+  ingredients: string[];
+  status: StatusWs;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  number: number;
+};
+
+export type FeedsWs = {
+  orders: Orders[];
+  success: boolean;
+  total: number;
+  totalToday: number;
+};
+
+export type WebSocketData = FeedsWs & { message: string;}
+

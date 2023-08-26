@@ -8,14 +8,14 @@ type Drag = {
   hoverIndex: number;
 };
 
-interface burgerConstructorState {
+interface BurgerConstructorState {
   bunUp: Tingredient | null;
   otherStuffings: Tingredient[];
   bunDown: Tingredient | null;
   isBun: boolean;
 }
 
-const initialState: burgerConstructorState = {
+const initialState: BurgerConstructorState = {
   bunUp: null,
   otherStuffings: [],
   bunDown: null,

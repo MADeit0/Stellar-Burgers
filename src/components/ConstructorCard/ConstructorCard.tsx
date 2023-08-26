@@ -6,37 +6,41 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
-import type { Identifier, XYCoord } from 'dnd-core'
+import type { Identifier, XYCoord } from "dnd-core";
 
 import {
   deleteIngredient,
   moveCard,
 } from "../../store/burgerConstructor/burgerConstructorSlice";
 import { ItemTypes } from "../../utils/constants";
+import { useAppDispatch } from "../../hooks/hook";
 
 interface ConstructorCardProps {
-  name: string
-   price: number
-   image: string
-   fakeId: string
-   index: number
+  name: string;
+  price: number;
+  image: string;
+  fakeId: string;
+  index: number;
 }
 
 interface DragItem {
-  index: number
-  id: string
-  type: string
+  index: number;
+  id: string;
+  type: string;
 }
 
-const ConstructorCard = (props: ConstructorCardProps ) => {
+const ConstructorCard = (props: ConstructorCardProps) => {
   const { name, price, image, fakeId, index } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ref = useRef<HTMLLIElement>(null);
 
-  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+  const [{ handlerId }, drop] = useDrop<
+    DragItem,
+    void,
+    { handlerId: Identifier | null }
+  >({
     accept: ItemTypes.CARD,
     collect(monitor) {
       return {
@@ -90,11 +94,11 @@ const ConstructorCard = (props: ConstructorCardProps ) => {
   /**
    *Отправляет диспатч с данными id карточки который сравнисается в массиве,
    * и удаляет ингредиент из конструктора
-   * 
+   *
    *@returns {void}
    */
   const onDelete = (): void => {
-    dispatch(deleteIngredient({fakeId}));
+    dispatch(deleteIngredient({ fakeId }));
   };
   return (
     <li

@@ -12,11 +12,11 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hook";
 
-interface ingredientProps {
+interface IngredientProps {
   ingredient: Tingredient;
 }
 
-const Ingredient = ({ ingredient }: ingredientProps) => {
+const Ingredient = ({ ingredient }: IngredientProps) => {
   const location = useLocation();
   const { name, price, image, _id } = ingredient;
   const [count, setCount] = useState(0);

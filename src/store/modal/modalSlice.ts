@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface modalState {
+interface ModalState {
   orderModal: boolean;
 }
 
-const initialState: modalState = {
+const initialState: ModalState = {
   orderModal: false,
 };
 

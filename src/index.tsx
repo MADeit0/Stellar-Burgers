@@ -14,7 +14,7 @@ if (rootElement) {
   root.render(
     <React.StrictMode>
       <Provider store={store}>
-        <Router>
+        <Router basename="/Stellar-Burgers">
           <App />
         </Router>
       </Provider>

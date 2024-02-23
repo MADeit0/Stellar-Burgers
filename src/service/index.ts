@@ -1,3 +1,22 @@
+/**
+ * Возвращает строку с правильным окончанием для фразы.
+ * @param {number} count - Число дней.
+ * @returns {string} Строка с правильным суффиксом.
+ */
+export function countSelections(count: number = 0): string {
+  const suffixes = new Map([
+    ['one', 'день назад'],
+    ['two', 'дня назад'],
+    ['few', 'дня назад'],
+    ['many', 'дней назад'],
+    ['other', 'дней назад'],
+  ]);
+
+  const pluralRules = new Intl.PluralRules('ru').select(count);
+  const rule = suffixes.get(pluralRules) as string;
+
+  return rule;
+}
 
 /**
  * Форматирует дату и время в соответствии с требуемым форматом.
@@ -5,9 +24,7 @@
  * @returns {string} Отформатированная строка с указанием времени, прошедшего с момента указанной даты.
  */
 export function formatDate(dateString: Date): string {
-
-
-  let timeAgo = "";
+  let timeAgo = '';
   const date = new Date(dateString).getTime();
   const currentDate = new Date().getTime();
 
@@ -21,24 +38,19 @@ export function formatDate(dateString: Date): string {
     case 1:
       timeAgo = `вчера`;
       break;
-    case 2:
-    case 3:
-    case 4:
-      timeAgo = `${days} дня назад`;
-      break;
     default:
-      timeAgo = `${days} дней назад`;
+      timeAgo = `${days} ${countSelections(days)}`;
       break;
   }
 
   const options: Intl.DateTimeFormatOptions = {
-    hour: "numeric",
-    minute: "numeric",
-    timeZoneName: "short",
-    timeZone: "Europe/Moscow",
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: 'short',
+    timeZone: 'Europe/Moscow',
   };
 
-  const formattedDate = new Intl.DateTimeFormat("ru-RU", options).format(date);
+  const formattedDate = new Intl.DateTimeFormat('ru-RU', options).format(date);
 
   return `${timeAgo}, ${formattedDate}`;
 }

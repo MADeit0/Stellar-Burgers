@@ -5,7 +5,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from "dnd-core";
 
@@ -30,7 +30,7 @@ interface DragItem {
   type: string;
 }
 
-const ConstructorCard = (props: ConstructorCardProps) => {
+const ConstructorCard = memo((props: ConstructorCardProps) => {
   const { name, price, image, fakeId, index } = props;
 
   const dispatch = useAppDispatch();
@@ -117,6 +117,6 @@ const ConstructorCard = (props: ConstructorCardProps) => {
       />
     </li>
   );
-};
+})
 
 export default ConstructorCard;

@@ -1,8 +1,8 @@
-import IngredientsBoardStyle from "./IngredientsBoard.module.css";
-import Ingredient from "../Ingredient/Ingredient";
+import IngredientsBoardStyle from './IngredientsBoard.module.css';
+import Ingredient from '../Ingredient/Ingredient';
 
-import { useEffect, forwardRef } from "react";
-import { useAppSelector } from "../../hooks/hook";
+import { useEffect, forwardRef, useMemo } from 'react';
+import { useAppSelector } from '../../hooks/hook';
 
 interface IngredientsBoardProps {
   title: string;
@@ -18,6 +18,8 @@ const IngredientsBoard = forwardRef<HTMLHeadingElement, IngredientsBoardProps>(
       ({ burgerIngredients }) => burgerIngredients.ingredientsDict
     );
 
+    const ingredients = useMemo(() => ingredientDict, [ingredientDict]);
+
     useEffect(() => {
       isView && setState(menu);
       // eslint-disable-next-line
@@ -29,8 +31,8 @@ const IngredientsBoard = forwardRef<HTMLHeadingElement, IngredientsBoardProps>(
           {title}
         </h2>
         <ul className={`${IngredientsBoardStyle.box} pr-4 pl-4`}>
-          {ingredientDict &&
-            Object.values(ingredientDict).map(
+          {ingredients &&
+            Object.values(ingredients).map(
               (item) =>
                 item.type === menu && (
                   <li

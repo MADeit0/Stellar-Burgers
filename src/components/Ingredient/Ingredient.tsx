@@ -8,7 +8,7 @@ import {
 
 import { ItemTypes } from "../../utils/constants";
 import { DragPreviewImage, useDrag } from "react-dnd";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hook";
 
@@ -16,7 +16,7 @@ interface IngredientProps {
   ingredient: Tingredient;
 }
 
-const Ingredient = ({ ingredient }: IngredientProps) => {
+const Ingredient = memo(({ ingredient }: IngredientProps) => {
   const location = useLocation();
   const { name, price, image, _id } = ingredient;
   const [count, setCount] = useState(0);
@@ -69,6 +69,6 @@ const Ingredient = ({ ingredient }: IngredientProps) => {
       )}
     </Link>
   );
-};
+})
 
 export default Ingredient;
